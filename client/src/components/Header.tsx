@@ -63,7 +63,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     gap: "6px",
     padding: "6px 14px",
-    fontSize: "13px",
+    fontSize: "14px",
     fontWeight: 400,
     color: tokens.colorNeutralForeground1,
     opacity: 0.45,
