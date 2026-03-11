@@ -19,9 +19,9 @@ const useStyles = makeStyles({
     left: "50%",
     transform: "translateX(-50%)",
     width: "100%",
-    height: "300px",
+    height: "400px",
     background:
-      "linear-gradient(to bottom, rgba(123, 83, 230, 0) 0%, rgba(123, 83, 230, 0.20) 100%)",
+      "linear-gradient(to bottom, rgba(123, 83, 230, 0) 0%, rgba(109, 65, 230, 0.2) 100%)",
     pointerEvents: "none",
     zIndex: 0,
   },
