@@ -8,20 +8,15 @@ import {
   Textarea,
   tokens,
 } from "@fluentui/react-components";
-import {
-  ChatMultiple20Regular,
-  Emoji20Regular,
-  Globe20Regular,
-  Wrench20Regular,
-} from "@fluentui/react-icons";
+import { Emoji20Regular } from "@fluentui/react-icons";
 import { useState } from "react";
 import graphragLogo from "../assets/graphrag.png";
 import type { TabValue } from "../types";
 
-const TABS: { value: TabValue; label: string; icon: React.ReactNode }[] = [
-  { value: "ask", label: "Ask", icon: <ChatMultiple20Regular /> },
-  { value: "explore", label: "Explore", icon: <Globe20Regular /> },
-  { value: "build", label: "Build", icon: <Wrench20Regular /> },
+const TABS: { value: TabValue; label: string }[] = [
+  { value: "ask", label: "Ask" },
+  { value: "explore", label: "Explore" },
+  { value: "build", label: "Build" },
 ];
 
 const useStyles = makeStyles({
@@ -88,11 +83,6 @@ const useStyles = makeStyles({
   tabActive: {
     opacity: 1,
     fontWeight: 600,
-  },
-  tabIcon: {
-    display: "flex",
-    alignItems: "center",
-    fontSize: "16px",
   },
   divider: {
     width: "1px",
@@ -171,7 +161,6 @@ const Header = ({ activeTab, onTabChange }: HeaderProps) => {
             )}
             onClick={() => onTabChange(tab.value)}
           >
-            <span className={styles.tabIcon}>{tab.icon}</span>
             {tab.label}
           </button>
         ))}
