@@ -1,0 +1,1888 @@
+2026-03-11 16:52:04.0549 - INFO - graphrag.index.validate_config - LLM Config Params Validated
+2026-03-11 16:52:10.0122 - INFO - graphrag.index.validate_config - Embedding LLM Config Params Validated
+2026-03-11 16:52:10.0123 - INFO - graphrag.cli.index - Starting pipeline run. False
+2026-03-11 16:52:10.0128 - INFO - graphrag.cli.index - Using default configuration: {
+    "completion_models": {
+        "default_completion_model": {
+            "type": "litellm",
+            "model_provider": "azure",
+            "model": "gpt-4.1",
+            "call_args": {},
+            "api_base": "https://graphrag-foundry-resource.openai.azure.com/",
+            "api_version": "2024-12-01-preview",
+            "auth_method": "azure_managed_identity",
+            "azure_deployment_name": "gpt-4.1",
+            "retry": {
+                "type": "exponential_backoff",
+                "max_retries": null,
+                "base_delay": null,
+                "jitter": null,
+                "max_delay": null
+            },
+            "rate_limit": null,
+            "metrics": {
+                "type": "default",
+                "store": "memory",
+                "writer": "log",
+                "log_level": null,
+                "base_dir": null
+            },
+            "mock_responses": []
+        }
+    },
+    "embedding_models": {
+        "default_embedding_model": {
+            "type": "litellm",
+            "model_provider": "azure",
+            "model": "text-embedding-3-large",
+            "call_args": {},
+            "api_base": "https://graphrag-foundry-resource.cognitiveservices.azure.com/",
+            "api_version": "2024-02-01",
+            "auth_method": "azure_managed_identity",
+            "azure_deployment_name": "text-embedding-3-large",
+            "retry": {
+                "type": "exponential_backoff",
+                "max_retries": null,
+                "base_delay": null,
+                "jitter": null,
+                "max_delay": null
+            },
+            "rate_limit": null,
+            "metrics": {
+                "type": "default",
+                "store": "memory",
+                "writer": "log",
+                "log_level": null,
+                "base_dir": null
+            },
+            "mock_responses": []
+        }
+    },
+    "concurrent_requests": 25,
+    "async_mode": "threaded",
+    "input": {
+        "type": "text",
+        "encoding": null,
+        "file_pattern": null,
+        "id_column": null,
+        "title_column": null,
+        "text_column": null
+    },
+    "input_storage": {
+        "type": "file",
+        "encoding": null,
+        "base_dir": "C:\\Users\\t-aryanshah\\OneDrive - Microsoft\\SE\\ai-tour\\foundry\\graphrag-quickstart\\input",
+        "account_url": null,
+        "database_name": null
+    },
+    "chunking": {
+        "type": "tokens",
+        "encoding_model": "o200k_base",
+        "size": 1200,
+        "overlap": 100,
+        "prepend_metadata": null
+    },
+    "output_storage": {
+        "type": "file",
+        "encoding": null,
+        "base_dir": "C:\\Users\\t-aryanshah\\OneDrive - Microsoft\\SE\\ai-tour\\foundry\\graphrag-quickstart\\output",
+        "account_url": null,
+        "database_name": null
+    },
+    "update_output_storage": {
+        "type": "file",
+        "encoding": null,
+        "base_dir": "C:\\Users\\t-aryanshah\\OneDrive - Microsoft\\SE\\ai-tour\\foundry\\graphrag-quickstart\\update_output",
+        "account_url": null,
+        "database_name": null
+    },
+    "table_provider": {
+        "type": "parquet"
+    },
+    "cache": {
+        "type": "json",
+        "storage": {
+            "type": "file",
+            "encoding": null,
+            "base_dir": "cache",
+            "account_url": null,
+            "database_name": null
+        }
+    },
+    "reporting": {
+        "type": "file",
+        "base_dir": "C:\\Users\\t-aryanshah\\OneDrive - Microsoft\\SE\\ai-tour\\foundry\\graphrag-quickstart\\logs",
+        "account_url": null
+    },
+    "vector_store": {
+        "type": "lancedb",
+        "db_uri": "C:\\Users\\t-aryanshah\\OneDrive - Microsoft\\SE\\ai-tour\\foundry\\graphrag-quickstart\\output\\lancedb",
+        "url": null,
+        "audience": null,
+        "database_name": null,
+        "vector_size": 3072,
+        "index_schema": {
+            "text_unit_text": {
+                "index_name": "text_unit_text",
+                "id_field": "id",
+                "vector_field": "vector",
+                "vector_size": 3072,
+                "fields": {}
+            },
+            "community_full_content": {
+                "index_name": "community_full_content",
+                "id_field": "id",
+                "vector_field": "vector",
+                "vector_size": 3072,
+                "fields": {}
+            },
+            "entity_description": {
+                "index_name": "entity_description",
+                "id_field": "id",
+                "vector_field": "vector",
+                "vector_size": 3072,
+                "fields": {}
+            }
+        }
+    },
+    "workflows": null,
+    "embed_text": {
+        "embedding_model_id": "default_embedding_model",
+        "model_instance_name": "text_embedding",
+        "batch_size": 16,
+        "batch_max_tokens": 8191,
+        "names": [
+            "entity_description",
+            "community_full_content",
+            "text_unit_text"
+        ]
+    },
+    "extract_graph": {
+        "completion_model_id": "default_completion_model",
+        "model_instance_name": "extract_graph",
+        "prompt": "prompts/extract_graph.txt",
+        "entity_types": [
+            "organization",
+            "person",
+            "geo",
+            "event"
+        ],
+        "max_gleanings": 1
+    },
+    "summarize_descriptions": {
+        "completion_model_id": "default_completion_model",
+        "model_instance_name": "summarize_descriptions",
+        "prompt": "prompts/summarize_descriptions.txt",
+        "max_length": 500,
+        "max_input_tokens": 4000
+    },
+    "extract_graph_nlp": {
+        "normalize_edge_weights": true,
+        "text_analyzer": {
+            "extractor_type": "regex_english",
+            "model_name": "en_core_web_md",
+            "max_word_length": 15,
+            "word_delimiter": " ",
+            "include_named_entities": true,
+            "exclude_nouns": [
+                "stuff",
+                "thing",
+                "things",
+                "bunch",
+                "bit",
+                "bits",
+                "people",
+                "person",
+                "okay",
+                "hey",
+                "hi",
+                "hello",
+                "laughter",
+                "oh"
+            ],
+            "exclude_entity_tags": [
+                "DATE"
+            ],
+            "exclude_pos_tags": [
+                "DET",
+                "PRON",
+                "INTJ",
+                "X"
+            ],
+            "noun_phrase_tags": [
+                "PROPN",
+                "NOUNS"
+            ],
+            "noun_phrase_grammars": {
+                "PROPN,PROPN": "PROPN",
+                "NOUN,NOUN": "NOUNS",
+                "NOUNS,NOUN": "NOUNS",
+                "ADJ,ADJ": "ADJ",
+                "ADJ,NOUN": "NOUNS"
+            }
+        },
+        "concurrent_requests": 25,
+        "async_mode": "threaded"
+    },
+    "prune_graph": {
+        "min_node_freq": 2,
+        "max_node_freq_std": null,
+        "min_node_degree": 1,
+        "max_node_degree_std": null,
+        "min_edge_weight_pct": 40.0,
+        "remove_ego_nodes": true,
+        "lcc_only": false
+    },
+    "cluster_graph": {
+        "max_cluster_size": 10,
+        "use_lcc": true,
+        "seed": 3735928559
+    },
+    "extract_claims": {
+        "enabled": false,
+        "completion_model_id": "default_completion_model",
+        "model_instance_name": "extract_claims",
+        "prompt": "prompts/extract_claims.txt",
+        "description": "Any claims or facts that could be relevant to information discovery.",
+        "max_gleanings": 1
+    },
+    "community_reports": {
+        "completion_model_id": "default_completion_model",
+        "model_instance_name": "community_reporting",
+        "graph_prompt": "prompts/community_report_graph.txt",
+        "text_prompt": "prompts/community_report_text.txt",
+        "max_length": 2000,
+        "max_input_length": 8000
+    },
+    "snapshots": {
+        "embeddings": false,
+        "graphml": false,
+        "raw_graph": false
+    },
+    "local_search": {
+        "prompt": "prompts/local_search_system_prompt.txt",
+        "completion_model_id": "default_completion_model",
+        "embedding_model_id": "default_embedding_model",
+        "text_unit_prop": 0.5,
+        "community_prop": 0.15,
+        "conversation_history_max_turns": 5,
+        "top_k_entities": 10,
+        "top_k_relationships": 10,
+        "max_context_tokens": 12000
+    },
+    "global_search": {
+        "map_prompt": "prompts/global_search_map_system_prompt.txt",
+        "reduce_prompt": "prompts/global_search_reduce_system_prompt.txt",
+        "completion_model_id": "default_completion_model",
+        "knowledge_prompt": "prompts/global_search_knowledge_system_prompt.txt",
+        "max_context_tokens": 12000,
+        "data_max_tokens": 12000,
+        "map_max_length": 1000,
+        "reduce_max_length": 2000,
+        "dynamic_search_threshold": 1,
+        "dynamic_search_keep_parent": false,
+        "dynamic_search_num_repeats": 1,
+        "dynamic_search_use_summary": false,
+        "dynamic_search_max_level": 2
+    },
+    "drift_search": {
+        "prompt": "prompts/drift_search_system_prompt.txt",
+        "reduce_prompt": "prompts/drift_search_reduce_prompt.txt",
+        "completion_model_id": "default_completion_model",
+        "embedding_model_id": "default_embedding_model",
+        "data_max_tokens": 12000,
+        "reduce_max_tokens": null,
+        "reduce_temperature": 0,
+        "reduce_max_completion_tokens": null,
+        "concurrency": 32,
+        "drift_k_followups": 20,
+        "primer_folds": 5,
+        "primer_llm_max_tokens": 12000,
+        "n_depth": 3,
+        "local_search_text_unit_prop": 0.9,
+        "local_search_community_prop": 0.1,
+        "local_search_top_k_mapped_entities": 10,
+        "local_search_top_k_relationships": 10,
+        "local_search_max_data_tokens": 12000,
+        "local_search_temperature": 0,
+        "local_search_top_p": 1,
+        "local_search_n": 1,
+        "local_search_llm_max_gen_tokens": null,
+        "local_search_llm_max_gen_completion_tokens": null
+    },
+    "basic_search": {
+        "prompt": "prompts/basic_search_system_prompt.txt",
+        "completion_model_id": "default_completion_model",
+        "embedding_model_id": "default_embedding_model",
+        "k": 10,
+        "max_context_tokens": 12000
+    }
+}
+2026-03-11 16:52:10.0136 - INFO - graphrag.api.index - Initializing indexing pipeline...
+2026-03-11 16:52:10.0136 - INFO - graphrag.index.workflows.factory - Creating pipeline with workflows: ['load_input_documents', 'create_base_text_units', 'create_final_documents', 'extract_graph', 'finalize_graph', 'extract_covariates', 'create_communities', 'create_final_text_units', 'create_community_reports', 'generate_text_embeddings']
+2026-03-11 16:52:10.0150 - INFO - graphrag.index.run.run_pipeline - Running standard indexing.
+2026-03-11 16:52:10.0175 - INFO - graphrag.index.run.run_pipeline - Executing pipeline...
+2026-03-11 16:52:10.0238 - INFO - graphrag.index.workflows.load_input_documents - Final # of rows loaded: 1
+2026-03-11 16:52:10.0781 - INFO - graphrag.api.index - Workflow load_input_documents completed successfully
+2026-03-11 16:52:10.0812 - INFO - graphrag.index.workflows.create_base_text_units - Workflow started: create_base_text_units
+2026-03-11 16:52:14.0461 - INFO - graphrag.index.workflows.create_base_text_units - Starting chunking process for 1 documents
+2026-03-11 16:52:14.0770 - INFO - graphrag.index.workflows.create_base_text_units - chunker progress:  1/1
+2026-03-11 16:52:14.0786 - INFO - graphrag.index.workflows.create_base_text_units - Workflow completed: create_base_text_units
+2026-03-11 16:52:14.0821 - INFO - graphrag.api.index - Workflow create_base_text_units completed successfully
+2026-03-11 16:52:14.0826 - INFO - graphrag.index.workflows.create_final_documents - Workflow started: create_final_documents
+2026-03-11 16:52:14.0892 - INFO - graphrag.index.workflows.create_final_documents - Workflow completed: create_final_documents
+2026-03-11 16:52:14.0892 - INFO - graphrag.api.index - Workflow create_final_documents completed successfully
+2026-03-11 16:52:14.0897 - INFO - graphrag.index.workflows.extract_graph - Workflow started: extract_graph
+2026-03-11 16:52:42.0091 - INFO - graphrag.logger.progress - extract graph progress: 1/42
+2026-03-11 16:52:45.0511 - INFO - graphrag.logger.progress - extract graph progress: 2/42
+2026-03-11 16:52:48.0047 - INFO - graphrag.logger.progress - extract graph progress: 3/42
+2026-03-11 16:52:48.0056 - INFO - graphrag.logger.progress - extract graph progress: 4/42
+2026-03-11 16:52:48.0064 - INFO - graphrag.logger.progress - extract graph progress: 5/42
+2026-03-11 16:52:50.0241 - INFO - graphrag.logger.progress - extract graph progress: 6/42
+2026-03-11 16:52:50.0810 - INFO - graphrag.logger.progress - extract graph progress: 7/42
+2026-03-11 16:52:52.0185 - INFO - graphrag.logger.progress - extract graph progress: 8/42
+2026-03-11 16:53:33.0570 - INFO - graphrag.logger.progress - extract graph progress: 9/42
+2026-03-11 16:53:34.0085 - INFO - graphrag.logger.progress - extract graph progress: 10/42
+2026-03-11 16:53:35.0426 - INFO - graphrag.logger.progress - extract graph progress: 11/42
+2026-03-11 16:53:36.0036 - INFO - graphrag.logger.progress - extract graph progress: 12/42
+2026-03-11 16:53:36.0632 - INFO - graphrag.logger.progress - extract graph progress: 13/42
+2026-03-11 16:53:37.0172 - INFO - graphrag.logger.progress - extract graph progress: 14/42
+2026-03-11 16:53:37.0723 - INFO - graphrag.logger.progress - extract graph progress: 15/42
+2026-03-11 16:53:38.0346 - INFO - graphrag.logger.progress - extract graph progress: 16/42
+2026-03-11 16:53:39.0625 - INFO - graphrag.logger.progress - extract graph progress: 17/42
+2026-03-11 16:53:39.0634 - INFO - graphrag.logger.progress - extract graph progress: 18/42
+2026-03-11 16:53:41.0678 - INFO - graphrag.logger.progress - extract graph progress: 19/42
+2026-03-11 16:53:43.0728 - INFO - graphrag.logger.progress - extract graph progress: 20/42
+2026-03-11 16:53:43.0737 - INFO - graphrag.logger.progress - extract graph progress: 21/42
+2026-03-11 16:53:56.0592 - INFO - graphrag.logger.progress - extract graph progress: 22/42
+2026-03-11 16:54:38.0543 - INFO - graphrag.logger.progress - extract graph progress: 23/42
+2026-03-11 16:54:38.0554 - INFO - graphrag.logger.progress - extract graph progress: 24/42
+2026-03-11 16:54:38.0567 - INFO - graphrag.logger.progress - extract graph progress: 25/42
+2026-03-11 16:54:38.0654 - INFO - graphrag.logger.progress - extract graph progress: 26/42
+2026-03-11 16:54:38.0693 - INFO - graphrag.logger.progress - extract graph progress: 27/42
+2026-03-11 16:54:39.0766 - INFO - graphrag.logger.progress - extract graph progress: 28/42
+2026-03-11 16:54:39.0852 - INFO - graphrag.logger.progress - extract graph progress: 29/42
+2026-03-11 16:54:39.0857 - INFO - graphrag.logger.progress - extract graph progress: 30/42
+2026-03-11 16:54:40.0162 - INFO - graphrag.logger.progress - extract graph progress: 31/42
+2026-03-11 16:54:40.0598 - INFO - graphrag.logger.progress - extract graph progress: 32/42
+2026-03-11 16:54:40.0665 - INFO - graphrag.logger.progress - extract graph progress: 33/42
+2026-03-11 16:54:43.0398 - INFO - graphrag.logger.progress - extract graph progress: 34/42
+2026-03-11 16:54:43.0582 - INFO - graphrag.logger.progress - extract graph progress: 35/42
+2026-03-11 16:54:45.0061 - INFO - graphrag.logger.progress - extract graph progress: 36/42
+2026-03-11 16:54:46.0189 - INFO - graphrag.logger.progress - extract graph progress: 37/42
+2026-03-11 16:54:46.0462 - INFO - graphrag.logger.progress - extract graph progress: 38/42
+2026-03-11 16:54:48.0579 - INFO - graphrag.logger.progress - extract graph progress: 39/42
+2026-03-11 16:54:48.0862 - INFO - graphrag.logger.progress - extract graph progress: 40/42
+2026-03-11 16:54:49.0114 - INFO - graphrag.logger.progress - extract graph progress: 41/42
+2026-03-11 16:54:49.0992 - INFO - graphrag.logger.progress - extract graph progress: 42/42
+2026-03-11 16:54:50.0864 - WARNING - graphrag.index.operations.extract_graph.utils - Dropped 128 relationship(s) referencing non-existent entities.
+2026-03-11 16:54:53.0256 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1/1281
+2026-03-11 16:54:53.0258 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 2/1281
+2026-03-11 16:54:53.0258 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 3/1281
+2026-03-11 16:54:53.0259 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 4/1281
+2026-03-11 16:54:53.0259 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 5/1281
+2026-03-11 16:54:53.0260 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 6/1281
+2026-03-11 16:54:53.0260 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 7/1281
+2026-03-11 16:54:53.0261 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 8/1281
+2026-03-11 16:54:53.0920 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 9/1281
+2026-03-11 16:54:54.0382 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 10/1281
+2026-03-11 16:54:54.0743 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 11/1281
+2026-03-11 16:54:55.0383 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 12/1281
+2026-03-11 16:54:55.0384 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 13/1281
+2026-03-11 16:54:55.0386 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 14/1281
+2026-03-11 16:54:55.0386 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 15/1281
+2026-03-11 16:54:55.0387 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 16/1281
+2026-03-11 16:54:55.0388 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 17/1281
+2026-03-11 16:54:55.0389 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 18/1281
+2026-03-11 16:54:55.0548 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 19/1281
+2026-03-11 16:54:55.0551 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 20/1281
+2026-03-11 16:54:55.0551 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 21/1281
+2026-03-11 16:54:57.0804 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 22/1281
+2026-03-11 16:54:58.0509 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 23/1281
+2026-03-11 16:54:58.0510 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 24/1281
+2026-03-11 16:54:58.0512 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 25/1281
+2026-03-11 16:54:58.0512 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 26/1281
+2026-03-11 16:54:58.0576 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 27/1281
+2026-03-11 16:54:58.0610 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 28/1281
+2026-03-11 16:54:58.0612 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 29/1281
+2026-03-11 16:54:58.0632 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 30/1281
+2026-03-11 16:54:58.0637 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 31/1281
+2026-03-11 16:54:58.0659 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 32/1281
+2026-03-11 16:54:58.0745 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 33/1281
+2026-03-11 16:54:58.0748 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 34/1281
+2026-03-11 16:54:58.0808 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 35/1281
+2026-03-11 16:54:59.0213 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 36/1281
+2026-03-11 16:54:59.0430 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 37/1281
+2026-03-11 16:54:59.0437 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 38/1281
+2026-03-11 16:54:59.0445 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 39/1281
+2026-03-11 16:54:59.0453 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 40/1281
+2026-03-11 16:54:59.0557 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 41/1281
+2026-03-11 16:54:59.0575 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 42/1281
+2026-03-11 16:54:59.0583 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 43/1281
+2026-03-11 16:54:59.0585 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 44/1281
+2026-03-11 16:54:59.0586 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 45/1281
+2026-03-11 16:54:59.0590 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 46/1281
+2026-03-11 16:54:59.0653 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 47/1281
+2026-03-11 16:54:59.0656 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 48/1281
+2026-03-11 16:54:59.0728 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 49/1281
+2026-03-11 16:54:59.0794 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 50/1281
+2026-03-11 16:54:59.0809 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 51/1281
+2026-03-11 16:54:59.0822 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 52/1281
+2026-03-11 16:54:59.0831 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 53/1281
+2026-03-11 16:54:59.0844 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 54/1281
+2026-03-11 16:54:59.0854 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 55/1281
+2026-03-11 16:54:59.0855 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 56/1281
+2026-03-11 16:54:59.0861 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 57/1281
+2026-03-11 16:54:59.0864 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 58/1281
+2026-03-11 16:54:59.0877 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 59/1281
+2026-03-11 16:54:59.0893 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 60/1281
+2026-03-11 16:54:59.0895 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 61/1281
+2026-03-11 16:54:59.0897 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 62/1281
+2026-03-11 16:54:59.0903 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 63/1281
+2026-03-11 16:54:59.0904 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 64/1281
+2026-03-11 16:54:59.0905 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 65/1281
+2026-03-11 16:54:59.0906 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 66/1281
+2026-03-11 16:54:59.0907 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 67/1281
+2026-03-11 16:54:59.0988 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 68/1281
+2026-03-11 16:54:59.0989 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 69/1281
+2026-03-11 16:54:59.0990 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 70/1281
+2026-03-11 16:54:59.0990 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 71/1281
+2026-03-11 16:54:59.0995 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 72/1281
+2026-03-11 16:54:59.0998 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 73/1281
+2026-03-11 16:55:00.0107 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 74/1281
+2026-03-11 16:55:00.0186 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 75/1281
+2026-03-11 16:55:00.0376 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 76/1281
+2026-03-11 16:55:00.0381 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 77/1281
+2026-03-11 16:55:00.0530 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 78/1281
+2026-03-11 16:55:00.0532 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 79/1281
+2026-03-11 16:55:00.0546 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 80/1281
+2026-03-11 16:55:00.0549 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 81/1281
+2026-03-11 16:55:00.0554 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 82/1281
+2026-03-11 16:55:00.0555 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 83/1281
+2026-03-11 16:55:00.0555 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 84/1281
+2026-03-11 16:55:00.0556 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 85/1281
+2026-03-11 16:55:00.0558 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 86/1281
+2026-03-11 16:55:00.0558 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 87/1281
+2026-03-11 16:55:00.0559 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 88/1281
+2026-03-11 16:55:00.0559 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 89/1281
+2026-03-11 16:55:01.0044 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 90/1281
+2026-03-11 16:55:01.0045 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 91/1281
+2026-03-11 16:55:01.0382 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 92/1281
+2026-03-11 16:55:01.0656 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 93/1281
+2026-03-11 16:55:01.0945 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 94/1281
+2026-03-11 16:55:01.0948 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 95/1281
+2026-03-11 16:55:01.0951 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 96/1281
+2026-03-11 16:55:01.0953 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 97/1281
+2026-03-11 16:55:01.0954 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 98/1281
+2026-03-11 16:55:01.0957 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 99/1281
+2026-03-11 16:55:01.0959 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 100/1281
+2026-03-11 16:55:01.0960 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 101/1281
+2026-03-11 16:55:01.0960 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 102/1281
+2026-03-11 16:55:01.0961 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 103/1281
+2026-03-11 16:55:01.0961 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 104/1281
+2026-03-11 16:55:01.0962 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 105/1281
+2026-03-11 16:55:01.0963 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 106/1281
+2026-03-11 16:55:01.0964 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 107/1281
+2026-03-11 16:55:02.0634 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 108/1281
+2026-03-11 16:55:02.0635 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 109/1281
+2026-03-11 16:55:02.0636 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 110/1281
+2026-03-11 16:55:02.0637 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 111/1281
+2026-03-11 16:55:02.0637 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 112/1281
+2026-03-11 16:55:02.0638 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 113/1281
+2026-03-11 16:55:02.0639 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 114/1281
+2026-03-11 16:55:02.0640 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 115/1281
+2026-03-11 16:55:02.0640 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 116/1281
+2026-03-11 16:55:02.0934 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 117/1281
+2026-03-11 16:55:03.0395 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 118/1281
+2026-03-11 16:55:03.0396 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 119/1281
+2026-03-11 16:55:03.0399 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 120/1281
+2026-03-11 16:55:03.0400 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 121/1281
+2026-03-11 16:55:03.0401 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 122/1281
+2026-03-11 16:55:03.0401 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 123/1281
+2026-03-11 16:55:03.0402 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 124/1281
+2026-03-11 16:55:03.0671 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 125/1281
+2026-03-11 16:55:03.0674 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 126/1281
+2026-03-11 16:55:04.0084 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 127/1281
+2026-03-11 16:55:04.0085 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 128/1281
+2026-03-11 16:55:04.0086 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 129/1281
+2026-03-11 16:55:04.0086 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 130/1281
+2026-03-11 16:55:04.0087 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 131/1281
+2026-03-11 16:55:04.0087 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 132/1281
+2026-03-11 16:55:04.0087 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 133/1281
+2026-03-11 16:55:04.0088 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 134/1281
+2026-03-11 16:55:05.0064 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 135/1281
+2026-03-11 16:55:05.0922 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 136/1281
+2026-03-11 16:55:05.0923 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 137/1281
+2026-03-11 16:55:06.0972 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 138/1281
+2026-03-11 16:55:06.0973 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 139/1281
+2026-03-11 16:55:06.0974 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 140/1281
+2026-03-11 16:55:06.0974 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 141/1281
+2026-03-11 16:55:06.0975 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 142/1281
+2026-03-11 16:55:06.0976 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 143/1281
+2026-03-11 16:55:06.0976 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 144/1281
+2026-03-11 16:55:06.0977 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 145/1281
+2026-03-11 16:55:06.0978 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 146/1281
+2026-03-11 16:55:06.0978 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 147/1281
+2026-03-11 16:55:06.0979 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 148/1281
+2026-03-11 16:55:06.0979 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 149/1281
+2026-03-11 16:55:06.0980 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 150/1281
+2026-03-11 16:55:06.0983 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 151/1281
+2026-03-11 16:55:06.0986 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 152/1281
+2026-03-11 16:55:06.0987 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 153/1281
+2026-03-11 16:55:06.0988 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 154/1281
+2026-03-11 16:55:06.0989 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 155/1281
+2026-03-11 16:55:06.0989 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 156/1281
+2026-03-11 16:55:07.0131 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 157/1281
+2026-03-11 16:55:07.0132 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 158/1281
+2026-03-11 16:55:29.0922 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 159/1281
+2026-03-11 16:55:29.0925 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 160/1281
+2026-03-11 16:55:29.0925 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 161/1281
+2026-03-11 16:55:29.0928 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 162/1281
+2026-03-11 16:55:29.0929 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 163/1281
+2026-03-11 16:55:29.0932 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 164/1281
+2026-03-11 16:55:29.0932 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 165/1281
+2026-03-11 16:55:29.0940 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 166/1281
+2026-03-11 16:55:29.0943 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 167/1281
+2026-03-11 16:55:29.0945 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 168/1281
+2026-03-11 16:55:29.0947 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 169/1281
+2026-03-11 16:55:29.0948 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 170/1281
+2026-03-11 16:55:29.0952 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 171/1281
+2026-03-11 16:55:29.0954 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 172/1281
+2026-03-11 16:55:29.0958 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 173/1281
+2026-03-11 16:55:29.0960 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 174/1281
+2026-03-11 16:55:29.0963 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 175/1281
+2026-03-11 16:55:29.0966 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 176/1281
+2026-03-11 16:55:29.0967 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 177/1281
+2026-03-11 16:55:29.0968 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 178/1281
+2026-03-11 16:55:29.0970 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 179/1281
+2026-03-11 16:55:30.0287 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 180/1281
+2026-03-11 16:55:30.0289 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 181/1281
+2026-03-11 16:55:30.0290 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 182/1281
+2026-03-11 16:55:30.0290 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 183/1281
+2026-03-11 16:55:30.0414 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 184/1281
+2026-03-11 16:55:30.0588 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 185/1281
+2026-03-11 16:55:30.0591 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 186/1281
+2026-03-11 16:55:30.0592 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 187/1281
+2026-03-11 16:55:30.0596 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 188/1281
+2026-03-11 16:55:30.0680 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 189/1281
+2026-03-11 16:55:30.0915 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 190/1281
+2026-03-11 16:55:30.0926 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 191/1281
+2026-03-11 16:55:30.0930 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 192/1281
+2026-03-11 16:55:31.0031 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 193/1281
+2026-03-11 16:55:31.0036 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 194/1281
+2026-03-11 16:55:31.0037 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 195/1281
+2026-03-11 16:55:31.0066 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 196/1281
+2026-03-11 16:55:31.0075 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 197/1281
+2026-03-11 16:55:31.0196 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 198/1281
+2026-03-11 16:55:31.0457 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 199/1281
+2026-03-11 16:55:31.0510 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 200/1281
+2026-03-11 16:55:31.0595 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 201/1281
+2026-03-11 16:55:31.0652 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 202/1281
+2026-03-11 16:55:31.0680 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 203/1281
+2026-03-11 16:55:31.0696 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 204/1281
+2026-03-11 16:55:31.0703 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 205/1281
+2026-03-11 16:55:31.0806 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 206/1281
+2026-03-11 16:55:31.0836 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 207/1281
+2026-03-11 16:55:31.0838 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 208/1281
+2026-03-11 16:55:31.0841 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 209/1281
+2026-03-11 16:55:31.0872 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 210/1281
+2026-03-11 16:55:31.0882 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 211/1281
+2026-03-11 16:55:31.0889 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 212/1281
+2026-03-11 16:55:31.0903 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 213/1281
+2026-03-11 16:55:31.0904 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 214/1281
+2026-03-11 16:55:31.0905 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 215/1281
+2026-03-11 16:55:31.0906 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 216/1281
+2026-03-11 16:55:31.0909 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 217/1281
+2026-03-11 16:55:31.0911 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 218/1281
+2026-03-11 16:55:31.0914 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 219/1281
+2026-03-11 16:55:32.0016 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 220/1281
+2026-03-11 16:55:32.0021 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 221/1281
+2026-03-11 16:55:32.0023 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 222/1281
+2026-03-11 16:55:32.0036 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 223/1281
+2026-03-11 16:55:32.0037 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 224/1281
+2026-03-11 16:55:32.0038 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 225/1281
+2026-03-11 16:55:32.0127 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 226/1281
+2026-03-11 16:55:32.0129 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 227/1281
+2026-03-11 16:55:32.0130 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 228/1281
+2026-03-11 16:55:32.0131 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 229/1281
+2026-03-11 16:55:32.0134 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 230/1281
+2026-03-11 16:55:32.0210 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 231/1281
+2026-03-11 16:55:32.0212 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 232/1281
+2026-03-11 16:55:32.0213 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 233/1281
+2026-03-11 16:55:32.0233 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 234/1281
+2026-03-11 16:55:32.0237 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 235/1281
+2026-03-11 16:55:32.0238 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 236/1281
+2026-03-11 16:55:32.0440 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 237/1281
+2026-03-11 16:55:32.0449 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 238/1281
+2026-03-11 16:55:32.0462 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 239/1281
+2026-03-11 16:55:32.0464 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 240/1281
+2026-03-11 16:55:32.0480 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 241/1281
+2026-03-11 16:55:32.0776 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 242/1281
+2026-03-11 16:55:32.0781 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 243/1281
+2026-03-11 16:55:32.0782 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 244/1281
+2026-03-11 16:55:32.0785 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 245/1281
+2026-03-11 16:55:32.0888 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 246/1281
+2026-03-11 16:55:32.0892 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 247/1281
+2026-03-11 16:55:32.0893 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 248/1281
+2026-03-11 16:55:32.0958 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 249/1281
+2026-03-11 16:55:32.0961 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 250/1281
+2026-03-11 16:55:32.0962 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 251/1281
+2026-03-11 16:55:33.0118 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 252/1281
+2026-03-11 16:55:33.0158 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 253/1281
+2026-03-11 16:55:33.0185 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 254/1281
+2026-03-11 16:55:33.0208 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 255/1281
+2026-03-11 16:55:33.0304 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 256/1281
+2026-03-11 16:55:33.0340 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 257/1281
+2026-03-11 16:55:33.0341 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 258/1281
+2026-03-11 16:55:33.0342 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 259/1281
+2026-03-11 16:55:33.0373 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 260/1281
+2026-03-11 16:55:33.0378 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 261/1281
+2026-03-11 16:55:33.0382 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 262/1281
+2026-03-11 16:55:33.0396 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 263/1281
+2026-03-11 16:55:33.0461 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 264/1281
+2026-03-11 16:55:33.0463 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 265/1281
+2026-03-11 16:55:33.0544 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 266/1281
+2026-03-11 16:55:33.0580 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 267/1281
+2026-03-11 16:55:33.0582 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 268/1281
+2026-03-11 16:55:33.0584 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 269/1281
+2026-03-11 16:55:33.0588 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 270/1281
+2026-03-11 16:55:33.0599 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 271/1281
+2026-03-11 16:55:33.0602 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 272/1281
+2026-03-11 16:55:33.0604 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 273/1281
+2026-03-11 16:55:33.0612 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 274/1281
+2026-03-11 16:55:33.0617 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 275/1281
+2026-03-11 16:55:33.0635 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 276/1281
+2026-03-11 16:55:33.0640 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 277/1281
+2026-03-11 16:55:33.0648 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 278/1281
+2026-03-11 16:55:33.0650 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 279/1281
+2026-03-11 16:55:33.0654 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 280/1281
+2026-03-11 16:55:33.0654 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 281/1281
+2026-03-11 16:55:33.0655 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 282/1281
+2026-03-11 16:55:33.0656 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 283/1281
+2026-03-11 16:55:33.0656 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 284/1281
+2026-03-11 16:55:33.0658 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 285/1281
+2026-03-11 16:55:33.0659 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 286/1281
+2026-03-11 16:55:33.0663 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 287/1281
+2026-03-11 16:55:33.0663 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 288/1281
+2026-03-11 16:55:33.0664 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 289/1281
+2026-03-11 16:55:33.0665 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 290/1281
+2026-03-11 16:55:33.0665 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 291/1281
+2026-03-11 16:55:33.0666 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 292/1281
+2026-03-11 16:55:33.0670 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 293/1281
+2026-03-11 16:55:33.0671 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 294/1281
+2026-03-11 16:55:33.0672 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 295/1281
+2026-03-11 16:55:33.0673 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 296/1281
+2026-03-11 16:55:33.0674 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 297/1281
+2026-03-11 16:55:33.0675 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 298/1281
+2026-03-11 16:55:33.0746 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 299/1281
+2026-03-11 16:55:33.0838 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 300/1281
+2026-03-11 16:55:33.0839 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 301/1281
+2026-03-11 16:55:33.0840 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 302/1281
+2026-03-11 16:55:33.0841 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 303/1281
+2026-03-11 16:55:33.0842 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 304/1281
+2026-03-11 16:55:33.0842 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 305/1281
+2026-03-11 16:55:33.0843 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 306/1281
+2026-03-11 16:55:33.0849 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 307/1281
+2026-03-11 16:55:33.0928 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 308/1281
+2026-03-11 16:55:33.0930 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 309/1281
+2026-03-11 16:55:33.0970 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 310/1281
+2026-03-11 16:55:33.0972 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 311/1281
+2026-03-11 16:55:33.0973 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 312/1281
+2026-03-11 16:55:33.0987 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 313/1281
+2026-03-11 16:55:34.0004 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 314/1281
+2026-03-11 16:55:34.0012 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 315/1281
+2026-03-11 16:55:34.0014 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 316/1281
+2026-03-11 16:55:34.0016 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 317/1281
+2026-03-11 16:55:34.0017 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 318/1281
+2026-03-11 16:55:34.0020 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 319/1281
+2026-03-11 16:55:34.0033 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 320/1281
+2026-03-11 16:55:34.0034 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 321/1281
+2026-03-11 16:55:34.0057 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 322/1281
+2026-03-11 16:55:34.0064 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 323/1281
+2026-03-11 16:55:34.0065 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 324/1281
+2026-03-11 16:55:34.0067 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 325/1281
+2026-03-11 16:55:34.0068 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 326/1281
+2026-03-11 16:55:34.0069 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 327/1281
+2026-03-11 16:55:34.0090 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 328/1281
+2026-03-11 16:55:34.0091 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 329/1281
+2026-03-11 16:55:34.0092 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 330/1281
+2026-03-11 16:55:34.0093 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 331/1281
+2026-03-11 16:55:34.0095 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 332/1281
+2026-03-11 16:55:34.0098 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 333/1281
+2026-03-11 16:55:34.0099 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 334/1281
+2026-03-11 16:55:34.0099 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 335/1281
+2026-03-11 16:55:34.0100 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 336/1281
+2026-03-11 16:55:34.0100 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 337/1281
+2026-03-11 16:55:34.0113 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 338/1281
+2026-03-11 16:55:34.0332 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 339/1281
+2026-03-11 16:55:34.0334 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 340/1281
+2026-03-11 16:55:34.0335 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 341/1281
+2026-03-11 16:55:34.0340 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 342/1281
+2026-03-11 16:55:34.0343 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 343/1281
+2026-03-11 16:55:34.0351 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 344/1281
+2026-03-11 16:55:34.0381 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 345/1281
+2026-03-11 16:55:34.0382 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 346/1281
+2026-03-11 16:55:34.0383 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 347/1281
+2026-03-11 16:55:34.0385 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 348/1281
+2026-03-11 16:55:34.0462 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 349/1281
+2026-03-11 16:55:34.0509 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 350/1281
+2026-03-11 16:55:34.0510 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 351/1281
+2026-03-11 16:55:34.0511 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 352/1281
+2026-03-11 16:55:34.0582 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 353/1281
+2026-03-11 16:55:34.0587 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 354/1281
+2026-03-11 16:55:34.0601 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 355/1281
+2026-03-11 16:55:34.0602 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 356/1281
+2026-03-11 16:55:34.0637 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 357/1281
+2026-03-11 16:55:34.0660 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 358/1281
+2026-03-11 16:55:34.0665 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 359/1281
+2026-03-11 16:55:34.0667 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 360/1281
+2026-03-11 16:55:34.0685 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 361/1281
+2026-03-11 16:55:34.0686 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 362/1281
+2026-03-11 16:55:34.0707 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 363/1281
+2026-03-11 16:55:34.0709 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 364/1281
+2026-03-11 16:55:34.0713 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 365/1281
+2026-03-11 16:55:34.0713 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 366/1281
+2026-03-11 16:55:34.0715 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 367/1281
+2026-03-11 16:55:34.0716 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 368/1281
+2026-03-11 16:55:34.0717 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 369/1281
+2026-03-11 16:55:34.0718 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 370/1281
+2026-03-11 16:55:34.0721 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 371/1281
+2026-03-11 16:55:34.0721 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 372/1281
+2026-03-11 16:55:34.0721 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 373/1281
+2026-03-11 16:55:34.0722 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 374/1281
+2026-03-11 16:55:34.0722 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 375/1281
+2026-03-11 16:55:34.0724 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 376/1281
+2026-03-11 16:55:34.0724 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 377/1281
+2026-03-11 16:55:34.0791 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 378/1281
+2026-03-11 16:55:34.0793 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 379/1281
+2026-03-11 16:55:34.0794 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 380/1281
+2026-03-11 16:55:34.0795 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 381/1281
+2026-03-11 16:55:34.0796 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 382/1281
+2026-03-11 16:55:34.0799 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 383/1281
+2026-03-11 16:55:34.0802 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 384/1281
+2026-03-11 16:55:34.0813 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 385/1281
+2026-03-11 16:55:34.0821 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 386/1281
+2026-03-11 16:55:34.0822 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 387/1281
+2026-03-11 16:55:34.0823 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 388/1281
+2026-03-11 16:55:34.0824 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 389/1281
+2026-03-11 16:55:34.0834 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 390/1281
+2026-03-11 16:55:34.0836 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 391/1281
+2026-03-11 16:55:34.0836 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 392/1281
+2026-03-11 16:55:34.0837 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 393/1281
+2026-03-11 16:55:34.0838 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 394/1281
+2026-03-11 16:55:34.0838 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 395/1281
+2026-03-11 16:55:34.0839 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 396/1281
+2026-03-11 16:55:34.0839 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 397/1281
+2026-03-11 16:55:34.0896 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 398/1281
+2026-03-11 16:55:34.0898 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 399/1281
+2026-03-11 16:55:34.0901 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 400/1281
+2026-03-11 16:55:34.0902 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 401/1281
+2026-03-11 16:55:34.0909 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 402/1281
+2026-03-11 16:55:34.0922 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 403/1281
+2026-03-11 16:55:34.0956 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 404/1281
+2026-03-11 16:55:34.0966 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 405/1281
+2026-03-11 16:55:34.0987 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 406/1281
+2026-03-11 16:55:34.0988 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 407/1281
+2026-03-11 16:55:34.0993 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 408/1281
+2026-03-11 16:55:34.0997 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 409/1281
+2026-03-11 16:55:34.0998 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 410/1281
+2026-03-11 16:55:35.0127 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 411/1281
+2026-03-11 16:55:35.0130 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 412/1281
+2026-03-11 16:55:35.0139 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 413/1281
+2026-03-11 16:55:35.0376 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 414/1281
+2026-03-11 16:55:35.0377 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 415/1281
+2026-03-11 16:55:35.0378 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 416/1281
+2026-03-11 16:55:35.0379 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 417/1281
+2026-03-11 16:55:35.0583 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 418/1281
+2026-03-11 16:55:35.0650 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 419/1281
+2026-03-11 16:55:35.0655 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 420/1281
+2026-03-11 16:55:35.0666 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 421/1281
+2026-03-11 16:55:35.0732 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 422/1281
+2026-03-11 16:55:35.0745 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 423/1281
+2026-03-11 16:55:35.0767 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 424/1281
+2026-03-11 16:55:35.0781 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 425/1281
+2026-03-11 16:55:35.0799 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 426/1281
+2026-03-11 16:55:35.0802 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 427/1281
+2026-03-11 16:55:35.0805 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 428/1281
+2026-03-11 16:55:35.0807 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 429/1281
+2026-03-11 16:55:35.0807 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 430/1281
+2026-03-11 16:55:35.0809 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 431/1281
+2026-03-11 16:55:35.0810 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 432/1281
+2026-03-11 16:55:35.0812 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 433/1281
+2026-03-11 16:55:35.0813 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 434/1281
+2026-03-11 16:55:35.0814 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 435/1281
+2026-03-11 16:55:35.0814 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 436/1281
+2026-03-11 16:55:35.0816 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 437/1281
+2026-03-11 16:55:35.0816 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 438/1281
+2026-03-11 16:55:35.0817 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 439/1281
+2026-03-11 16:55:35.0817 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 440/1281
+2026-03-11 16:55:35.0817 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 441/1281
+2026-03-11 16:55:35.0818 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 442/1281
+2026-03-11 16:55:35.0881 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 443/1281
+2026-03-11 16:55:36.0487 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 444/1281
+2026-03-11 16:55:38.0225 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 445/1281
+2026-03-11 16:55:38.0366 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 446/1281
+2026-03-11 16:55:38.0773 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 447/1281
+2026-03-11 16:55:39.0091 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 448/1281
+2026-03-11 16:55:40.0309 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 449/1281
+2026-03-11 16:55:40.0961 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 450/1281
+2026-03-11 16:55:46.0260 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 451/1281
+2026-03-11 16:55:58.0166 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 452/1281
+2026-03-11 16:55:58.0168 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 453/1281
+2026-03-11 16:55:58.0587 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 454/1281
+2026-03-11 16:55:58.0676 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 455/1281
+2026-03-11 16:55:58.0934 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 456/1281
+2026-03-11 16:55:59.0723 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 457/1281
+2026-03-11 16:55:59.0729 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 458/1281
+2026-03-11 16:55:59.0798 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 459/1281
+2026-03-11 16:55:59.0799 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 460/1281
+2026-03-11 16:55:59.0876 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 461/1281
+2026-03-11 16:55:59.0919 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 462/1281
+2026-03-11 16:56:00.0060 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 463/1281
+2026-03-11 16:56:00.0852 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 464/1281
+2026-03-11 16:56:03.0438 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 465/1281
+2026-03-11 16:56:03.0511 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 466/1281
+2026-03-11 16:56:03.0512 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 467/1281
+2026-03-11 16:56:03.0512 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 468/1281
+2026-03-11 16:56:03.0513 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 469/1281
+2026-03-11 16:56:03.0514 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 470/1281
+2026-03-11 16:56:03.0514 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 471/1281
+2026-03-11 16:56:03.0515 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 472/1281
+2026-03-11 16:56:03.0515 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 473/1281
+2026-03-11 16:56:03.0516 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 474/1281
+2026-03-11 16:56:03.0670 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 475/1281
+2026-03-11 16:56:03.0695 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 476/1281
+2026-03-11 16:56:03.0695 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 477/1281
+2026-03-11 16:56:03.0820 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 478/1281
+2026-03-11 16:56:03.0820 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 479/1281
+2026-03-11 16:56:03.0821 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 480/1281
+2026-03-11 16:56:03.0821 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 481/1281
+2026-03-11 16:56:03.0851 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 482/1281
+2026-03-11 16:56:03.0852 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 483/1281
+2026-03-11 16:56:03.0853 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 484/1281
+2026-03-11 16:56:03.0853 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 485/1281
+2026-03-11 16:56:03.0853 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 486/1281
+2026-03-11 16:56:03.0854 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 487/1281
+2026-03-11 16:56:03.0854 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 488/1281
+2026-03-11 16:56:03.0854 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 489/1281
+2026-03-11 16:56:03.0855 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 490/1281
+2026-03-11 16:56:03.0855 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 491/1281
+2026-03-11 16:56:03.0855 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 492/1281
+2026-03-11 16:56:03.0855 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 493/1281
+2026-03-11 16:56:03.0901 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 494/1281
+2026-03-11 16:56:03.0901 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 495/1281
+2026-03-11 16:56:03.0902 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 496/1281
+2026-03-11 16:56:03.0902 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 497/1281
+2026-03-11 16:56:03.0902 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 498/1281
+2026-03-11 16:56:03.0902 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 499/1281
+2026-03-11 16:56:03.0903 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 500/1281
+2026-03-11 16:56:03.0903 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 501/1281
+2026-03-11 16:56:03.0903 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 502/1281
+2026-03-11 16:56:03.0903 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 503/1281
+2026-03-11 16:56:03.0905 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 504/1281
+2026-03-11 16:56:03.0905 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 505/1281
+2026-03-11 16:56:03.0905 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 506/1281
+2026-03-11 16:56:03.0905 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 507/1281
+2026-03-11 16:56:03.0906 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 508/1281
+2026-03-11 16:56:03.0906 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 509/1281
+2026-03-11 16:56:03.0906 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 510/1281
+2026-03-11 16:56:03.0906 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 511/1281
+2026-03-11 16:56:03.0906 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 512/1281
+2026-03-11 16:56:03.0907 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 513/1281
+2026-03-11 16:56:03.0907 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 514/1281
+2026-03-11 16:56:03.0907 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 515/1281
+2026-03-11 16:56:03.0907 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 516/1281
+2026-03-11 16:56:03.0908 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 517/1281
+2026-03-11 16:56:03.0908 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 518/1281
+2026-03-11 16:56:03.0908 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 519/1281
+2026-03-11 16:56:03.0908 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 520/1281
+2026-03-11 16:56:03.0908 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 521/1281
+2026-03-11 16:56:03.0928 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 522/1281
+2026-03-11 16:56:03.0929 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 523/1281
+2026-03-11 16:56:04.0028 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 524/1281
+2026-03-11 16:56:04.0030 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 525/1281
+2026-03-11 16:56:04.0030 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 526/1281
+2026-03-11 16:56:04.0031 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 527/1281
+2026-03-11 16:56:04.0031 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 528/1281
+2026-03-11 16:56:04.0031 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 529/1281
+2026-03-11 16:56:04.0032 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 530/1281
+2026-03-11 16:56:04.0032 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 531/1281
+2026-03-11 16:56:04.0032 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 532/1281
+2026-03-11 16:56:04.0033 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 533/1281
+2026-03-11 16:56:04.0033 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 534/1281
+2026-03-11 16:56:04.0034 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 535/1281
+2026-03-11 16:56:04.0035 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 536/1281
+2026-03-11 16:56:04.0035 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 537/1281
+2026-03-11 16:56:04.0036 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 538/1281
+2026-03-11 16:56:04.0037 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 539/1281
+2026-03-11 16:56:04.0038 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 540/1281
+2026-03-11 16:56:04.0038 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 541/1281
+2026-03-11 16:56:04.0094 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 542/1281
+2026-03-11 16:56:04.0095 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 543/1281
+2026-03-11 16:56:04.0096 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 544/1281
+2026-03-11 16:56:04.0096 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 545/1281
+2026-03-11 16:56:04.0097 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 546/1281
+2026-03-11 16:56:04.0097 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 547/1281
+2026-03-11 16:56:04.0098 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 548/1281
+2026-03-11 16:56:04.0098 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 549/1281
+2026-03-11 16:56:04.0098 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 550/1281
+2026-03-11 16:56:04.0099 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 551/1281
+2026-03-11 16:56:04.0099 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 552/1281
+2026-03-11 16:56:04.0099 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 553/1281
+2026-03-11 16:56:04.0100 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 554/1281
+2026-03-11 16:56:04.0122 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 555/1281
+2026-03-11 16:56:04.0122 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 556/1281
+2026-03-11 16:56:04.0123 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 557/1281
+2026-03-11 16:56:04.0123 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 558/1281
+2026-03-11 16:56:04.0124 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 559/1281
+2026-03-11 16:56:04.0124 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 560/1281
+2026-03-11 16:56:04.0125 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 561/1281
+2026-03-11 16:56:04.0125 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 562/1281
+2026-03-11 16:56:04.0125 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 563/1281
+2026-03-11 16:56:04.0125 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 564/1281
+2026-03-11 16:56:04.0126 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 565/1281
+2026-03-11 16:56:04.0149 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 566/1281
+2026-03-11 16:56:04.0150 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 567/1281
+2026-03-11 16:56:04.0150 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 568/1281
+2026-03-11 16:56:04.0151 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 569/1281
+2026-03-11 16:56:04.0151 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 570/1281
+2026-03-11 16:56:04.0151 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 571/1281
+2026-03-11 16:56:04.0152 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 572/1281
+2026-03-11 16:56:04.0152 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 573/1281
+2026-03-11 16:56:04.0174 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 574/1281
+2026-03-11 16:56:04.0175 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 575/1281
+2026-03-11 16:56:04.0196 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 576/1281
+2026-03-11 16:56:04.0196 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 577/1281
+2026-03-11 16:56:04.0197 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 578/1281
+2026-03-11 16:56:04.0197 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 579/1281
+2026-03-11 16:56:04.0198 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 580/1281
+2026-03-11 16:56:05.0690 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 581/1281
+2026-03-11 16:56:05.0693 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 582/1281
+2026-03-11 16:56:05.0696 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 583/1281
+2026-03-11 16:56:05.0697 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 584/1281
+2026-03-11 16:56:05.0698 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 585/1281
+2026-03-11 16:56:05.0698 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 586/1281
+2026-03-11 16:56:05.0699 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 587/1281
+2026-03-11 16:56:05.0699 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 588/1281
+2026-03-11 16:56:05.0699 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 589/1281
+2026-03-11 16:56:05.0765 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 590/1281
+2026-03-11 16:56:05.0765 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 591/1281
+2026-03-11 16:56:05.0766 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 592/1281
+2026-03-11 16:56:05.0767 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 593/1281
+2026-03-11 16:56:05.0767 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 594/1281
+2026-03-11 16:56:05.0768 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 595/1281
+2026-03-11 16:56:05.0769 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 596/1281
+2026-03-11 16:56:05.0769 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 597/1281
+2026-03-11 16:56:05.0770 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 598/1281
+2026-03-11 16:56:05.0770 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 599/1281
+2026-03-11 16:56:05.0771 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 600/1281
+2026-03-11 16:56:05.0849 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 601/1281
+2026-03-11 16:56:05.0850 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 602/1281
+2026-03-11 16:56:05.0850 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 603/1281
+2026-03-11 16:56:05.0946 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 604/1281
+2026-03-11 16:56:05.0947 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 605/1281
+2026-03-11 16:56:05.0948 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 606/1281
+2026-03-11 16:56:05.0948 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 607/1281
+2026-03-11 16:56:05.0949 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 608/1281
+2026-03-11 16:56:05.0950 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 609/1281
+2026-03-11 16:56:05.0950 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 610/1281
+2026-03-11 16:56:05.0951 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 611/1281
+2026-03-11 16:56:05.0951 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 612/1281
+2026-03-11 16:56:05.0951 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 613/1281
+2026-03-11 16:56:05.0952 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 614/1281
+2026-03-11 16:56:05.0952 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 615/1281
+2026-03-11 16:56:05.0953 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 616/1281
+2026-03-11 16:56:05.0953 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 617/1281
+2026-03-11 16:56:05.0954 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 618/1281
+2026-03-11 16:56:05.0954 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 619/1281
+2026-03-11 16:56:05.0954 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 620/1281
+2026-03-11 16:56:05.0954 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 621/1281
+2026-03-11 16:56:05.0955 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 622/1281
+2026-03-11 16:56:06.0022 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 623/1281
+2026-03-11 16:56:06.0023 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 624/1281
+2026-03-11 16:56:06.0024 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 625/1281
+2026-03-11 16:56:06.0025 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 626/1281
+2026-03-11 16:56:06.0025 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 627/1281
+2026-03-11 16:56:06.0025 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 628/1281
+2026-03-11 16:56:06.0025 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 629/1281
+2026-03-11 16:56:06.0026 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 630/1281
+2026-03-11 16:56:06.0026 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 631/1281
+2026-03-11 16:56:06.0026 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 632/1281
+2026-03-11 16:56:06.0026 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 633/1281
+2026-03-11 16:56:06.0027 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 634/1281
+2026-03-11 16:56:06.0027 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 635/1281
+2026-03-11 16:56:06.0027 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 636/1281
+2026-03-11 16:56:06.0027 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 637/1281
+2026-03-11 16:56:06.0028 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 638/1281
+2026-03-11 16:56:06.0028 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 639/1281
+2026-03-11 16:56:06.0028 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 640/1281
+2026-03-11 16:56:06.0028 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 641/1281
+2026-03-11 16:56:06.0133 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 642/1281
+2026-03-11 16:56:06.0134 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 643/1281
+2026-03-11 16:56:06.0135 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 644/1281
+2026-03-11 16:56:06.0135 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 645/1281
+2026-03-11 16:56:06.0135 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 646/1281
+2026-03-11 16:56:06.0136 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 647/1281
+2026-03-11 16:56:06.0136 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 648/1281
+2026-03-11 16:56:06.0137 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 649/1281
+2026-03-11 16:56:06.0137 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 650/1281
+2026-03-11 16:56:06.0181 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 651/1281
+2026-03-11 16:56:06.0182 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 652/1281
+2026-03-11 16:56:06.0183 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 653/1281
+2026-03-11 16:56:06.0187 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 654/1281
+2026-03-11 16:56:06.0193 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 655/1281
+2026-03-11 16:56:06.0194 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 656/1281
+2026-03-11 16:56:06.0194 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 657/1281
+2026-03-11 16:56:06.0194 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 658/1281
+2026-03-11 16:56:06.0194 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 659/1281
+2026-03-11 16:56:06.0194 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 660/1281
+2026-03-11 16:56:06.0196 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 661/1281
+2026-03-11 16:56:06.0196 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 662/1281
+2026-03-11 16:56:06.0197 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 663/1281
+2026-03-11 16:56:06.0198 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 664/1281
+2026-03-11 16:56:06.0198 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 665/1281
+2026-03-11 16:56:06.0198 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 666/1281
+2026-03-11 16:56:06.0331 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 667/1281
+2026-03-11 16:56:06.0332 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 668/1281
+2026-03-11 16:56:06.0332 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 669/1281
+2026-03-11 16:56:06.0333 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 670/1281
+2026-03-11 16:56:06.0333 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 671/1281
+2026-03-11 16:56:06.0333 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 672/1281
+2026-03-11 16:56:06.0335 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 673/1281
+2026-03-11 16:56:06.0335 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 674/1281
+2026-03-11 16:56:06.0335 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 675/1281
+2026-03-11 16:56:06.0335 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 676/1281
+2026-03-11 16:56:06.0336 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 677/1281
+2026-03-11 16:56:06.0336 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 678/1281
+2026-03-11 16:56:06.0336 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 679/1281
+2026-03-11 16:56:06.0570 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 680/1281
+2026-03-11 16:56:06.0571 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 681/1281
+2026-03-11 16:56:06.0572 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 682/1281
+2026-03-11 16:56:06.0572 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 683/1281
+2026-03-11 16:56:06.0573 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 684/1281
+2026-03-11 16:56:06.0573 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 685/1281
+2026-03-11 16:56:06.0574 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 686/1281
+2026-03-11 16:56:06.0574 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 687/1281
+2026-03-11 16:56:06.0574 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 688/1281
+2026-03-11 16:56:06.0575 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 689/1281
+2026-03-11 16:56:06.0575 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 690/1281
+2026-03-11 16:56:06.0576 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 691/1281
+2026-03-11 16:56:06.0576 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 692/1281
+2026-03-11 16:56:06.0577 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 693/1281
+2026-03-11 16:56:06.0649 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 694/1281
+2026-03-11 16:56:06.0650 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 695/1281
+2026-03-11 16:56:06.0650 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 696/1281
+2026-03-11 16:56:06.0651 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 697/1281
+2026-03-11 16:56:06.0651 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 698/1281
+2026-03-11 16:56:06.0651 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 699/1281
+2026-03-11 16:56:06.0652 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 700/1281
+2026-03-11 16:56:06.0652 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 701/1281
+2026-03-11 16:56:06.0652 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 702/1281
+2026-03-11 16:56:06.0652 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 703/1281
+2026-03-11 16:56:06.0653 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 704/1281
+2026-03-11 16:56:06.0653 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 705/1281
+2026-03-11 16:56:06.0674 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 706/1281
+2026-03-11 16:56:06.0676 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 707/1281
+2026-03-11 16:56:06.0677 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 708/1281
+2026-03-11 16:56:06.0681 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 709/1281
+2026-03-11 16:56:06.0687 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 710/1281
+2026-03-11 16:56:06.0688 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 711/1281
+2026-03-11 16:56:06.0689 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 712/1281
+2026-03-11 16:56:06.0696 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 713/1281
+2026-03-11 16:56:06.0698 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 714/1281
+2026-03-11 16:56:06.0698 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 715/1281
+2026-03-11 16:56:06.0699 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 716/1281
+2026-03-11 16:56:06.0700 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 717/1281
+2026-03-11 16:56:06.0700 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 718/1281
+2026-03-11 16:56:06.0701 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 719/1281
+2026-03-11 16:56:06.0701 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 720/1281
+2026-03-11 16:56:06.0702 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 721/1281
+2026-03-11 16:56:06.0702 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 722/1281
+2026-03-11 16:56:06.0702 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 723/1281
+2026-03-11 16:56:06.0702 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 724/1281
+2026-03-11 16:56:06.0704 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 725/1281
+2026-03-11 16:56:06.0705 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 726/1281
+2026-03-11 16:56:06.0705 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 727/1281
+2026-03-11 16:56:06.0731 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 728/1281
+2026-03-11 16:56:06.0732 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 729/1281
+2026-03-11 16:56:06.0813 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 730/1281
+2026-03-11 16:56:06.0842 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 731/1281
+2026-03-11 16:56:06.0843 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 732/1281
+2026-03-11 16:56:06.0844 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 733/1281
+2026-03-11 16:56:06.0844 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 734/1281
+2026-03-11 16:56:06.0845 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 735/1281
+2026-03-11 16:56:06.0851 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 736/1281
+2026-03-11 16:56:06.0852 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 737/1281
+2026-03-11 16:56:06.0853 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 738/1281
+2026-03-11 16:56:06.0887 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 739/1281
+2026-03-11 16:56:06.0888 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 740/1281
+2026-03-11 16:56:06.0890 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 741/1281
+2026-03-11 16:56:06.0895 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 742/1281
+2026-03-11 16:56:06.0901 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 743/1281
+2026-03-11 16:56:06.0902 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 744/1281
+2026-03-11 16:56:06.0902 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 745/1281
+2026-03-11 16:56:06.0903 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 746/1281
+2026-03-11 16:56:06.0951 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 747/1281
+2026-03-11 16:56:06.0952 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 748/1281
+2026-03-11 16:56:06.0954 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 749/1281
+2026-03-11 16:56:06.0954 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 750/1281
+2026-03-11 16:56:06.0956 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 751/1281
+2026-03-11 16:56:06.0957 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 752/1281
+2026-03-11 16:56:06.0958 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 753/1281
+2026-03-11 16:56:06.0958 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 754/1281
+2026-03-11 16:56:06.0958 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 755/1281
+2026-03-11 16:56:06.0959 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 756/1281
+2026-03-11 16:56:06.0960 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 757/1281
+2026-03-11 16:56:07.0108 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 758/1281
+2026-03-11 16:56:07.0109 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 759/1281
+2026-03-11 16:56:07.0110 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 760/1281
+2026-03-11 16:56:07.0110 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 761/1281
+2026-03-11 16:56:07.0111 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 762/1281
+2026-03-11 16:56:07.0112 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 763/1281
+2026-03-11 16:56:07.0112 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 764/1281
+2026-03-11 16:56:07.0113 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 765/1281
+2026-03-11 16:56:07.0185 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 766/1281
+2026-03-11 16:56:07.0185 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 767/1281
+2026-03-11 16:56:07.0186 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 768/1281
+2026-03-11 16:56:07.0186 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 769/1281
+2026-03-11 16:56:07.0188 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 770/1281
+2026-03-11 16:56:07.0188 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 771/1281
+2026-03-11 16:56:07.0189 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 772/1281
+2026-03-11 16:56:07.0189 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 773/1281
+2026-03-11 16:56:07.0189 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 774/1281
+2026-03-11 16:56:07.0190 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 775/1281
+2026-03-11 16:56:07.0190 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 776/1281
+2026-03-11 16:56:07.0191 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 777/1281
+2026-03-11 16:56:07.0191 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 778/1281
+2026-03-11 16:56:07.0191 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 779/1281
+2026-03-11 16:56:07.0192 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 780/1281
+2026-03-11 16:56:07.0192 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 781/1281
+2026-03-11 16:56:07.0193 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 782/1281
+2026-03-11 16:56:07.0193 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 783/1281
+2026-03-11 16:56:07.0193 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 784/1281
+2026-03-11 16:56:07.0194 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 785/1281
+2026-03-11 16:56:07.0194 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 786/1281
+2026-03-11 16:56:07.0194 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 787/1281
+2026-03-11 16:56:07.0195 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 788/1281
+2026-03-11 16:56:07.0195 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 789/1281
+2026-03-11 16:56:07.0195 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 790/1281
+2026-03-11 16:56:07.0196 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 791/1281
+2026-03-11 16:56:07.0389 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 792/1281
+2026-03-11 16:56:07.0391 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 793/1281
+2026-03-11 16:56:07.0392 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 794/1281
+2026-03-11 16:56:07.0392 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 795/1281
+2026-03-11 16:56:07.0393 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 796/1281
+2026-03-11 16:56:07.0393 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 797/1281
+2026-03-11 16:56:07.0394 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 798/1281
+2026-03-11 16:56:07.0394 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 799/1281
+2026-03-11 16:56:07.0394 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 800/1281
+2026-03-11 16:56:07.0395 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 801/1281
+2026-03-11 16:56:07.0395 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 802/1281
+2026-03-11 16:56:07.0395 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 803/1281
+2026-03-11 16:56:07.0397 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 804/1281
+2026-03-11 16:56:07.0397 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 805/1281
+2026-03-11 16:56:07.0397 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 806/1281
+2026-03-11 16:56:07.0397 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 807/1281
+2026-03-11 16:56:07.0398 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 808/1281
+2026-03-11 16:56:07.0398 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 809/1281
+2026-03-11 16:56:07.0399 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 810/1281
+2026-03-11 16:56:07.0400 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 811/1281
+2026-03-11 16:56:07.0410 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 812/1281
+2026-03-11 16:56:07.0411 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 813/1281
+2026-03-11 16:56:07.0412 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 814/1281
+2026-03-11 16:56:07.0412 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 815/1281
+2026-03-11 16:56:07.0416 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 816/1281
+2026-03-11 16:56:07.0417 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 817/1281
+2026-03-11 16:56:07.0418 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 818/1281
+2026-03-11 16:56:07.0420 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 819/1281
+2026-03-11 16:56:07.0422 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 820/1281
+2026-03-11 16:56:07.0423 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 821/1281
+2026-03-11 16:56:07.0423 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 822/1281
+2026-03-11 16:56:07.0425 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 823/1281
+2026-03-11 16:56:07.0425 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 824/1281
+2026-03-11 16:56:07.0426 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 825/1281
+2026-03-11 16:56:07.0426 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 826/1281
+2026-03-11 16:56:07.0427 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 827/1281
+2026-03-11 16:56:07.0427 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 828/1281
+2026-03-11 16:56:07.0428 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 829/1281
+2026-03-11 16:56:07.0713 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 830/1281
+2026-03-11 16:56:07.0923 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 831/1281
+2026-03-11 16:56:08.0035 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 832/1281
+2026-03-11 16:56:08.0111 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 833/1281
+2026-03-11 16:56:08.0112 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 834/1281
+2026-03-11 16:56:08.0112 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 835/1281
+2026-03-11 16:56:08.0113 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 836/1281
+2026-03-11 16:56:08.0113 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 837/1281
+2026-03-11 16:56:08.0114 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 838/1281
+2026-03-11 16:56:08.0115 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 839/1281
+2026-03-11 16:56:08.0115 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 840/1281
+2026-03-11 16:56:08.0116 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 841/1281
+2026-03-11 16:56:08.0116 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 842/1281
+2026-03-11 16:56:08.0117 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 843/1281
+2026-03-11 16:56:08.0118 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 844/1281
+2026-03-11 16:56:08.0118 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 845/1281
+2026-03-11 16:56:08.0186 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 846/1281
+2026-03-11 16:56:08.0187 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 847/1281
+2026-03-11 16:56:08.0188 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 848/1281
+2026-03-11 16:56:08.0189 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 849/1281
+2026-03-11 16:56:08.0189 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 850/1281
+2026-03-11 16:56:08.0251 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 851/1281
+2026-03-11 16:56:08.0291 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 852/1281
+2026-03-11 16:56:08.0300 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 853/1281
+2026-03-11 16:56:08.0307 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 854/1281
+2026-03-11 16:56:08.0308 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 855/1281
+2026-03-11 16:56:08.0310 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 856/1281
+2026-03-11 16:56:08.0315 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 857/1281
+2026-03-11 16:56:08.0317 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 858/1281
+2026-03-11 16:56:08.0317 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 859/1281
+2026-03-11 16:56:08.0319 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 860/1281
+2026-03-11 16:56:08.0320 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 861/1281
+2026-03-11 16:56:08.0320 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 862/1281
+2026-03-11 16:56:08.0321 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 863/1281
+2026-03-11 16:56:08.0322 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 864/1281
+2026-03-11 16:56:08.0323 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 865/1281
+2026-03-11 16:56:08.0323 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 866/1281
+2026-03-11 16:56:08.0324 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 867/1281
+2026-03-11 16:56:08.0324 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 868/1281
+2026-03-11 16:56:08.0325 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 869/1281
+2026-03-11 16:56:08.0325 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 870/1281
+2026-03-11 16:56:08.0326 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 871/1281
+2026-03-11 16:56:08.0327 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 872/1281
+2026-03-11 16:56:08.0327 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 873/1281
+2026-03-11 16:56:08.0377 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 874/1281
+2026-03-11 16:56:08.0378 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 875/1281
+2026-03-11 16:56:08.0382 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 876/1281
+2026-03-11 16:56:08.0457 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 877/1281
+2026-03-11 16:56:08.0458 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 878/1281
+2026-03-11 16:56:08.0458 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 879/1281
+2026-03-11 16:56:08.0459 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 880/1281
+2026-03-11 16:56:08.0460 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 881/1281
+2026-03-11 16:56:08.0460 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 882/1281
+2026-03-11 16:56:08.0461 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 883/1281
+2026-03-11 16:56:08.0462 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 884/1281
+2026-03-11 16:56:08.0462 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 885/1281
+2026-03-11 16:56:08.0464 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 886/1281
+2026-03-11 16:56:08.0552 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 887/1281
+2026-03-11 16:56:08.0716 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 888/1281
+2026-03-11 16:56:08.0719 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 889/1281
+2026-03-11 16:56:08.0936 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 890/1281
+2026-03-11 16:56:08.0938 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 891/1281
+2026-03-11 16:56:08.0939 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 892/1281
+2026-03-11 16:56:08.0939 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 893/1281
+2026-03-11 16:56:08.0939 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 894/1281
+2026-03-11 16:56:09.0206 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 895/1281
+2026-03-11 16:56:09.0207 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 896/1281
+2026-03-11 16:56:09.0208 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 897/1281
+2026-03-11 16:56:09.0209 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 898/1281
+2026-03-11 16:56:09.0210 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 899/1281
+2026-03-11 16:56:09.0212 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 900/1281
+2026-03-11 16:56:09.0212 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 901/1281
+2026-03-11 16:56:09.0213 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 902/1281
+2026-03-11 16:56:09.0213 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 903/1281
+2026-03-11 16:56:09.0391 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 904/1281
+2026-03-11 16:56:09.0395 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 905/1281
+2026-03-11 16:56:09.0396 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 906/1281
+2026-03-11 16:56:09.0399 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 907/1281
+2026-03-11 16:56:09.0401 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 908/1281
+2026-03-11 16:56:09.0404 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 909/1281
+2026-03-11 16:56:09.0404 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 910/1281
+2026-03-11 16:56:09.0405 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 911/1281
+2026-03-11 16:56:09.0405 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 912/1281
+2026-03-11 16:56:09.0406 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 913/1281
+2026-03-11 16:56:09.0407 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 914/1281
+2026-03-11 16:56:09.0407 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 915/1281
+2026-03-11 16:56:09.0408 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 916/1281
+2026-03-11 16:56:09.0409 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 917/1281
+2026-03-11 16:56:09.0409 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 918/1281
+2026-03-11 16:56:09.0410 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 919/1281
+2026-03-11 16:56:09.0411 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 920/1281
+2026-03-11 16:56:09.0411 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 921/1281
+2026-03-11 16:56:09.0412 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 922/1281
+2026-03-11 16:56:09.0412 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 923/1281
+2026-03-11 16:56:09.0412 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 924/1281
+2026-03-11 16:56:09.0413 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 925/1281
+2026-03-11 16:56:09.0413 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 926/1281
+2026-03-11 16:56:09.0414 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 927/1281
+2026-03-11 16:56:09.0414 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 928/1281
+2026-03-11 16:56:09.0415 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 929/1281
+2026-03-11 16:56:09.0415 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 930/1281
+2026-03-11 16:56:09.0416 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 931/1281
+2026-03-11 16:56:09.0416 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 932/1281
+2026-03-11 16:56:09.0416 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 933/1281
+2026-03-11 16:56:09.0418 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 934/1281
+2026-03-11 16:56:09.0418 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 935/1281
+2026-03-11 16:56:09.0418 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 936/1281
+2026-03-11 16:56:09.0419 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 937/1281
+2026-03-11 16:56:09.0419 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 938/1281
+2026-03-11 16:56:09.0419 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 939/1281
+2026-03-11 16:56:09.0420 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 940/1281
+2026-03-11 16:56:09.0420 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 941/1281
+2026-03-11 16:56:09.0420 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 942/1281
+2026-03-11 16:56:09.0421 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 943/1281
+2026-03-11 16:56:09.0421 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 944/1281
+2026-03-11 16:56:09.0421 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 945/1281
+2026-03-11 16:56:09.0422 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 946/1281
+2026-03-11 16:56:09.0422 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 947/1281
+2026-03-11 16:56:09.0422 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 948/1281
+2026-03-11 16:56:09.0423 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 949/1281
+2026-03-11 16:56:09.0423 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 950/1281
+2026-03-11 16:56:09.0423 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 951/1281
+2026-03-11 16:56:09.0424 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 952/1281
+2026-03-11 16:56:09.0424 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 953/1281
+2026-03-11 16:56:09.0424 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 954/1281
+2026-03-11 16:56:09.0425 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 955/1281
+2026-03-11 16:56:09.0425 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 956/1281
+2026-03-11 16:56:09.0425 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 957/1281
+2026-03-11 16:56:09.0426 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 958/1281
+2026-03-11 16:56:09.0426 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 959/1281
+2026-03-11 16:56:09.0702 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 960/1281
+2026-03-11 16:56:09.0703 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 961/1281
+2026-03-11 16:56:09.0704 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 962/1281
+2026-03-11 16:56:09.0704 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 963/1281
+2026-03-11 16:56:09.0704 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 964/1281
+2026-03-11 16:56:09.0705 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 965/1281
+2026-03-11 16:56:09.0705 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 966/1281
+2026-03-11 16:56:09.0705 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 967/1281
+2026-03-11 16:56:09.0707 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 968/1281
+2026-03-11 16:56:09.0708 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 969/1281
+2026-03-11 16:56:09.0708 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 970/1281
+2026-03-11 16:56:09.0708 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 971/1281
+2026-03-11 16:56:09.0709 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 972/1281
+2026-03-11 16:56:09.0709 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 973/1281
+2026-03-11 16:56:09.0709 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 974/1281
+2026-03-11 16:56:09.0710 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 975/1281
+2026-03-11 16:56:09.0710 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 976/1281
+2026-03-11 16:56:09.0710 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 977/1281
+2026-03-11 16:56:09.0710 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 978/1281
+2026-03-11 16:56:09.0711 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 979/1281
+2026-03-11 16:56:09.0711 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 980/1281
+2026-03-11 16:56:09.0711 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 981/1281
+2026-03-11 16:56:09.0712 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 982/1281
+2026-03-11 16:56:09.0712 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 983/1281
+2026-03-11 16:56:09.0712 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 984/1281
+2026-03-11 16:56:09.0712 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 985/1281
+2026-03-11 16:56:09.0713 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 986/1281
+2026-03-11 16:56:09.0713 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 987/1281
+2026-03-11 16:56:09.0713 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 988/1281
+2026-03-11 16:56:09.0713 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 989/1281
+2026-03-11 16:56:09.0714 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 990/1281
+2026-03-11 16:56:09.0754 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 991/1281
+2026-03-11 16:56:09.0755 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 992/1281
+2026-03-11 16:56:09.0761 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 993/1281
+2026-03-11 16:56:09.0761 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 994/1281
+2026-03-11 16:56:09.0763 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 995/1281
+2026-03-11 16:56:09.0769 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 996/1281
+2026-03-11 16:56:09.0769 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 997/1281
+2026-03-11 16:56:09.0770 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 998/1281
+2026-03-11 16:56:09.0776 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 999/1281
+2026-03-11 16:56:09.0776 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1000/1281
+2026-03-11 16:56:09.0777 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1001/1281
+2026-03-11 16:56:09.0778 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1002/1281
+2026-03-11 16:56:09.0778 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1003/1281
+2026-03-11 16:56:09.0779 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1004/1281
+2026-03-11 16:56:09.0782 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1005/1281
+2026-03-11 16:56:09.0783 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1006/1281
+2026-03-11 16:56:09.0783 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1007/1281
+2026-03-11 16:56:09.0784 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1008/1281
+2026-03-11 16:56:09.0784 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1009/1281
+2026-03-11 16:56:09.0785 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1010/1281
+2026-03-11 16:56:09.0785 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1011/1281
+2026-03-11 16:56:09.0786 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1012/1281
+2026-03-11 16:56:09.0786 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1013/1281
+2026-03-11 16:56:09.0787 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1014/1281
+2026-03-11 16:56:09.0787 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1015/1281
+2026-03-11 16:56:09.0788 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1016/1281
+2026-03-11 16:56:09.0788 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1017/1281
+2026-03-11 16:56:09.0789 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1018/1281
+2026-03-11 16:56:09.0789 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1019/1281
+2026-03-11 16:56:09.0790 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1020/1281
+2026-03-11 16:56:09.0790 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1021/1281
+2026-03-11 16:56:09.0791 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1022/1281
+2026-03-11 16:56:09.0791 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1023/1281
+2026-03-11 16:56:09.0792 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1024/1281
+2026-03-11 16:56:09.0818 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1025/1281
+2026-03-11 16:56:09.0819 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1026/1281
+2026-03-11 16:56:09.0821 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1027/1281
+2026-03-11 16:56:09.0825 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1028/1281
+2026-03-11 16:56:09.0832 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1029/1281
+2026-03-11 16:56:09.0834 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1030/1281
+2026-03-11 16:56:09.0834 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1031/1281
+2026-03-11 16:56:09.0835 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1032/1281
+2026-03-11 16:56:09.0836 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1033/1281
+2026-03-11 16:56:09.0838 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1034/1281
+2026-03-11 16:56:09.0838 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1035/1281
+2026-03-11 16:56:09.0838 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1036/1281
+2026-03-11 16:56:10.0419 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1037/1281
+2026-03-11 16:56:10.0420 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1038/1281
+2026-03-11 16:56:10.0420 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1039/1281
+2026-03-11 16:56:10.0420 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1040/1281
+2026-03-11 16:56:10.0422 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1041/1281
+2026-03-11 16:56:10.0423 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1042/1281
+2026-03-11 16:56:10.0424 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1043/1281
+2026-03-11 16:56:10.0424 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1044/1281
+2026-03-11 16:56:10.0424 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1045/1281
+2026-03-11 16:56:10.0425 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1046/1281
+2026-03-11 16:56:10.0425 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1047/1281
+2026-03-11 16:56:10.0426 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1048/1281
+2026-03-11 16:56:10.0426 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1049/1281
+2026-03-11 16:56:10.0427 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1050/1281
+2026-03-11 16:56:10.0427 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1051/1281
+2026-03-11 16:56:10.0427 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1052/1281
+2026-03-11 16:56:10.0428 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1053/1281
+2026-03-11 16:56:10.0428 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1054/1281
+2026-03-11 16:56:10.0428 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1055/1281
+2026-03-11 16:56:10.0429 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1056/1281
+2026-03-11 16:56:10.0429 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1057/1281
+2026-03-11 16:56:10.0429 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1058/1281
+2026-03-11 16:56:10.0430 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1059/1281
+2026-03-11 16:56:10.0430 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1060/1281
+2026-03-11 16:56:10.0430 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1061/1281
+2026-03-11 16:56:10.0431 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1062/1281
+2026-03-11 16:56:10.0431 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1063/1281
+2026-03-11 16:56:10.0431 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1064/1281
+2026-03-11 16:56:10.0432 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1065/1281
+2026-03-11 16:56:10.0432 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1066/1281
+2026-03-11 16:56:10.0432 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1067/1281
+2026-03-11 16:56:10.0433 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1068/1281
+2026-03-11 16:56:10.0433 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1069/1281
+2026-03-11 16:56:10.0433 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1070/1281
+2026-03-11 16:56:10.0433 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1071/1281
+2026-03-11 16:56:10.0434 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1072/1281
+2026-03-11 16:56:10.0434 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1073/1281
+2026-03-11 16:56:10.0434 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1074/1281
+2026-03-11 16:56:10.0435 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1075/1281
+2026-03-11 16:56:10.0435 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1076/1281
+2026-03-11 16:56:10.0435 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1077/1281
+2026-03-11 16:56:10.0435 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1078/1281
+2026-03-11 16:56:10.0436 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1079/1281
+2026-03-11 16:56:10.0436 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1080/1281
+2026-03-11 16:56:10.0436 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1081/1281
+2026-03-11 16:56:10.0436 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1082/1281
+2026-03-11 16:56:10.0437 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1083/1281
+2026-03-11 16:56:10.0439 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1084/1281
+2026-03-11 16:56:10.0439 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1085/1281
+2026-03-11 16:56:10.0439 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1086/1281
+2026-03-11 16:56:10.0439 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1087/1281
+2026-03-11 16:56:10.0440 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1088/1281
+2026-03-11 16:56:10.0441 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1089/1281
+2026-03-11 16:56:10.0441 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1090/1281
+2026-03-11 16:56:10.0441 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1091/1281
+2026-03-11 16:56:10.0442 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1092/1281
+2026-03-11 16:56:10.0442 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1093/1281
+2026-03-11 16:56:10.0443 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1094/1281
+2026-03-11 16:56:10.0443 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1095/1281
+2026-03-11 16:56:10.0443 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1096/1281
+2026-03-11 16:56:10.0444 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1097/1281
+2026-03-11 16:56:10.0444 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1098/1281
+2026-03-11 16:56:10.0444 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1099/1281
+2026-03-11 16:56:10.0444 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1100/1281
+2026-03-11 16:56:10.0444 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1101/1281
+2026-03-11 16:56:10.0444 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1102/1281
+2026-03-11 16:56:10.0445 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1103/1281
+2026-03-11 16:56:10.0445 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1104/1281
+2026-03-11 16:56:10.0445 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1105/1281
+2026-03-11 16:56:10.0445 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1106/1281
+2026-03-11 16:56:10.0445 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1107/1281
+2026-03-11 16:56:10.0447 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1108/1281
+2026-03-11 16:56:10.0447 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1109/1281
+2026-03-11 16:56:10.0447 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1110/1281
+2026-03-11 16:56:10.0447 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1111/1281
+2026-03-11 16:56:10.0447 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1112/1281
+2026-03-11 16:56:10.0448 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1113/1281
+2026-03-11 16:56:10.0448 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1114/1281
+2026-03-11 16:56:10.0448 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1115/1281
+2026-03-11 16:56:12.0204 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1116/1281
+2026-03-11 16:56:12.0205 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1117/1281
+2026-03-11 16:56:29.0473 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1118/1281
+2026-03-11 16:56:29.0475 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1119/1281
+2026-03-11 16:56:29.0477 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1120/1281
+2026-03-11 16:56:29.0478 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1121/1281
+2026-03-11 16:56:29.0479 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1122/1281
+2026-03-11 16:56:29.0479 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1123/1281
+2026-03-11 16:56:29.0480 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1124/1281
+2026-03-11 16:56:29.0482 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1125/1281
+2026-03-11 16:56:29.0482 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1126/1281
+2026-03-11 16:56:29.0483 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1127/1281
+2026-03-11 16:56:29.0486 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1128/1281
+2026-03-11 16:56:29.0511 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1129/1281
+2026-03-11 16:56:29.0516 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1130/1281
+2026-03-11 16:56:29.0519 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1131/1281
+2026-03-11 16:56:29.0519 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1132/1281
+2026-03-11 16:56:29.0521 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1133/1281
+2026-03-11 16:56:29.0523 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1134/1281
+2026-03-11 16:56:29.0523 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1135/1281
+2026-03-11 16:56:29.0526 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1136/1281
+2026-03-11 16:56:29.0526 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1137/1281
+2026-03-11 16:56:29.0528 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1138/1281
+2026-03-11 16:56:29.0528 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1139/1281
+2026-03-11 16:56:29.0528 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1140/1281
+2026-03-11 16:56:29.0530 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1141/1281
+2026-03-11 16:56:29.0530 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1142/1281
+2026-03-11 16:56:29.0530 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1143/1281
+2026-03-11 16:56:29.0531 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1144/1281
+2026-03-11 16:56:29.0531 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1145/1281
+2026-03-11 16:56:29.0531 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1146/1281
+2026-03-11 16:56:29.0532 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1147/1281
+2026-03-11 16:56:29.0533 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1148/1281
+2026-03-11 16:56:29.0533 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1149/1281
+2026-03-11 16:56:29.0533 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1150/1281
+2026-03-11 16:56:29.0534 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1151/1281
+2026-03-11 16:56:29.0534 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1152/1281
+2026-03-11 16:56:29.0535 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1153/1281
+2026-03-11 16:56:29.0535 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1154/1281
+2026-03-11 16:56:29.0535 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1155/1281
+2026-03-11 16:56:29.0536 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1156/1281
+2026-03-11 16:56:29.0536 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1157/1281
+2026-03-11 16:56:29.0536 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1158/1281
+2026-03-11 16:56:29.0537 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1159/1281
+2026-03-11 16:56:29.0537 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1160/1281
+2026-03-11 16:56:29.0537 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1161/1281
+2026-03-11 16:56:29.0537 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1162/1281
+2026-03-11 16:56:29.0538 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1163/1281
+2026-03-11 16:56:29.0538 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1164/1281
+2026-03-11 16:56:29.0538 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1165/1281
+2026-03-11 16:56:29.0539 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1166/1281
+2026-03-11 16:56:29.0569 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1167/1281
+2026-03-11 16:56:29.0569 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1168/1281
+2026-03-11 16:56:29.0571 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1169/1281
+2026-03-11 16:56:29.0575 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1170/1281
+2026-03-11 16:56:29.0581 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1171/1281
+2026-03-11 16:56:29.0582 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1172/1281
+2026-03-11 16:56:29.0582 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1173/1281
+2026-03-11 16:56:29.0582 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1174/1281
+2026-03-11 16:56:29.0583 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1175/1281
+2026-03-11 16:56:29.0583 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1176/1281
+2026-03-11 16:56:29.0583 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1177/1281
+2026-03-11 16:56:29.0583 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1178/1281
+2026-03-11 16:56:29.0583 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1179/1281
+2026-03-11 16:56:29.0585 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1180/1281
+2026-03-11 16:56:29.0585 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1181/1281
+2026-03-11 16:56:29.0585 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1182/1281
+2026-03-11 16:56:29.0585 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1183/1281
+2026-03-11 16:56:29.0586 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1184/1281
+2026-03-11 16:56:29.0586 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1185/1281
+2026-03-11 16:56:29.0586 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1186/1281
+2026-03-11 16:56:29.0586 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1187/1281
+2026-03-11 16:56:29.0586 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1188/1281
+2026-03-11 16:56:29.0586 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1189/1281
+2026-03-11 16:56:29.0588 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1190/1281
+2026-03-11 16:56:29.0588 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1191/1281
+2026-03-11 16:56:29.0588 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1192/1281
+2026-03-11 16:56:29.0589 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1193/1281
+2026-03-11 16:56:29.0589 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1194/1281
+2026-03-11 16:56:29.0589 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1195/1281
+2026-03-11 16:56:29.0589 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1196/1281
+2026-03-11 16:56:29.0590 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1197/1281
+2026-03-11 16:56:29.0590 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1198/1281
+2026-03-11 16:56:29.0590 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1199/1281
+2026-03-11 16:56:29.0590 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1200/1281
+2026-03-11 16:56:29.0591 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1201/1281
+2026-03-11 16:56:29.0591 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1202/1281
+2026-03-11 16:56:29.0591 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1203/1281
+2026-03-11 16:56:29.0591 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1204/1281
+2026-03-11 16:56:29.0591 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1205/1281
+2026-03-11 16:56:29.0592 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1206/1281
+2026-03-11 16:56:30.0058 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1207/1281
+2026-03-11 16:56:30.0058 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1208/1281
+2026-03-11 16:56:30.0169 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1209/1281
+2026-03-11 16:56:30.0169 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1210/1281
+2026-03-11 16:56:30.0171 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1211/1281
+2026-03-11 16:56:30.0171 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1212/1281
+2026-03-11 16:56:30.0172 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1213/1281
+2026-03-11 16:56:30.0172 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1214/1281
+2026-03-11 16:56:30.0172 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1215/1281
+2026-03-11 16:56:30.0197 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1216/1281
+2026-03-11 16:56:30.0197 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1217/1281
+2026-03-11 16:56:30.0200 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1218/1281
+2026-03-11 16:56:30.0203 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1219/1281
+2026-03-11 16:56:30.0209 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1220/1281
+2026-03-11 16:56:30.0209 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1221/1281
+2026-03-11 16:56:30.0211 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1222/1281
+2026-03-11 16:56:30.0211 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1223/1281
+2026-03-11 16:56:30.0211 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1224/1281
+2026-03-11 16:56:30.0212 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1225/1281
+2026-03-11 16:56:30.0212 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1226/1281
+2026-03-11 16:56:30.0213 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1227/1281
+2026-03-11 16:56:30.0228 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1228/1281
+2026-03-11 16:56:30.0283 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1229/1281
+2026-03-11 16:56:30.0283 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1230/1281
+2026-03-11 16:56:30.0284 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1231/1281
+2026-03-11 16:56:30.0284 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1232/1281
+2026-03-11 16:56:30.0284 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1233/1281
+2026-03-11 16:56:30.0284 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1234/1281
+2026-03-11 16:56:30.0285 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1235/1281
+2026-03-11 16:56:30.0285 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1236/1281
+2026-03-11 16:56:30.0285 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1237/1281
+2026-03-11 16:56:30.0285 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1238/1281
+2026-03-11 16:56:30.0286 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1239/1281
+2026-03-11 16:56:30.0286 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1240/1281
+2026-03-11 16:56:30.0286 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1241/1281
+2026-03-11 16:56:30.0286 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1242/1281
+2026-03-11 16:56:30.0288 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1243/1281
+2026-03-11 16:56:30.0288 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1244/1281
+2026-03-11 16:56:30.0288 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1245/1281
+2026-03-11 16:56:30.0288 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1246/1281
+2026-03-11 16:56:30.0288 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1247/1281
+2026-03-11 16:56:30.0288 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1248/1281
+2026-03-11 16:56:30.0289 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1249/1281
+2026-03-11 16:56:30.0289 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1250/1281
+2026-03-11 16:56:30.0289 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1251/1281
+2026-03-11 16:56:30.0289 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1252/1281
+2026-03-11 16:56:30.0290 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1253/1281
+2026-03-11 16:56:30.0290 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1254/1281
+2026-03-11 16:56:30.0290 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1255/1281
+2026-03-11 16:56:30.0290 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1256/1281
+2026-03-11 16:56:30.0290 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1257/1281
+2026-03-11 16:56:30.0501 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1258/1281
+2026-03-11 16:56:30.0631 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1259/1281
+2026-03-11 16:56:30.0741 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1260/1281
+2026-03-11 16:56:30.0918 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1261/1281
+2026-03-11 16:56:31.0014 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1262/1281
+2026-03-11 16:56:31.0015 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1263/1281
+2026-03-11 16:56:31.0071 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1264/1281
+2026-03-11 16:56:31.0139 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1265/1281
+2026-03-11 16:56:31.0140 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1266/1281
+2026-03-11 16:56:31.0387 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1267/1281
+2026-03-11 16:56:31.0469 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1268/1281
+2026-03-11 16:56:31.0588 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1269/1281
+2026-03-11 16:56:31.0733 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1270/1281
+2026-03-11 16:56:31.0773 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1271/1281
+2026-03-11 16:56:32.0416 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1272/1281
+2026-03-11 16:56:32.0593 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1273/1281
+2026-03-11 16:56:32.0725 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1274/1281
+2026-03-11 16:56:32.0791 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1275/1281
+2026-03-11 16:56:32.0904 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1276/1281
+2026-03-11 16:56:32.0948 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1277/1281
+2026-03-11 16:56:33.0102 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1278/1281
+2026-03-11 16:56:34.0481 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1279/1281
+2026-03-11 16:56:34.0847 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1280/1281
+2026-03-11 16:56:35.0006 - INFO - graphrag.logger.progress - Summarize entity/relationship description progress: 1281/1281
+2026-03-11 16:56:35.0103 - INFO - graphrag.index.workflows.extract_graph - Workflow completed: extract_graph
+2026-03-11 16:56:35.0130 - INFO - graphrag.api.index - Workflow extract_graph completed successfully
+2026-03-11 16:56:35.0151 - INFO - graphrag.index.workflows.finalize_graph - Workflow started: finalize_graph
+2026-03-11 16:56:35.0774 - INFO - graphrag.index.workflows.finalize_graph - Workflow completed: finalize_graph
+2026-03-11 16:56:35.0775 - INFO - graphrag.api.index - Workflow finalize_graph completed successfully
+2026-03-11 16:56:35.0777 - INFO - graphrag.index.workflows.extract_covariates - Workflow started: extract_covariates
+2026-03-11 16:56:35.0777 - INFO - graphrag.index.workflows.extract_covariates - Workflow completed: extract_covariates
+2026-03-11 16:56:35.0777 - INFO - graphrag.api.index - Workflow extract_covariates completed successfully
+2026-03-11 16:56:35.0779 - INFO - graphrag.index.workflows.create_communities - Workflow started: create_communities
+2026-03-11 16:56:36.0344 - INFO - graphrag.index.workflows.create_communities - Workflow completed: create_communities
+2026-03-11 16:56:36.0353 - INFO - graphrag.api.index - Workflow create_communities completed successfully
+2026-03-11 16:56:36.0356 - INFO - graphrag.index.workflows.create_final_text_units - Workflow started: create_final_text_units
+2026-03-11 16:56:36.0667 - INFO - graphrag.index.workflows.create_final_text_units - Workflow completed: create_final_text_units
+2026-03-11 16:56:36.0668 - INFO - graphrag.api.index - Workflow create_final_text_units completed successfully
+2026-03-11 16:56:36.0671 - INFO - graphrag.index.workflows.create_community_reports - Workflow started: create_community_reports
+2026-03-11 16:56:36.0849 - INFO - graphrag.index.operations.summarize_communities.graph_context.context_builder - Number of nodes at level=4 => 42
+2026-03-11 16:56:37.0315 - INFO - graphrag.index.operations.summarize_communities.graph_context.context_builder - Number of nodes at level=3 => 44
+2026-03-11 16:56:37.0851 - INFO - graphrag.index.operations.summarize_communities.graph_context.context_builder - Number of nodes at level=2 => 186
+2026-03-11 16:56:39.0183 - INFO - graphrag.index.operations.summarize_communities.graph_context.context_builder - Number of nodes at level=1 => 390
+2026-03-11 16:56:41.0848 - INFO - graphrag.index.operations.summarize_communities.graph_context.context_builder - Number of nodes at level=0 => 429
+2026-03-11 16:56:58.0938 - INFO - graphrag.logger.progress - level 4 summarize communities progress: 1/2
+2026-03-11 16:57:06.0488 - INFO - graphrag.logger.progress - level 4 summarize communities progress: 2/2
+2026-03-11 16:57:18.0770 - INFO - graphrag.logger.progress - level 3 summarize communities progress: 1/2
+2026-03-11 16:57:33.0243 - INFO - graphrag.logger.progress - level 3 summarize communities progress: 2/2
+2026-03-11 16:57:50.0532 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 1/31
+2026-03-11 16:57:51.0627 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 2/31
+2026-03-11 16:57:52.0436 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 3/31
+2026-03-11 16:57:52.0820 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 4/31
+2026-03-11 16:57:53.0153 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 5/31
+2026-03-11 16:57:53.0542 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 6/31
+2026-03-11 16:57:53.0929 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 7/31
+2026-03-11 16:57:54.0676 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 8/31
+2026-03-11 16:57:55.0473 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 9/31
+2026-03-11 16:57:55.0582 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 10/31
+2026-03-11 16:57:55.0888 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 11/31
+2026-03-11 16:57:55.0942 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 12/31
+2026-03-11 16:57:56.0394 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 13/31
+2026-03-11 16:57:56.0536 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 14/31
+2026-03-11 16:57:56.0704 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 15/31
+2026-03-11 16:57:56.0924 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 16/31
+2026-03-11 16:57:57.0199 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 17/31
+2026-03-11 16:57:57.0346 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 18/31
+2026-03-11 16:57:57.0555 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 19/31
+2026-03-11 16:57:57.0737 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 20/31
+2026-03-11 16:57:58.0493 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 21/31
+2026-03-11 16:57:59.0429 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 22/31
+2026-03-11 16:58:00.0648 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 23/31
+2026-03-11 16:58:01.0268 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 24/31
+2026-03-11 16:58:03.0831 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 25/31
+2026-03-11 16:58:04.0653 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 26/31
+2026-03-11 16:58:17.0776 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 27/31
+2026-03-11 16:58:19.0513 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 28/31
+2026-03-11 16:58:20.0645 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 29/31
+2026-03-11 16:58:53.0649 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 30/31
+2026-03-11 16:58:55.0222 - INFO - graphrag.logger.progress - level 2 summarize communities progress: 31/31
+2026-03-11 16:59:16.0708 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 1/48
+2026-03-11 16:59:17.0067 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 2/48
+2026-03-11 16:59:17.0858 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 3/48
+2026-03-11 16:59:17.0859 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 4/48
+2026-03-11 16:59:18.0598 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 5/48
+2026-03-11 16:59:18.0968 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 6/48
+2026-03-11 16:59:19.0332 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 7/48
+2026-03-11 16:59:19.0724 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 8/48
+2026-03-11 16:59:19.0726 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 9/48
+2026-03-11 16:59:20.0773 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 10/48
+2026-03-11 16:59:21.0097 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 11/48
+2026-03-11 16:59:21.0725 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 12/48
+2026-03-11 16:59:21.0727 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 13/48
+2026-03-11 16:59:21.0729 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 14/48
+2026-03-11 16:59:23.0032 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 15/48
+2026-03-11 16:59:23.0034 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 16/48
+2026-03-11 16:59:23.0036 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 17/48
+2026-03-11 16:59:24.0203 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 18/48
+2026-03-11 16:59:24.0830 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 19/48
+2026-03-11 16:59:24.0831 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 20/48
+2026-03-11 16:59:24.0833 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 21/48
+2026-03-11 16:59:24.0834 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 22/48
+2026-03-11 16:59:24.0844 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 23/48
+2026-03-11 16:59:26.0618 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 24/48
+2026-03-11 16:59:28.0919 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 25/48
+2026-03-11 16:59:51.0980 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 26/48
+2026-03-11 17:00:15.0369 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 27/48
+2026-03-11 17:00:15.0964 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 28/48
+2026-03-11 17:00:16.0851 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 29/48
+2026-03-11 17:00:18.0005 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 30/48
+2026-03-11 17:00:18.0177 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 31/48
+2026-03-11 17:00:18.0306 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 32/48
+2026-03-11 17:00:18.0495 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 33/48
+2026-03-11 17:00:18.0937 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 34/48
+2026-03-11 17:00:19.0055 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 35/48
+2026-03-11 17:00:19.0246 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 36/48
+2026-03-11 17:00:19.0247 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 37/48
+2026-03-11 17:00:19.0746 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 38/48
+2026-03-11 17:00:20.0091 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 39/48
+2026-03-11 17:00:20.0161 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 40/48
+2026-03-11 17:00:20.0285 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 41/48
+2026-03-11 17:00:22.0094 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 42/48
+2026-03-11 17:00:22.0257 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 43/48
+2026-03-11 17:00:22.0630 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 44/48
+2026-03-11 17:00:24.0073 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 45/48
+2026-03-11 17:00:24.0682 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 46/48
+2026-03-11 17:00:26.0121 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 47/48
+2026-03-11 17:00:50.0501 - INFO - graphrag.logger.progress - level 1 summarize communities progress: 48/48
+2026-03-11 17:01:09.0416 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 1/18
+2026-03-11 17:01:10.0312 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 2/18
+2026-03-11 17:01:11.0845 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 3/18
+2026-03-11 17:01:13.0065 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 4/18
+2026-03-11 17:01:13.0460 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 5/18
+2026-03-11 17:01:14.0076 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 6/18
+2026-03-11 17:01:14.0721 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 7/18
+2026-03-11 17:01:16.0097 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 8/18
+2026-03-11 17:01:18.0183 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 9/18
+2026-03-11 17:01:18.0763 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 10/18
+2026-03-11 17:01:18.0909 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 11/18
+2026-03-11 17:01:19.0098 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 12/18
+2026-03-11 17:01:19.0146 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 13/18
+2026-03-11 17:01:19.0809 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 14/18
+2026-03-11 17:01:22.0054 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 15/18
+2026-03-11 17:01:22.0967 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 16/18
+2026-03-11 17:01:25.0646 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 17/18
+2026-03-11 17:01:27.0098 - INFO - graphrag.logger.progress - level 0 summarize communities progress: 18/18
+2026-03-11 17:01:27.0171 - INFO - graphrag.index.workflows.create_community_reports - Workflow completed: create_community_reports
+2026-03-11 17:01:27.0181 - INFO - graphrag.api.index - Workflow create_community_reports completed successfully
+2026-03-11 17:01:27.0206 - INFO - graphrag.index.workflows.generate_text_embeddings - Workflow started: generate_text_embeddings
+2026-03-11 17:01:27.0233 - INFO - graphrag.index.workflows.generate_text_embeddings - Embedding the following fields: ['entity_description', 'community_full_content', 'text_unit_text']
+2026-03-11 17:01:28.0556 - INFO - graphrag.index.operations.embed_text.run_embed_text - embedding 400 inputs via 400 snippets using 25 batches. max_batch_size=16, batch_max_tokens=8191
+2026-03-11 17:01:44.0391 - INFO - graphrag.logger.progress - generate embeddings progress: 1/25
+2026-03-11 17:01:44.0500 - INFO - graphrag.logger.progress - generate embeddings progress: 2/25
+2026-03-11 17:01:44.0527 - INFO - graphrag.logger.progress - generate embeddings progress: 3/25
+2026-03-11 17:01:44.0541 - INFO - graphrag.logger.progress - generate embeddings progress: 4/25
+2026-03-11 17:01:44.0554 - INFO - graphrag.logger.progress - generate embeddings progress: 5/25
+2026-03-11 17:01:44.0567 - INFO - graphrag.logger.progress - generate embeddings progress: 6/25
+2026-03-11 17:01:44.0580 - INFO - graphrag.logger.progress - generate embeddings progress: 7/25
+2026-03-11 17:01:44.0596 - INFO - graphrag.logger.progress - generate embeddings progress: 8/25
+2026-03-11 17:01:44.0612 - INFO - graphrag.logger.progress - generate embeddings progress: 9/25
+2026-03-11 17:01:44.0626 - INFO - graphrag.logger.progress - generate embeddings progress: 10/25
+2026-03-11 17:01:44.0639 - INFO - graphrag.logger.progress - generate embeddings progress: 11/25
+2026-03-11 17:01:44.0653 - INFO - graphrag.logger.progress - generate embeddings progress: 12/25
+2026-03-11 17:01:44.0665 - INFO - graphrag.logger.progress - generate embeddings progress: 13/25
+2026-03-11 17:01:44.0685 - INFO - graphrag.logger.progress - generate embeddings progress: 14/25
+2026-03-11 17:01:44.0688 - INFO - graphrag.logger.progress - generate embeddings progress: 15/25
+2026-03-11 17:01:44.0702 - INFO - graphrag.logger.progress - generate embeddings progress: 16/25
+2026-03-11 17:01:44.0715 - INFO - graphrag.logger.progress - generate embeddings progress: 17/25
+2026-03-11 17:01:44.0731 - INFO - graphrag.logger.progress - generate embeddings progress: 18/25
+2026-03-11 17:01:44.0746 - INFO - graphrag.logger.progress - generate embeddings progress: 19/25
+2026-03-11 17:01:44.0776 - INFO - graphrag.logger.progress - generate embeddings progress: 20/25
+2026-03-11 17:01:44.0791 - INFO - graphrag.logger.progress - generate embeddings progress: 21/25
+2026-03-11 17:01:44.0808 - INFO - graphrag.logger.progress - generate embeddings progress: 22/25
+2026-03-11 17:01:44.0825 - INFO - graphrag.logger.progress - generate embeddings progress: 23/25
+2026-03-11 17:01:44.0854 - INFO - graphrag.logger.progress - generate embeddings progress: 24/25
+2026-03-11 17:01:44.0864 - INFO - graphrag.logger.progress - generate embeddings progress: 25/25
+2026-03-11 17:01:47.0013 - INFO - graphrag.index.operations.embed_text.run_embed_text - embedding 60 inputs via 60 snippets using 4 batches. max_batch_size=16, batch_max_tokens=8191
+2026-03-11 17:01:48.0767 - INFO - graphrag.logger.progress - generate embeddings progress: 1/4
+2026-03-11 17:01:49.0374 - INFO - graphrag.logger.progress - generate embeddings progress: 2/4
+2026-03-11 17:01:49.0389 - INFO - graphrag.logger.progress - generate embeddings progress: 3/4
+2026-03-11 17:01:49.0402 - INFO - graphrag.logger.progress - generate embeddings progress: 4/4
+2026-03-11 17:01:49.0703 - INFO - graphrag.index.workflows.generate_text_embeddings - Embedded 460 rows for entity_description
+2026-03-11 17:01:50.0183 - INFO - graphrag.index.operations.embed_text.run_embed_text - embedding 101 inputs via 101 snippets using 14 batches. max_batch_size=16, batch_max_tokens=8191
+2026-03-11 17:02:05.0267 - INFO - graphrag.logger.progress - generate embeddings progress: 1/14
+2026-03-11 17:02:07.0629 - INFO - graphrag.logger.progress - generate embeddings progress: 2/14
+2026-03-11 17:02:08.0434 - INFO - graphrag.logger.progress - generate embeddings progress: 3/14
+2026-03-11 17:02:08.0442 - INFO - graphrag.logger.progress - generate embeddings progress: 4/14
+2026-03-11 17:02:08.0451 - INFO - graphrag.logger.progress - generate embeddings progress: 5/14
+2026-03-11 17:02:08.0457 - INFO - graphrag.logger.progress - generate embeddings progress: 6/14
+2026-03-11 17:02:08.0463 - INFO - graphrag.logger.progress - generate embeddings progress: 7/14
+2026-03-11 17:02:08.0473 - INFO - graphrag.logger.progress - generate embeddings progress: 8/14
+2026-03-11 17:02:08.0479 - INFO - graphrag.logger.progress - generate embeddings progress: 9/14
+2026-03-11 17:02:08.0488 - INFO - graphrag.logger.progress - generate embeddings progress: 10/14
+2026-03-11 17:02:08.0503 - INFO - graphrag.logger.progress - generate embeddings progress: 11/14
+2026-03-11 17:02:08.0505 - INFO - graphrag.logger.progress - generate embeddings progress: 12/14
+2026-03-11 17:02:10.0882 - INFO - graphrag.logger.progress - generate embeddings progress: 13/14
+2026-03-11 17:02:42.0133 - INFO - graphrag.logger.progress - generate embeddings progress: 14/14
+2026-03-11 17:02:42.0607 - INFO - graphrag.index.workflows.generate_text_embeddings - Embedded 101 rows for community_full_content
+2026-03-11 17:02:42.0894 - INFO - graphrag.index.operations.embed_text.run_embed_text - embedding 42 inputs via 42 snippets using 7 batches. max_batch_size=16, batch_max_tokens=8191
+2026-03-11 17:03:07.0250 - INFO - graphrag.logger.progress - generate embeddings progress: 1/7
+2026-03-11 17:03:07.0254 - INFO - graphrag.logger.progress - generate embeddings progress: 2/7
+2026-03-11 17:03:07.0264 - INFO - graphrag.logger.progress - generate embeddings progress: 3/7
+2026-03-11 17:03:07.0270 - INFO - graphrag.logger.progress - generate embeddings progress: 4/7
+2026-03-11 17:03:07.0278 - INFO - graphrag.logger.progress - generate embeddings progress: 5/7
+2026-03-11 17:03:07.0285 - INFO - graphrag.logger.progress - generate embeddings progress: 6/7
+2026-03-11 17:03:07.0292 - INFO - graphrag.logger.progress - generate embeddings progress: 7/7
+2026-03-11 17:03:07.0504 - INFO - graphrag.index.workflows.generate_text_embeddings - Embedded 42 rows for text_unit_text
+2026-03-11 17:03:07.0505 - INFO - graphrag.index.workflows.generate_text_embeddings - Workflow completed: generate_text_embeddings
+2026-03-11 17:03:07.0522 - INFO - graphrag.api.index - Workflow generate_text_embeddings completed successfully
+2026-03-11 17:03:07.0525 - INFO - graphrag.index.run.run_pipeline - Indexing pipeline complete.
+2026-03-11 17:03:07.0535 - INFO - graphrag_llm.metrics.log_metrics_writer - Metrics for azure/text-embedding-3-large: {
+  "attempted_request_count": 51,
+  "successful_response_count": 51,
+  "failed_response_count": 0,
+  "failure_rate": 0.0,
+  "requests_with_retries": 0,
+  "retries": 0,
+  "retry_rate": 0.0,
+  "compute_duration_seconds": 381.9187898635864,
+  "compute_duration_per_response_seconds": 7.48860372281542,
+  "cache_hit_rate": 0.0,
+  "streaming_responses": 0,
+  "responses_with_tokens": 51,
+  "prompt_tokens": 182429,
+  "total_tokens": 182429,
+  "tokens_per_response": 3577.0392156862745,
+  "responses_with_cost": 51,
+  "input_cost": 0.023715769999999997,
+  "total_cost": 0.023715769999999997,
+  "cost_per_response": 0.0004650150980392156
+}
+2026-03-11 17:03:07.0536 - INFO - graphrag_llm.metrics.log_metrics_writer - Metrics for azure/gpt-4.1: {
+  "attempted_request_count": 345,
+  "successful_response_count": 345,
+  "failed_response_count": 0,
+  "failure_rate": 0.0,
+  "requests_with_retries": 5,
+  "retries": 5,
+  "retry_rate": 0.014285714285714285,
+  "compute_duration_seconds": 7634.240888834,
+  "compute_duration_per_response_seconds": 22.128234460388406,
+  "cache_hit_rate": 0.0,
+  "streaming_responses": 0,
+  "responses_with_tokens": 345,
+  "prompt_tokens": 676816,
+  "completion_tokens": 233562,
+  "total_tokens": 910378,
+  "tokens_per_response": 2638.776811594203,
+  "responses_with_cost": 345,
+  "input_cost": 1.3536319999999997,
+  "output_cost": 1.8684960000000004,
+  "total_cost": 3.222127999999998,
+  "cost_per_response": 0.009339501449275357
+}

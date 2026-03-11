@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "fluent-ui": {
+      "command": "npx.cmd",
+      "args": ["mcp-fluent-ui"]
+    }
+  }
+}
