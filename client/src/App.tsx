@@ -27,7 +27,6 @@ const useStyles = makeStyles({
   },
   content: {
     margin: "0 auto",
-    padding: "1.5rem",
     position: "relative",
   },
   panel: {
