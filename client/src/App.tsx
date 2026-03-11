@@ -10,6 +10,20 @@ const useStyles = makeStyles({
   root: {
     minHeight: "100vh",
     backgroundColor: "#151515",
+    position: "relative",
+    overflow: "hidden",
+  },
+  glow: {
+    position: "fixed",
+    bottom: "-120px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    width: "100%",
+    height: "300px",
+    background:
+      "linear-gradient(to bottom, rgba(123, 83, 230, 0) 0%, rgba(123, 83, 230, 0.20) 100%)",
+    pointerEvents: "none",
+    zIndex: 0,
   },
   content: {
     margin: "0 auto",
@@ -59,6 +73,7 @@ const App = () => {
 
   return (
     <div className={styles.root}>
+      <div className={styles.glow} />
       <Header activeTab={activeTab} onTabChange={setActiveTab} />
 
       <main className={styles.content}>
