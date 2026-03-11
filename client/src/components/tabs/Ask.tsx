@@ -1,6 +1,7 @@
 import { makeStyles, Textarea, tokens } from "@fluentui/react-components";
-import { Send16Regular } from "@fluentui/react-icons";
+import { ArrowUpRight12Regular, Send16Regular } from "@fluentui/react-icons";
 import { useEffect, useRef, useState } from "react";
+import bookUrl from "../../assets/book.txt?url";
 
 const useStyles = makeStyles({
   root: {
@@ -52,16 +53,44 @@ const useStyles = makeStyles({
     width: "100%",
     flexShrink: 0,
   },
-  inputArea: {
+  inputSection: {
     display: "flex",
-    alignItems: "flex-end",
+    flexDirection: "column",
     gap: "8px",
-    padding: "0.5rem",
     flexShrink: 0,
     maxWidth: "800px",
     marginLeft: "auto",
     marginRight: "auto",
     width: "100%",
+    padding: "0.5rem",
+  },
+  suggestions: {
+    display: "flex",
+    gap: "6px",
+    flexWrap: "wrap",
+  },
+  suggestionBtn: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "4px",
+    fontSize: "12px",
+    padding: "5px 12px",
+    borderRadius: "14px",
+    border: "1px solid rgba(255, 255, 255, 0.12)",
+    backgroundColor: "transparent",
+    color: tokens.colorNeutralForeground2,
+    cursor: "pointer",
+    transition: "border-color 0.15s ease, background-color 0.15s ease",
+    whiteSpace: "nowrap",
+    ":hover": {
+      border: "1px solid rgba(255, 255, 255, 0.3)",
+      backgroundColor: "rgba(255, 255, 255, 0.04)",
+    },
+  },
+  inputRow: {
+    display: "flex",
+    alignItems: "flex-end",
+    gap: "8px",
   },
   textareaWrapper: {
     flex: 1,
@@ -110,6 +139,7 @@ const Ask = () => {
   const [graphRagAnswer, setGraphRagAnswer] = useState<string | null>(null);
   const ragPanelRef = useRef<HTMLDivElement>(null);
   const graphRagPanelRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Auto-scroll both panels to bottom when answers change
   useEffect(() => {
@@ -168,29 +198,61 @@ const Ask = () => {
       {/* Divider */}
       <div className={styles.horizontalDivider} />
 
-      {/* Input bar */}
-      <div className={styles.inputArea}>
-        <Textarea
-          className={styles.textareaWrapper}
-          placeholder="Ask a question to compare RAG vs GraphRAG..."
-          value={query}
-          onChange={(_, data) => setQuery(data.value)}
-          resize="none"
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              handleSend();
-            }
-          }}
-        />
-        <button
-          className={styles.sendBtn}
-          onClick={handleSend}
-          disabled={!query.trim()}
-          title="Send"
-        >
-          <Send16Regular />
-        </button>
+      {/* Input section */}
+      <div className={styles.inputSection}>
+        <div className={styles.suggestions}>
+          <button
+            className={styles.suggestionBtn}
+            onClick={() => {
+              setQuery("What are the top themes in this story?");
+              textareaRef.current?.focus();
+            }}
+          >
+            What are the top themes in this story?
+          </button>
+          <button
+            className={styles.suggestionBtn}
+            onClick={() => {
+              setQuery("Who is Scrooge and what are his main relationships?");
+              textareaRef.current?.focus();
+            }}
+          >
+            Who is Scrooge and what are his main relationships?
+          </button>
+          <button
+            className={styles.suggestionBtn}
+            onClick={() => {
+              window.open(bookUrl, "_blank");
+            }}
+          >
+            Show book
+            <ArrowUpRight12Regular />
+          </button>
+        </div>
+        <div className={styles.inputRow}>
+          <Textarea
+            ref={textareaRef}
+            className={styles.textareaWrapper}
+            placeholder="Ask a question to compare RAG vs GraphRAG..."
+            value={query}
+            onChange={(_, data) => setQuery(data.value)}
+            resize="none"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+          />
+          <button
+            className={styles.sendBtn}
+            onClick={handleSend}
+            disabled={!query.trim()}
+            title="Send"
+          >
+            <Send16Regular />
+          </button>
+        </div>
       </div>
     </div>
   );
