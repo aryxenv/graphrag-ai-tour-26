@@ -11,14 +11,18 @@
   },
   "dependencies": {
     "@fluentui/react": "^8.125.5",
+    "@fluentui/react-components": "^9.73.3",
+    "@fluentui/react-icons": "^2.0.320",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-force-graph-3d": "^1.29.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.183.1",
     "@vitejs/plugin-react-swc": "^4.2.2",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
