@@ -90,9 +90,25 @@ def generate_questions(
     client = _get_client()
 
     if mode == "global":
-        focus = "broad, high-level questions about dataset-wide themes and patterns"
+        focus = (
+            "broad questions about themes, patterns, or comparisons that span the ENTIRE dataset. "
+            "These questions should require synthesizing information from many different parts of the text — "
+            "NOT answerable from any single paragraph or passage."
+        )
+        examples = (
+            "1. [global] What are the recurring moral lessons across all character arcs?\n"
+            "2. [cross-document] How do different characters' views on wealth contrast?"
+        )
     else:
-        focus = "specific, detailed questions about particular entities, relationships, and events"
+        focus = (
+            "specific questions about entity relationships, hidden connections, or multi-hop reasoning. "
+            "These questions should require connecting 2-3 entities or events that are NOT directly mentioned together — "
+            "questions that only a knowledge graph could answer well."
+        )
+        examples = (
+            "1. [hidden] How does Fezziwig's generosity contrast with Scrooge's treatment of Cratchit?\n"
+            "2. [timeline] How does Scrooge's emotional state change across the three ghostly visits?"
+        )
 
     response = client.chat.completions.create(
         model="gpt-4.1",
@@ -100,19 +116,27 @@ def generate_questions(
             {
                 "role": "system",
                 "content": (
-                    "You are a question generator. Given summaries of a knowledge graph, "
-                    "generate interesting questions that a user might want to ask about the dataset. "
-                    "Tag each question with exactly one type: cross-document, global, hidden, or timeline."
+                    "You generate short, compelling questions from knowledge graph summaries. "
+                    "Your questions must showcase what a knowledge graph can do that simple text search cannot:\n"
+                    "- Synthesize across many documents\n"
+                    "- Reveal hidden connections between entities\n"
+                    "- Trace themes or changes across time\n"
+                    "- Compare or contrast distant parts of the corpus\n\n"
+                    "Rules:\n"
+                    "- Each question MUST be under 80 characters\n"
+                    "- Each question must NOT be answerable from a single paragraph\n"
+                    "- Keep questions simple-sounding but requiring deep synthesis\n"
+                    "- Tag each with one type: cross-document, global, hidden, or timeline"
                 ),
             },
             {
                 "role": "user",
                 "content": (
-                    f"Here are summaries from the knowledge graph:\n\n{summaries}\n\n"
-                    f"Generate exactly {count} {focus}.\n"
-                    f"Format each line as: NUMBER. [TYPE] QUESTION\n"
-                    f"Example: 1. [global] What are the major themes?\n"
-                    f"Return ONLY the numbered list."
+                    f"Knowledge graph summaries:\n\n{summaries}\n\n"
+                    f"Generate exactly {count} {focus}\n\n"
+                    f"Examples of good questions:\n{examples}\n\n"
+                    f"Format: NUMBER. [TYPE] QUESTION\n"
+                    f"Return ONLY the numbered list, nothing else."
                 ),
             },
         ],
