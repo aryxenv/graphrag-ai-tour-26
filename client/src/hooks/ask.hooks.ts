@@ -1,6 +1,12 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useRef, useState } from "react";
-import { fetchAskQuestions, streamGraphRAGQuery, streamRAGQuery } from "../api";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { EvalScores } from "../api";
+import {
+  evaluateSingle,
+  fetchAskQuestions,
+  streamGraphRAGQuery,
+  streamRAGQuery,
+} from "../api";
 
 export function useAskQuestions() {
   const queryClient = useQueryClient();
@@ -119,5 +125,60 @@ export function useStreamingQuery() {
 
   const isStreaming = rag.isStreaming || graphRag.isStreaming;
 
-  return { rag, graphRag, send, isStreaming };
+  // Independent eval state for each side
+  const [ragEval, setRagEval] = useState<EvalScores | null>(null);
+  const [graphRagEval, setGraphRagEval] = useState<EvalScores | null>(null);
+  const [isRagEvaluating, setIsRagEvaluating] = useState(false);
+  const [isGraphRagEvaluating, setIsGraphRagEvaluating] = useState(false);
+  const lastQueryRef = useRef("");
+
+  // Trigger RAG eval as soon as RAG finishes
+  useEffect(() => {
+    if (!rag.isStreaming && rag.text && !rag.error && lastQueryRef.current) {
+      setIsRagEvaluating(true);
+      evaluateSingle(lastQueryRef.current, rag.text)
+        .then(setRagEval)
+        .catch(() => setRagEval(null))
+        .finally(() => setIsRagEvaluating(false));
+    }
+  }, [rag.isStreaming, rag.text, rag.error]);
+
+  // Trigger GraphRAG eval as soon as GraphRAG finishes
+  useEffect(() => {
+    if (
+      !graphRag.isStreaming &&
+      graphRag.text &&
+      !graphRag.error &&
+      lastQueryRef.current
+    ) {
+      setIsGraphRagEvaluating(true);
+      evaluateSingle(lastQueryRef.current, graphRag.text)
+        .then(setGraphRagEval)
+        .catch(() => setGraphRagEval(null))
+        .finally(() => setIsGraphRagEvaluating(false));
+    }
+  }, [graphRag.isStreaming, graphRag.text, graphRag.error]);
+
+  const wrappedSend = useCallback(
+    (query: string) => {
+      lastQueryRef.current = query;
+      setRagEval(null);
+      setGraphRagEval(null);
+      setIsRagEvaluating(false);
+      setIsGraphRagEvaluating(false);
+      send(query);
+    },
+    [send],
+  );
+
+  return {
+    rag,
+    graphRag,
+    send: wrappedSend,
+    isStreaming,
+    ragEval,
+    graphRagEval,
+    isRagEvaluating,
+    isGraphRagEvaluating,
+  };
 }

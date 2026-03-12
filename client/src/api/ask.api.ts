@@ -119,3 +119,24 @@ export async function fetchAskQuestions(): Promise<{
   const data: GeneratedQuestion[] = await res.json();
   return { questions: data, mode };
 }
+
+export interface EvalScores {
+  relevance: number;
+  groundedness: number;
+  coherence: number;
+  overall: number;
+}
+
+/** Evaluate a single response using Azure AI Evaluation. */
+export async function evaluateSingle(
+  query: string,
+  response: string,
+): Promise<EvalScores> {
+  const res = await fetch(`${API_BASE}/evaluate/single`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query, response }),
+  });
+  if (!res.ok) throw new Error(`Evaluation failed: ${res.status}`);
+  return res.json();
+}
