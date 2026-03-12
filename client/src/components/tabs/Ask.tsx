@@ -2,6 +2,18 @@ import { makeStyles, Textarea, tokens } from "@fluentui/react-components";
 import { ArrowUpRight12Regular, Send16Regular } from "@fluentui/react-icons";
 import { useEffect, useRef, useState } from "react";
 import bookUrl from "../../assets/book.txt?url";
+import type { DemoPrompt } from "../../types";
+
+const DEMO_PROMPTS: Record<string, DemoPrompt> = {
+  themes: {
+    text: "What are the top themes in this story?",
+    searchMethod: "global",
+  },
+  scrooge: {
+    text: "Who is Scrooge and what are his main relationships?",
+    searchMethod: "local",
+  },
+};
 
 const useStyles = makeStyles({
   root: {
@@ -201,24 +213,18 @@ const Ask = () => {
       {/* Input section */}
       <div className={styles.inputSection}>
         <div className={styles.suggestions}>
-          <button
-            className={styles.suggestionBtn}
-            onClick={() => {
-              setQuery("What are the top themes in this story?");
-              textareaRef.current?.focus();
-            }}
-          >
-            What are the top themes in this story?
-          </button>
-          <button
-            className={styles.suggestionBtn}
-            onClick={() => {
-              setQuery("Who is Scrooge and what are his main relationships?");
-              textareaRef.current?.focus();
-            }}
-          >
-            Who is Scrooge and what are his main relationships?
-          </button>
+          {Object.values(DEMO_PROMPTS).map((prompt) => (
+            <button
+              key={prompt.text}
+              className={styles.suggestionBtn}
+              onClick={() => {
+                setQuery(prompt.text);
+                textareaRef.current?.focus();
+              }}
+            >
+              {prompt.text}
+            </button>
+          ))}
           <button
             className={styles.suggestionBtn}
             onClick={() => {

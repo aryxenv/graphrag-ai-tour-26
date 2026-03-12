@@ -36,4 +36,11 @@ export interface Memo {
 
 export type DemoScenario = "tech-startup" | "hospital" | "law-firm";
 
+export type SearchMethod = "local" | "global";
+
+export interface DemoPrompt {
+  text: string;
+  searchMethod: SearchMethod;
+}
+
 export type TabValue = "ask" | "explore" | "build";
