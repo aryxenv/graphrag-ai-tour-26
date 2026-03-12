@@ -1,0 +1,9 @@
+azure-identity>=1.25.2
+azure-search-documents>=11.6.0
+fastapi>=0.135.1
+graphrag>=3.0.6
+graphrag-storage>=3.0.6
+openai>=2.26.0
+pandas>=2.3.3
+python-dotenv>=1.2.2
+uvicorn>=0.41.0

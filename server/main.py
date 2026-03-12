@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from endpoints.query import router as query_router
 from endpoints.questions import router as questions_router
 
 # Load .env from the server directory
@@ -20,6 +21,7 @@ app.add_middleware(
 )
 
 app.include_router(questions_router)
+app.include_router(query_router)
 
 
 @app.get("/")
