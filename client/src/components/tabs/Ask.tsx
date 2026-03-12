@@ -13,6 +13,7 @@ import {
 } from "@fluentui/react-icons";
 import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import type { EvalScores } from "../../api";
 import azureAiSearchLogo from "../../assets/azure_ai_search.svg";
 import bookUrl from "../../assets/book.txt?url";
@@ -378,7 +379,7 @@ const Ask = () => {
             {rag.error ? (
               <div className={styles.errorState}>{rag.error}</div>
             ) : rag.text ? (
-              <Markdown>{rag.text}</Markdown>
+              <Markdown remarkPlugins={[remarkGfm]}>{rag.text}</Markdown>
             ) : rag.isStreaming ? (
               <Spinner size="small" label="Querying RAG..." />
             ) : (
@@ -420,7 +421,7 @@ const Ask = () => {
             {graphRag.error ? (
               <div className={styles.errorState}>{graphRag.error}</div>
             ) : graphRag.text ? (
-              <Markdown>{graphRag.text}</Markdown>
+              <Markdown remarkPlugins={[remarkGfm]}>{graphRag.text}</Markdown>
             ) : graphRag.isStreaming ? (
               <Spinner size="small" label="Querying GraphRAG..." />
             ) : (
