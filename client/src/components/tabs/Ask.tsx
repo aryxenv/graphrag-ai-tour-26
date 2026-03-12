@@ -58,7 +58,7 @@ const useStyles = makeStyles({
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    padding: "0 24px 24px 24px",
+    padding: "0 24px 12px 24px",
     overflowY: "auto",
   },
   panelContent: {
