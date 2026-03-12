@@ -1,16 +1,18 @@
-import { makeStyles, Textarea, tokens } from "@fluentui/react-components";
+import {
+  makeStyles,
+  Spinner,
+  Textarea,
+  tokens,
+} from "@fluentui/react-components";
 import {
   ArrowUpRight12Regular,
   LightbulbFilament16Regular,
   Send16Regular,
 } from "@fluentui/react-icons";
 import { useEffect, useRef, useState } from "react";
+import Markdown from "react-markdown";
 import bookUrl from "../../assets/book.txt?url";
-import {
-  useAskQuestions,
-  useQueryGraphRAG,
-  useQueryVanillaRAG,
-} from "../../hooks";
+import { useAskQuestions, useStreamingQuery } from "../../hooks";
 import type { SearchMethod } from "../../types";
 
 interface Suggestion {
@@ -30,11 +32,14 @@ const useStyles = makeStyles({
   },
   panelHeader: {
     flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "8px",
     fontSize: "16px",
     fontWeight: 600,
     textTransform: "uppercase",
     letterSpacing: "0.8px",
-    textAlign: "center",
     padding: "24px 0 12px 0",
   },
   panels: {
@@ -47,7 +52,7 @@ const useStyles = makeStyles({
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    padding: "0 24px",
+    padding: "0 24px 24px 24px",
     overflowY: "auto",
   },
   panelContent: {
@@ -145,6 +150,31 @@ const useStyles = makeStyles({
     opacity: 0.3,
     fontSize: "14px",
   },
+  engineBadge: {
+    fontSize: "11px",
+    fontWeight: 400,
+    textTransform: "lowercase",
+    padding: "2px 8px",
+    borderRadius: "10px",
+    backgroundColor: "rgba(123, 83, 230, 0.25)",
+    color: "#c4a8ff",
+    letterSpacing: "0.3px",
+  },
+  metricBadge: {
+    fontSize: "11px",
+    fontWeight: 400,
+    textTransform: "none",
+    padding: "2px 8px",
+    borderRadius: "10px",
+    backgroundColor: "rgba(255, 255, 255, 0.06)",
+    color: "rgba(255, 255, 255, 0.5)",
+    letterSpacing: "0.3px",
+  },
+  errorState: {
+    color: "#ff6b6b",
+    fontSize: "13px",
+    padding: "12px",
+  },
 });
 
 const Ask = () => {
@@ -160,8 +190,7 @@ const Ask = () => {
     refresh: loadSuggestions,
   } = useAskQuestions();
 
-  const vanillaRAG = useQueryVanillaRAG();
-  const graphRAG = useQueryGraphRAG();
+  const { rag, graphRag, send, isStreaming } = useStreamingQuery();
 
   const suggestions: Suggestion[] = (suggestionsData?.questions ?? []).map(
     (q) => ({
@@ -170,44 +199,69 @@ const Ask = () => {
     }),
   );
 
-  // Auto-scroll both panels to bottom when answers change
+  // Auto-scroll both panels to bottom when streaming text changes
   useEffect(() => {
     ragPanelRef.current?.scrollTo({
       top: ragPanelRef.current.scrollHeight,
       behavior: "smooth",
     });
+  }, [rag.text]);
+
+  useEffect(() => {
     graphRagPanelRef.current?.scrollTo({
       top: graphRagPanelRef.current.scrollHeight,
       behavior: "smooth",
     });
-  }, [vanillaRAG.data, graphRAG.data]);
+  }, [graphRag.text]);
 
   const handleSend = () => {
-    if (!query.trim()) return;
-    const q = query;
+    if (!query.trim() || isStreaming) return;
+    send(query.trim());
     setQuery("");
-    vanillaRAG.mutate(q);
-    graphRAG.mutate(q);
   };
-
-  const ragAnswer = vanillaRAG.data?.answer ?? null;
-  const graphRagAnswer = graphRAG.data?.answer ?? null;
 
   return (
     <div className={styles.root}>
       {/* Fixed headers */}
       <div className={styles.panelHeaders}>
-        <div className={styles.panelHeader}>RAG</div>
+        <div className={styles.panelHeader}>
+          RAG
+          {rag.ttft !== null && (
+            <span className={styles.metricBadge}>
+              {rag.ttft.toFixed(1)}s TTFT
+            </span>
+          )}
+          {!rag.isStreaming && rag.tokens > 0 && (
+            <span className={styles.metricBadge}>{rag.tokens}tk</span>
+          )}
+        </div>
         <div className={styles.verticalDivider} />
-        <div className={styles.panelHeader}>GraphRAG</div>
+        <div className={styles.panelHeader}>
+          GraphRAG
+          {graphRag.engine && (
+            <span className={styles.engineBadge}>{graphRag.engine}</span>
+          )}
+          {graphRag.ttft !== null && (
+            <span className={styles.metricBadge}>
+              {graphRag.ttft.toFixed(1)}s TTFT
+            </span>
+          )}
+          {!graphRag.isStreaming && graphRag.tokens > 0 && (
+            <span className={styles.metricBadge}>{graphRag.tokens}tk</span>
+          )}
+        </div>
       </div>
 
       {/* Scrollable panels */}
       <div className={styles.panels}>
         <div className={styles.panel} ref={ragPanelRef}>
           <div className={styles.panelContent}>
-            {ragAnswer ? (
-              <p>{ragAnswer}</p>
+            {rag.error ? (
+              <div className={styles.errorState}>{rag.error}</div>
+            ) : rag.text ? (
+              <Markdown>{rag.text}</Markdown>
+            ) : rag.isStreaming ? (
+              <Spinner size="small" label="Querying RAG..." />
             ) : (
               <div className={styles.emptyState}>Ask a question to compare</div>
             )}
@@ -218,8 +272,12 @@ const Ask = () => {
 
         <div className={styles.panel} ref={graphRagPanelRef}>
           <div className={styles.panelContent}>
-            {graphRagAnswer ? (
-              <p>{graphRagAnswer}</p>
+            {graphRag.error ? (
+              <div className={styles.errorState}>{graphRag.error}</div>
+            ) : graphRag.text ? (
+              <Markdown>{graphRag.text}</Markdown>
+            ) : graphRag.isStreaming ? (
+              <Spinner size="small" label="Querying GraphRAG..." />
             ) : (
               <div className={styles.emptyState}>Ask a question to compare</div>
             )}
@@ -282,7 +340,7 @@ const Ask = () => {
           <button
             className={styles.sendBtn}
             onClick={handleSend}
-            disabled={!query.trim()}
+            disabled={!query.trim() || isStreaming}
             title="Send"
           >
             <Send16Regular />
