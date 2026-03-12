@@ -1,0 +1,363 @@
+2026-03-12 18:03:43.0594 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:03:43.0594 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:03:43.0651 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:03:43.0652 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:04:39.0476 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:04:39.0477 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:04:39.0544 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:04:39.0545 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:04:39.0555 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:04:39.0556 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:04:39.0580 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:04:39.0582 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:04:39.0630 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:04:39.0630 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:04:39.0636 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:04:39.0636 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:04:39.0644 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:04:39.0645 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:04:40.0090 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:04:40.0091 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:04:41.0009 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:04:41.0009 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:05:39.0376 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:05:39.0376 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:05:39.0808 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:05:39.0809 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:05:39.0817 - WARNING - graphrag.query.structured_search.global_search.search - Warning: All map responses have score 0 (i.e., no relevant information found from the dataset), returning a canned 'I do not know' answer. You can try enabling `allow_general_knowledge` to encourage the LLM to incorporate relevant general knowledge, at the risk of increasing hallucinations.
+2026-03-12 18:05:40.0443 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:05:40.0443 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:05:40.0452 - WARNING - graphrag.query.structured_search.global_search.search - Warning: All map responses have score 0 (i.e., no relevant information found from the dataset), returning a canned 'I do not know' answer. You can try enabling `allow_general_knowledge` to encourage the LLM to incorporate relevant general knowledge, at the risk of increasing hallucinations.
+2026-03-12 18:08:54.0793 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:08:54.0793 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:09:30.0077 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:09:30.0077 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:09:41.0084 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:09:41.0084 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:09:41.0458 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:09:41.0459 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:09:41.0757 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:09:41.0757 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:09:52.0182 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:09:52.0183 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:09:52.0195 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:09:52.0195 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:09:53.0266 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:09:53.0266 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:10:41.0438 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:10:41.0438 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:10:41.0784 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:10:41.0785 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:10:41.0814 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:10:41.0815 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:10:51.0971 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:10:51.0972 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:10:52.0393 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:10:52.0393 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:10:52.0402 - WARNING - graphrag.query.structured_search.global_search.search - Warning: All map responses have score 0 (i.e., no relevant information found from the dataset), returning a canned 'I do not know' answer. You can try enabling `allow_general_knowledge` to encourage the LLM to incorporate relevant general knowledge, at the risk of increasing hallucinations.
+2026-03-12 18:10:52.0899 - WARNING - graphrag.query.llm.text_utils - Error decoding faulty json, attempting repair
+2026-03-12 18:10:52.0900 - ERROR - graphrag.query.llm.text_utils - not expected dict type. type=<class 'list'>:
+Traceback (most recent call last):
+  File "C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\server\.venv\Lib\site-packages\graphrag\query\llm\text_utils.py", line 84, in try_parse_json_object
+    result = json.loads(input)
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t-aryanshah\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 2 (char 1)
+2026-03-12 18:10:52.0908 - WARNING - graphrag.query.structured_search.global_search.search - Warning: All map responses have score 0 (i.e., no relevant information found from the dataset), returning a canned 'I do not know' answer. You can try enabling `allow_general_knowledge` to encourage the LLM to incorporate relevant general knowledge, at the risk of increasing hallucinations.
+2026-03-12 18:10:52.0943 - INFO - graphrag_llm.metrics.log_metrics_writer - Metrics for azure/gpt-4.1: {
+  "attempted_request_count": 416,
+  "successful_response_count": 416,
+  "failed_response_count": 0,
+  "failure_rate": 0.0,
+  "requests_with_retries": 33,
+  "retries": 38,
+  "retry_rate": 0.08370044052863436,
+  "compute_duration_seconds": 6743.057947874069,
+  "compute_duration_per_response_seconds": 16.20927391315882,
+  "cache_hit_rate": 0.0,
+  "streaming_responses": 0,
+  "responses_with_tokens": 416,
+  "prompt_tokens": 796016,
+  "completion_tokens": 50131,
+  "total_tokens": 846147,
+  "tokens_per_response": 2034.0072115384614,
+  "responses_with_cost": 416,
+  "input_cost": 1.592031999999999,
+  "output_cost": 0.4010479999999998,
+  "total_cost": 1.99308,
+  "cost_per_response": 0.0047910576923076926
+}

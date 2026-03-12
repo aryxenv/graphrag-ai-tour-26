@@ -1,19 +1,18 @@
 import { makeStyles, Textarea, tokens } from "@fluentui/react-components";
-import { ArrowUpRight12Regular, Send16Regular } from "@fluentui/react-icons";
-import { useEffect, useRef, useState } from "react";
+import {
+  ArrowUpRight12Regular,
+  LightbulbFilament16Regular,
+  Send16Regular,
+} from "@fluentui/react-icons";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { fetchAskQuestions } from "../../api";
 import bookUrl from "../../assets/book.txt?url";
-import type { DemoPrompt } from "../../types";
+import type { SearchMethod } from "../../types";
 
-const DEMO_PROMPTS: Record<string, DemoPrompt> = {
-  themes: {
-    text: "What are the top themes in this story?",
-    searchMethod: "global",
-  },
-  scrooge: {
-    text: "Who is Scrooge and what are his main relationships?",
-    searchMethod: "local",
-  },
-};
+interface Suggestion {
+  text: string;
+  searchMethod: SearchMethod;
+}
 
 const useStyles = makeStyles({
   root: {
@@ -149,9 +148,30 @@ const Ask = () => {
   const [query, setQuery] = useState("");
   const [ragAnswer, setRagAnswer] = useState<string | null>(null);
   const [graphRagAnswer, setGraphRagAnswer] = useState<string | null>(null);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const ragPanelRef = useRef<HTMLDivElement>(null);
   const graphRagPanelRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const loadSuggestions = useCallback(async () => {
+    setLoadingSuggestions(true);
+    try {
+      const { questions, mode } = await fetchAskQuestions();
+      setSuggestions(
+        questions.map((q) => ({ text: q.question, searchMethod: mode })),
+      );
+    } catch (err) {
+      console.error("Failed to load suggestions:", err);
+    } finally {
+      setLoadingSuggestions(false);
+    }
+  }, []);
+
+  // Generate suggestions on mount
+  useEffect(() => {
+    loadSuggestions();
+  }, [loadSuggestions]);
 
   // Auto-scroll both panels to bottom when answers change
   useEffect(() => {
@@ -213,18 +233,27 @@ const Ask = () => {
       {/* Input section */}
       <div className={styles.inputSection}>
         <div className={styles.suggestions}>
-          {Object.values(DEMO_PROMPTS).map((prompt) => (
+          {suggestions.map((s) => (
             <button
-              key={prompt.text}
+              key={s.text}
               className={styles.suggestionBtn}
               onClick={() => {
-                setQuery(prompt.text);
+                setQuery(s.text);
                 textareaRef.current?.focus();
               }}
             >
-              {prompt.text}
+              {s.text}
             </button>
           ))}
+          <button
+            className={styles.suggestionBtn}
+            onClick={loadSuggestions}
+            disabled={loadingSuggestions}
+            title="Generate new suggestions"
+          >
+            {loadingSuggestions ? "Generating…" : "Suggest with Foundry"}
+            <LightbulbFilament16Regular />
+          </button>
           <button
             className={styles.suggestionBtn}
             onClick={() => {

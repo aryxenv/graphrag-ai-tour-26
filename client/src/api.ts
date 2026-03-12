@@ -1,14 +1,12 @@
 import type {
-  GraphData,
-  QueryResult,
-  GeneratedQuestion,
-  Memo,
   DemoScenario,
+  GeneratedQuestion,
+  GraphData,
+  Memo,
+  QueryResult,
 } from "./types";
 
-// ── Base URL ────────────────────────────────────────────────────────
-// TODO: point to actual backend once it exists
-// const API_BASE = "/api";
+const API_BASE = "http://localhost:8000/api";
 
 // ── Ask Tab ─────────────────────────────────────────────────────────
 
@@ -33,16 +31,15 @@ export async function queryVanillaRAG(question: string): Promise<QueryResult> {
   };
 }
 
-/** Fetch pre-generated questions for the pre-built graph (Ask tab). */
-export async function fetchAskQuestions(): Promise<GeneratedQuestion[]> {
-  // TODO: GET ${API_BASE}/questions/ask
-  console.log("[api] fetchAskQuestions placeholder");
-  return [
-    { question: "What is the overall moral arc of Scrooge's transformation?", type: "global" },
-    { question: "How do the three ghosts relate to each other thematically?", type: "cross-document" },
-    { question: "Who is the most influential character and why?", type: "hidden" },
-    { question: "How does Scrooge's attitude change over the course of one night?", type: "timeline" },
-  ];
+/** Fetch AI-generated questions from the backend (random global/local mode). */
+export async function fetchAskQuestions(): Promise<{
+  questions: GeneratedQuestion[];
+  mode: "global" | "local";
+}> {
+  const mode = Math.random() < 0.5 ? "global" : "local";
+  const res = await fetch(`${API_BASE}/questions/ask?mode=${mode}&count=3`);
+  const data: GeneratedQuestion[] = await res.json();
+  return { questions: data, mode };
 }
 
 // ── Explore Tab ─────────────────────────────────────────────────────
@@ -53,18 +50,90 @@ export async function fetchExploreGraph(): Promise<GraphData> {
   console.log("[api] fetchExploreGraph placeholder");
   return {
     nodes: [
-      { id: "1", name: "Ebenezer Scrooge", type: "person", description: "A miserly old man", community: 0 },
-      { id: "2", name: "Bob Cratchit", type: "person", description: "Scrooge's clerk", community: 0 },
-      { id: "3", name: "Jacob Marley", type: "person", description: "Scrooge's deceased partner", community: 1 },
-      { id: "4", name: "Ghost of Christmas Past", type: "concept", description: "First spirit", community: 1 },
-      { id: "5", name: "Ghost of Christmas Present", type: "concept", description: "Second spirit", community: 1 },
-      { id: "6", name: "Ghost of Christmas Yet to Come", type: "concept", description: "Third spirit", community: 1 },
-      { id: "7", name: "Tiny Tim", type: "person", description: "Bob Cratchit's ill son", community: 0 },
-      { id: "8", name: "Fred", type: "person", description: "Scrooge's nephew", community: 2 },
-      { id: "9", name: "Fezziwig", type: "person", description: "Scrooge's former employer", community: 2 },
-      { id: "10", name: "London", type: "geo", description: "Setting of the story", community: 3 },
-      { id: "11", name: "Scrooge & Marley", type: "organization", description: "Counting house", community: 3 },
-      { id: "12", name: "Christmas Eve", type: "event", description: "Night of visitation", community: 1 },
+      {
+        id: "1",
+        name: "Ebenezer Scrooge",
+        type: "person",
+        description: "A miserly old man",
+        community: 0,
+      },
+      {
+        id: "2",
+        name: "Bob Cratchit",
+        type: "person",
+        description: "Scrooge's clerk",
+        community: 0,
+      },
+      {
+        id: "3",
+        name: "Jacob Marley",
+        type: "person",
+        description: "Scrooge's deceased partner",
+        community: 1,
+      },
+      {
+        id: "4",
+        name: "Ghost of Christmas Past",
+        type: "concept",
+        description: "First spirit",
+        community: 1,
+      },
+      {
+        id: "5",
+        name: "Ghost of Christmas Present",
+        type: "concept",
+        description: "Second spirit",
+        community: 1,
+      },
+      {
+        id: "6",
+        name: "Ghost of Christmas Yet to Come",
+        type: "concept",
+        description: "Third spirit",
+        community: 1,
+      },
+      {
+        id: "7",
+        name: "Tiny Tim",
+        type: "person",
+        description: "Bob Cratchit's ill son",
+        community: 0,
+      },
+      {
+        id: "8",
+        name: "Fred",
+        type: "person",
+        description: "Scrooge's nephew",
+        community: 2,
+      },
+      {
+        id: "9",
+        name: "Fezziwig",
+        type: "person",
+        description: "Scrooge's former employer",
+        community: 2,
+      },
+      {
+        id: "10",
+        name: "London",
+        type: "geo",
+        description: "Setting of the story",
+        community: 3,
+      },
+      {
+        id: "11",
+        name: "Scrooge & Marley",
+        type: "organization",
+        description: "Counting house",
+        community: 3,
+      },
+      {
+        id: "12",
+        name: "Christmas Eve",
+        type: "event",
+        description: "Night of visitation",
+        community: 1,
+      },
     ],
     links: [
       { source: "1", target: "2", label: "employs" },
@@ -90,7 +159,7 @@ export async function fetchExploreGraph(): Promise<GraphData> {
 /** Call Foundry agent to generate interconnected memos for a scenario. */
 export async function generateMemos(
   scenario: DemoScenario,
-  count: number
+  count: number,
 ): Promise<Memo[]> {
   // TODO: POST ${API_BASE}/build/generate { scenario, count }
   console.log("[api] generateMemos placeholder:", scenario, count);
@@ -123,14 +192,24 @@ export async function indexMemos(memos: Memo[]): Promise<GraphData> {
 
 /** Generate curated questions from the newly-built graph. */
 export async function generateBuildQuestions(
-  graph: GraphData
+  graph: GraphData,
 ): Promise<GeneratedQuestion[]> {
   // TODO: POST ${API_BASE}/build/questions { graph summary / community reports }
-  console.log("[api] generateBuildQuestions placeholder:", graph.nodes.length, "nodes");
+  console.log(
+    "[api] generateBuildQuestions placeholder:",
+    graph.nodes.length,
+    "nodes",
+  );
   return [
     { question: "What are the key themes across all memos?", type: "global" },
-    { question: "Which people appear in multiple memos and why?", type: "cross-document" },
-    { question: "What hidden connection exists between the memos?", type: "hidden" },
+    {
+      question: "Which people appear in multiple memos and why?",
+      type: "cross-document",
+    },
+    {
+      question: "What hidden connection exists between the memos?",
+      type: "hidden",
+    },
     { question: "How did the situation evolve over time?", type: "timeline" },
   ];
 }
@@ -140,7 +219,8 @@ export async function queryBuildGraph(question: string): Promise<QueryResult> {
   // TODO: POST ${API_BASE}/build/query { question }
   console.log("[api] queryBuildGraph placeholder:", question);
   return {
-    answer: "Build-graph query placeholder — will show GraphRAG answer over the freshly-indexed memos.",
+    answer:
+      "Build-graph query placeholder — will show GraphRAG answer over the freshly-indexed memos.",
     citations: ["Entities (1, 2, 3)", "Reports (1)"],
   };
 }

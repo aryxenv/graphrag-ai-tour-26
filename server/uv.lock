@@ -2837,9 +2837,11 @@ name = "server"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "azure-identity" },
     { name = "fastapi" },
     { name = "graphrag" },
     { name = "graphrag-storage" },
+    { name = "openai" },
     { name = "pandas" },
     { name = "python-dotenv" },
     { name = "uvicorn" },
@@ -2847,9 +2849,11 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "azure-identity", specifier = ">=1.25.2" },
     { name = "fastapi", specifier = ">=0.135.1" },
     { name = "graphrag", specifier = ">=3.0.6" },
     { name = "graphrag-storage", specifier = ">=3.0.6" },
+    { name = "openai", specifier = ">=2.26.0" },
     { name = "pandas", specifier = ">=2.3.3" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
     { name = "uvicorn", specifier = ">=0.41.0" },
