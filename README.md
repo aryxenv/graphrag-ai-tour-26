@@ -16,14 +16,18 @@ The app has three tabs:
 
 ## Architecture
 
-- **Frontend**: React 19 with Fluent UI v9, themed to match Foundry branding. Graph visualization powered by `react-force-graph-3d` / Three.js. Built with Vite and TypeScript.
-- **Backend**: Python with GraphRAG for indexing and search. Azure OpenAI GPT-4.1 and text-embedding-3-large via Foundry for graph extraction and embeddings.
-- **API**: All client-server calls are defined in `client/src/api.ts`. Each function maps to a planned Express endpoint.
+- **Frontend**: React 19 + Fluent UI v9 + Vite. Graph visualization with `react-force-graph-3d` / Three.js. Streamed responses rendered with `react-markdown`.
+- **Server**: FastAPI (Python). Serves query endpoints for both RAG and GraphRAG with SSE streaming. Includes AI-powered response evaluation via Azure AI Evaluation SDK.
+- **RAG Pipeline**: Azure AI Search hybrid (text + vector) retrieval with GPT-4.1 answer generation.
+- **GraphRAG Pipeline**: Knowledge graph extraction, community detection, and multi-engine search (local / global / drift) powered by the `graphrag` library.
+- **Models**: Azure OpenAI GPT-4.1 and text-embedding-3-large.
 
 ## Project Structure
 
 ```
 client/          React + Vite frontend
+server/          FastAPI backend (query, evaluation, question generation)
+rag/             Vanilla RAG indexing pipeline (Azure AI Search)
 graphrag/        GraphRAG indexing config, prompts, cached outputs, and source data
 BUILD.md         Detailed technical build notes and endpoint mapping
 ```
@@ -33,8 +37,20 @@ BUILD.md         Detailed technical build notes and endpoint mapping
 ### Prerequisites
 
 - Node.js 20+
-- Python 3.11+
-- Azure OpenAI resource with GPT-4.1 and text-embedding-3-large deployments
+- Python 3.11+ and [uv](https://docs.astral.sh/uv/)
+- Azure OpenAI resource with `gpt-4.1` and `text-embedding-3-large` deployments
+- Azure AI Search resource
+
+### Environment Variables
+
+Create `server/.env`:
+
+```
+AZURE_OPENAI_ENDPOINT=https://<your-resource>.openai.azure.com/
+AZURE_AI_SEARCH_ENDPOINT=https://<your-search>.search.windows.net
+```
+
+Authentication uses `DefaultAzureCredential` — ensure you're logged in via `az login`.
 
 ### Frontend
 
@@ -44,18 +60,25 @@ npm install
 npm run dev
 ```
 
-### GraphRAG Backend
+### Server
 
 ```bash
-cd graphrag
-python -m venv .venv # or uv venv (if you prefer uv)
-.venv/Scripts/Activate.ps1   # Windows
-pip install -r requirements.txt
+cd server
+uv venv
+uv pip install -r requirements.txt
+uv run python src/index.py
 ```
 
-Configure your Azure OpenAI connection in `graphrag/settings.yaml`, then run the indexing pipeline. See [graphrag/README.md](graphrag/README.md) for the full pipeline walkthrough, search methods, output artifacts, and CLI usage.
+### GraphRAG Indexing
+
+Configure your Azure OpenAI connection in `graphrag/settings.yaml`, then run the indexing pipeline. See [graphrag/README.md](graphrag/README.md) for details.
+
+### RAG Indexing
+
+See [rag/README.md](rag/README.md) for the Azure AI Search indexing setup.
 
 ## Additional Details
 
-- [graphrag/README.md](graphrag/README.md): GraphRAG pipeline details, configuration, and search modes
-- [BUILD.md](BUILD.md): Full technical breakdown including tab behavior, API endpoint mapping, and stack details
+- [graphrag/README.md](graphrag/README.md): GraphRAG pipeline, configuration, and search modes
+- [rag/README.md](rag/README.md): Vanilla RAG pipeline and Azure AI Search setup
+- [BUILD.md](BUILD.md): Technical breakdown including tab behavior, API endpoints, and stack details
