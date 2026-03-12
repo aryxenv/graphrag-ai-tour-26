@@ -2,6 +2,10 @@
 
 A hands-on demo built for the Microsoft Foundry booth at AI Tour Brussels 2026. Explore how GraphRAG turns unstructured documents into a knowledge graph and compare its answers against vanilla RAG, all through a foundry-like web app.
 
+## Preview
+
+![Foundry x GraphRAG Preview](./foundry_x_graphrag_preview.jpeg)
+
 ## What It Does
 
 The app has three tabs:
