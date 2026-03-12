@@ -11,13 +11,8 @@ import {
 import { Emoji20Regular } from "@fluentui/react-icons";
 import { useState } from "react";
 import graphragLogo from "../assets/graphrag.png";
+import { TABS } from "../constants";
 import type { TabValue } from "../types";
-
-const TABS: { value: TabValue; label: string }[] = [
-  { value: "ask", label: "Ask" },
-  { value: "explore", label: "Explore" },
-  { value: "build", label: "Build" },
-];
 
 const useStyles = makeStyles({
   header: {

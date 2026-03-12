@@ -13,6 +13,7 @@
     "@fluentui/react": "^8.125.5",
     "@fluentui/react-components": "^9.73.3",
     "@fluentui/react-icons": "^2.0.320",
+    "@tanstack/react-query": "^5.90.21",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-force-graph-3d": "^1.29.1"

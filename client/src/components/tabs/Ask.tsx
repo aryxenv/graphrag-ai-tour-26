@@ -4,9 +4,13 @@ import {
   LightbulbFilament16Regular,
   Send16Regular,
 } from "@fluentui/react-icons";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { fetchAskQuestions } from "../../api";
+import { useEffect, useRef, useState } from "react";
 import bookUrl from "../../assets/book.txt?url";
+import {
+  useAskQuestions,
+  useQueryGraphRAG,
+  useQueryVanillaRAG,
+} from "../../hooks";
 import type { SearchMethod } from "../../types";
 
 interface Suggestion {
@@ -146,32 +150,25 @@ const useStyles = makeStyles({
 const Ask = () => {
   const styles = useStyles();
   const [query, setQuery] = useState("");
-  const [ragAnswer, setRagAnswer] = useState<string | null>(null);
-  const [graphRagAnswer, setGraphRagAnswer] = useState<string | null>(null);
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
-  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const ragPanelRef = useRef<HTMLDivElement>(null);
   const graphRagPanelRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const loadSuggestions = useCallback(async () => {
-    setLoadingSuggestions(true);
-    try {
-      const { questions, mode } = await fetchAskQuestions();
-      setSuggestions(
-        questions.map((q) => ({ text: q.question, searchMethod: mode })),
-      );
-    } catch (err) {
-      console.error("Failed to load suggestions:", err);
-    } finally {
-      setLoadingSuggestions(false);
-    }
-  }, []);
+  const {
+    data: suggestionsData,
+    isFetching: loadingSuggestions,
+    refresh: loadSuggestions,
+  } = useAskQuestions();
 
-  // Generate suggestions on mount
-  useEffect(() => {
-    loadSuggestions();
-  }, [loadSuggestions]);
+  const vanillaRAG = useQueryVanillaRAG();
+  const graphRAG = useQueryGraphRAG();
+
+  const suggestions: Suggestion[] = (suggestionsData?.questions ?? []).map(
+    (q) => ({
+      text: q.question,
+      searchMethod: suggestionsData?.mode ?? "local",
+    }),
+  );
 
   // Auto-scroll both panels to bottom when answers change
   useEffect(() => {
@@ -183,15 +180,18 @@ const Ask = () => {
       top: graphRagPanelRef.current.scrollHeight,
       behavior: "smooth",
     });
-  }, [ragAnswer, graphRagAnswer]);
+  }, [vanillaRAG.data, graphRAG.data]);
 
   const handleSend = () => {
     if (!query.trim()) return;
-    // TODO: call actual APIs
-    setRagAnswer(`[RAG placeholder] Answer for: "${query}"`);
-    setGraphRagAnswer(`[GraphRAG placeholder] Answer for: "${query}"`);
+    const q = query;
     setQuery("");
+    vanillaRAG.mutate(q);
+    graphRAG.mutate(q);
   };
+
+  const ragAnswer = vanillaRAG.data?.answer ?? null;
+  const graphRagAnswer = graphRAG.data?.answer ?? null;
 
   return (
     <div className={styles.root}>

@@ -6,6 +6,12 @@ import Build from "./components/tabs/Build";
 import Explore from "./components/tabs/Explore";
 import type { TabValue } from "./types";
 
+const TAB_COMPONENTS: Record<TabValue, React.ComponentType> = {
+  ask: Ask,
+  explore: Explore,
+  build: Build,
+};
+
 const useStyles = makeStyles({
   root: {
     minHeight: "100vh",
@@ -40,12 +46,6 @@ const useStyles = makeStyles({
   },
 });
 
-const TABS: Record<TabValue, React.ComponentType> = {
-  ask: Ask,
-  explore: Explore,
-  build: Build,
-};
-
 const App = () => {
   const [activeTab, setActiveTab] = useState<TabValue>("ask");
   const [displayedTab, setDisplayedTab] = useState<TabValue>("ask");
@@ -68,7 +68,7 @@ const App = () => {
     return () => clearTimeout(timeoutRef.current);
   }, [activeTab, displayedTab]);
 
-  const ActiveComponent = TABS[displayedTab];
+  const ActiveComponent = TAB_COMPONENTS[displayedTab];
 
   return (
     <div className={styles.root}>
