@@ -116,3 +116,9 @@ python source.py
 ```
 
 Edit the `cited_entity_ids` and `cited_report_ids` lists in the script to look up different citations.
+
+## References
+
+- [GraphRAG Github - Microsoft Research](https://github.com/microsoft/graphrag): Open-source repository for the GraphRAG project by Microsoft Research.
+- [GraphRAG - Microsoft Research](https://microsoft.github.io/graphrag/): GraphRAG website.
+- [Microsoft Foundry Portal](ai.azure.com): Microsoft Foundry portal to manage end-to-end lifecycle of AI models powered by Azure.
