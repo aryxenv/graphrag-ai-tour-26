@@ -1,0 +1,10 @@
+Name of Scrooge's Former Fiancée
+Scrooge's former fiancée is named Belle. She is also referred to as "the girl" or "fair young girl in mourning dress" in some descriptions and adaptations, but "Belle" is the recognized name in both the original novella and character lists [Data: Entities (24, 197, 205); Relationships (286, 23, 311)].
+
+Reason for the End of the Engagement
+Belle ended her engagement with Scrooge because he became increasingly obsessed with wealth and material gain, losing sight of his former values and the love they once shared. Over time, Scrooge's hope and ambition became focused entirely on achieving financial security and avoiding poverty, and this transformation deeply troubled Belle. She realized that the "master passion, Gain, engrosses you," and that he was no longer the same man she had once loved. Their contract for marriage, made when they were both poor and content, was no longer meaningful because Scrooge had changed so profoundly in character and priorities [Data: Sources (15, 16); Entities (24, 197, 205); Relationships (286, 297, 296, 23, 298)].
+
+Belle articulates this change, stating, "Another idol has displaced me; and, if it can cheer and comfort you in time to come as I would have tried to do, I have no just cause to grieve," directly referencing Scrooge's devotion to wealth. She compassionately releases him from their engagement, believing that he would not choose her now that he values wealth over love and companionship [Data: Sources (15, 16); Relationships (297, 298, 296)].
+
+Commentary
+Belle's decision is a pivotal point in both her life and Scrooge's, symbolizing the emotional consequences of his pursuit of material success over personal relationships. This past heartbreak haunts Scrooge and serves as a key motivation for his ultimate redemption later in the story [Data: Entities (24, 205); Relationships (298, 296, 297); Reports (13)].

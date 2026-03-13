@@ -1,0 +1,10 @@
+Marley's Ghost's Appearance
+When Marley's Ghost appears to Scrooge, he is described as being dressed much as he was in life but with additional supernatural elements signifying his otherworldly and tormented status. Marley is recognizable with his trademark pigtail, waistcoat, tights, and boots. The most striking feature, however, is the heavy chain he is bound with, which plays a significant symbolic role in the narrative [Data: Entities (29, 40); Relationships (40, 182, 151)].
+
+The Composition of the Chain
+Marley's Ghost specifically explains to Scrooge that his chain is made up of items and symbols related to his business life. The chain is described as being "wound about him like a tail," and it is "made (for Scrooge observed it closely) of cash-boxes, keys, padlocks, ledgers, deeds, and heavy purses wrought in steel." Each of these objects within the chain symbolizes Marley’s lifelong obsession with material wealth and his neglect of humanity and charity. The heavy, ponderous chain is both a literal and metaphorical consequence of Marley's choices in life [Data: Entities (29, 40); Sources (6, 8)].
+
+Commentary
+Marley's Ghost's attire closely mirrors the fashion of his living days, reminding Scrooge—and the reader—of his unchanged focus on business even in death. The chain constructed from the tools of commerce acts as a powerful symbol of self-imposed burden and regret, reinforcing the story’s moral message: the pursuit of wealth at the expense of compassion leads to spiritual ruin [Data: Entities (29, 40); Sources (6, 8)].
+
+In summary, Marley’s Ghost appears in his usual business-like apparel, but his defining feature is the iconic and ominous chain composed of business-related objects, signifying the consequences of a life devoid of kindness and charity.
