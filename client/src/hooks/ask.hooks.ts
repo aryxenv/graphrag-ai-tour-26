@@ -60,6 +60,7 @@ interface PersistedResults {
   graphRag: StreamState;
   ragEval: EvalScores | null;
   graphRagEval: EvalScores | null;
+  lastQuery: string;
 }
 
 function loadPersistedResults(): PersistedResults | undefined {
@@ -161,6 +162,9 @@ export function useStreamingQuery() {
   const [isRagEvaluating, setIsRagEvaluating] = useState(false);
   const [isGraphRagEvaluating, setIsGraphRagEvaluating] = useState(false);
   const lastQueryRef = useRef("");
+  const [lastQuery, setLastQuery] = useState(
+    persisted.current?.lastQuery ?? "",
+  );
 
   // Trigger RAG eval as soon as RAG finishes (skip on mount with restored data)
   const hasEverSent = useRef(false);
@@ -201,6 +205,7 @@ export function useStreamingQuery() {
     (query: string) => {
       hasEverSent.current = true;
       lastQueryRef.current = query;
+      setLastQuery(query);
       setRagEval(null);
       setGraphRagEval(null);
       setIsRagEvaluating(false);
@@ -222,6 +227,7 @@ export function useStreamingQuery() {
         graphRag,
         ragEval,
         graphRagEval,
+        lastQuery,
       });
     }
   }, [rag, graphRag, ragEval, graphRagEval]);
@@ -231,6 +237,7 @@ export function useStreamingQuery() {
     graphRag,
     send: wrappedSend,
     isStreaming,
+    lastQuery,
     ragEval,
     graphRagEval,
     isRagEvaluating,

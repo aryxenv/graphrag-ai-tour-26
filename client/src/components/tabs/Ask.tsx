@@ -85,6 +85,7 @@ const Ask = () => {
     graphRag,
     send,
     isStreaming,
+    lastQuery,
     ragEval,
     graphRagEval,
     isRagEvaluating,
@@ -152,6 +153,7 @@ const Ask = () => {
         <QueryPanel
           ref={ragPanelRef}
           state={rag}
+          question={lastQuery}
           spinnerLabel="Querying RAG..."
           poweredByLogo={azureAiSearchLogo}
           poweredByLabel="Azure AI Search"
@@ -160,6 +162,7 @@ const Ask = () => {
         <QueryPanel
           ref={graphRagPanelRef}
           state={graphRag}
+          question={lastQuery}
           spinnerLabel="Querying GraphRAG..."
           poweredByLogo={graphragLogo}
           poweredByLabel="GraphRAG"

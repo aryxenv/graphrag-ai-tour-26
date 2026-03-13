@@ -33,6 +33,14 @@ const useStyles = makeStyles({
     fontSize: "13px",
     padding: "12px",
   },
+  question: {
+    fontSize: "13px",
+    fontWeight: 600,
+    color: tokens.colorNeutralForeground1,
+    padding: "12px 0 8px 0",
+    borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
+    marginBottom: "8px",
+  },
   poweredBy: {
     display: "flex",
     alignItems: "center",
@@ -58,13 +66,14 @@ const useStyles = makeStyles({
 
 interface QueryPanelProps {
   state: StreamState;
+  question?: string;
   spinnerLabel: string;
   poweredByLogo: string;
   poweredByLabel: string;
 }
 
 const QueryPanel = forwardRef<HTMLDivElement, QueryPanelProps>(
-  ({ state, spinnerLabel, poweredByLogo, poweredByLabel }, ref) => {
+  ({ state, question, spinnerLabel, poweredByLogo, poweredByLabel }, ref) => {
     const styles = useStyles();
 
     let content: React.ReactNode;
@@ -82,6 +91,7 @@ const QueryPanel = forwardRef<HTMLDivElement, QueryPanelProps>(
 
     return (
       <div className={styles.panel} ref={ref}>
+        {question && <div className={styles.question}>{question}</div>}
         <div className={styles.content}>{content}</div>
         <div className={styles.poweredBy}>
           <span className={styles.poweredByItem}>
