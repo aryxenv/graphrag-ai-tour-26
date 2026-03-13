@@ -5,7 +5,7 @@ import {
   Send16Regular,
 } from "@fluentui/react-icons";
 import { useRef, useState } from "react";
-import bookUrl from "../../assets/book.txt?url";
+import { BOOK_URL } from "../../constants";
 
 const useStyles = makeStyles({
   root: {
@@ -134,7 +134,7 @@ const QueryInput = ({
         </button>
         <button
           className={styles.suggestionBtn}
-          onClick={() => window.open(bookUrl, "_blank")}
+          onClick={() => window.open(BOOK_URL, "_blank")}
         >
           Show book
           <ArrowUpRight12Regular />
