@@ -222,7 +222,8 @@ const Ask = () => {
           ref={ragPanelRef}
           state={rag}
           question={lastQuery}
-          spinnerLabel="Querying RAG..."
+          spinnerLabel="Performing RAG..."
+          estimatedTime="TTFT may take up to 10 seconds"
           poweredByLogo={azureAiSearchLogo}
           poweredByLabel="Azure AI Search"
         />
@@ -231,7 +232,8 @@ const Ask = () => {
           ref={graphRagPanelRef}
           state={graphRag}
           question={lastQuery}
-          spinnerLabel="Querying GraphRAG..."
+          spinnerLabel="Performing GraphRAG..."
+          estimatedTime="TTFT may take up to 5 minutes"
           poweredByLogo={graphragLogo}
           poweredByLabel="GraphRAG"
         />

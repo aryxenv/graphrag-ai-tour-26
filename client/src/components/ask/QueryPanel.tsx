@@ -1,4 +1,5 @@
 import { makeStyles, Spinner, tokens } from "@fluentui/react-components";
+import { Info12Regular } from "@fluentui/react-icons";
 import type React from "react";
 import { forwardRef } from "react";
 import Markdown from "react-markdown";
@@ -62,18 +63,38 @@ const useStyles = makeStyles({
     height: "14px",
     width: "auto",
   },
+  estimatedTime: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "4px",
+    fontSize: "11px",
+    color: tokens.colorNeutralForeground4,
+    marginTop: "12px",
+  },
 });
 
 interface QueryPanelProps {
   state: StreamState;
   question?: string;
   spinnerLabel: string;
+  estimatedTime?: string;
   poweredByLogo: string;
   poweredByLabel: string;
 }
 
 const QueryPanel = forwardRef<HTMLDivElement, QueryPanelProps>(
-  ({ state, question, spinnerLabel, poweredByLogo, poweredByLabel }, ref) => {
+  (
+    {
+      state,
+      question,
+      spinnerLabel,
+      estimatedTime,
+      poweredByLogo,
+      poweredByLabel,
+    },
+    ref,
+  ) => {
     const styles = useStyles();
 
     let content: React.ReactNode;
@@ -82,7 +103,16 @@ const QueryPanel = forwardRef<HTMLDivElement, QueryPanelProps>(
     } else if (state.text) {
       content = <Markdown remarkPlugins={[remarkGfm]}>{state.text}</Markdown>;
     } else if (state.isStreaming) {
-      content = <Spinner size="small" label={spinnerLabel} />;
+      content = (
+        <>
+          <Spinner size="small" label={spinnerLabel} />
+          {estimatedTime && (
+            <div className={styles.estimatedTime}>
+              <Info12Regular /> {estimatedTime}
+            </div>
+          )}
+        </>
+      );
     } else {
       content = (
         <div className={styles.emptyState}>Ask a question to compare</div>
