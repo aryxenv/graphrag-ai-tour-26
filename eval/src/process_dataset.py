@@ -50,22 +50,29 @@ def parse_citations(text: str) -> dict[str, set[int]]:
 def resolve_contexts(
     citations: dict[str, set[int]], tables: dict[str, pd.DataFrame]
 ) -> list[str]:
-    """Look up cited items from parquet tables and return context strings."""
+    """Look up cited items from parquet tables and return unique context strings."""
+    seen: set[str] = set()
     contexts: list[str] = []
+
+    def _add(text: str) -> None:
+        text = text.strip()
+        if text and text not in seen:
+            seen.add(text)
+            contexts.append(text)
 
     # Sources -> text_units (raw text only, no labels)
     if citations["Sources"]:
         tu = tables["text_units"]
         matched = tu[tu["human_readable_id"].isin(citations["Sources"])]
         for _, row in matched.iterrows():
-            contexts.append(row["text"].strip())
+            _add(row["text"])
 
     # Reports -> community_reports (summary text only)
     if citations["Reports"]:
         cr = tables["community_reports"]
         matched = cr[cr["human_readable_id"].isin(citations["Reports"])]
         for _, row in matched.iterrows():
-            contexts.append(row["summary"].strip())
+            _add(row["summary"])
 
     # Entities -> entities (description text only)
     if citations["Entities"]:
@@ -74,7 +81,7 @@ def resolve_contexts(
         for _, row in matched.iterrows():
             desc = row.get("description", "")
             if desc:
-                contexts.append(desc.strip())
+                _add(desc)
 
     return contexts
 
