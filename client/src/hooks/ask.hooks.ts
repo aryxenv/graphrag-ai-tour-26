@@ -8,6 +8,26 @@ import {
   streamRAGQuery,
 } from "../api";
 
+const STORAGE_KEY_QUESTIONS = "ask:questions";
+const STORAGE_KEY_RESULTS = "ask:results";
+
+function loadFromStorage<T>(key: string): T | undefined {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function saveToStorage(key: string, value: unknown) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // storage full or unavailable — ignore
+  }
+}
+
 export function useAskQuestions() {
   const queryClient = useQueryClient();
 
@@ -15,7 +35,15 @@ export function useAskQuestions() {
     queryKey: ["askQuestions"],
     queryFn: fetchAskQuestions,
     refetchOnWindowFocus: false,
+    initialData: loadFromStorage<Awaited<ReturnType<typeof fetchAskQuestions>>>(
+      STORAGE_KEY_QUESTIONS,
+    ),
   });
+
+  // Persist suggestions when they change
+  useEffect(() => {
+    if (query.data) saveToStorage(STORAGE_KEY_QUESTIONS, query.data);
+  }, [query.data]);
 
   const refresh = () =>
     queryClient.refetchQueries({ queryKey: ["askQuestions"] });
@@ -45,9 +73,25 @@ function estimateTokens(text: string): number {
   return Math.ceil(text.length / 4);
 }
 
+interface PersistedResults {
+  rag: StreamState;
+  graphRag: StreamState;
+  ragEval: EvalScores | null;
+  graphRagEval: EvalScores | null;
+}
+
+function loadPersistedResults(): PersistedResults | undefined {
+  return loadFromStorage<PersistedResults>(STORAGE_KEY_RESULTS);
+}
+
 export function useStreamingQuery() {
-  const [rag, setRag] = useState<StreamState>(INITIAL_STREAM);
-  const [graphRag, setGraphRag] = useState<StreamState>(INITIAL_STREAM);
+  const persisted = useRef(loadPersistedResults());
+  const [rag, setRag] = useState<StreamState>(
+    persisted.current?.rag ?? INITIAL_STREAM,
+  );
+  const [graphRag, setGraphRag] = useState<StreamState>(
+    persisted.current?.graphRag ?? INITIAL_STREAM,
+  );
   const ragAbort = useRef<AbortController | null>(null);
   const graphRagAbort = useRef<AbortController | null>(null);
   const ragFirstChunk = useRef(false);
@@ -126,15 +170,26 @@ export function useStreamingQuery() {
   const isStreaming = rag.isStreaming || graphRag.isStreaming;
 
   // Independent eval state for each side
-  const [ragEval, setRagEval] = useState<EvalScores | null>(null);
-  const [graphRagEval, setGraphRagEval] = useState<EvalScores | null>(null);
+  const [ragEval, setRagEval] = useState<EvalScores | null>(
+    persisted.current?.ragEval ?? null,
+  );
+  const [graphRagEval, setGraphRagEval] = useState<EvalScores | null>(
+    persisted.current?.graphRagEval ?? null,
+  );
   const [isRagEvaluating, setIsRagEvaluating] = useState(false);
   const [isGraphRagEvaluating, setIsGraphRagEvaluating] = useState(false);
   const lastQueryRef = useRef("");
 
-  // Trigger RAG eval as soon as RAG finishes
+  // Trigger RAG eval as soon as RAG finishes (skip on mount with restored data)
+  const hasEverSent = useRef(false);
   useEffect(() => {
-    if (!rag.isStreaming && rag.text && !rag.error && lastQueryRef.current) {
+    if (
+      hasEverSent.current &&
+      !rag.isStreaming &&
+      rag.text &&
+      !rag.error &&
+      lastQueryRef.current
+    ) {
       setIsRagEvaluating(true);
       evaluateSingle(lastQueryRef.current, rag.text)
         .then(setRagEval)
@@ -146,6 +201,7 @@ export function useStreamingQuery() {
   // Trigger GraphRAG eval as soon as GraphRAG finishes
   useEffect(() => {
     if (
+      hasEverSent.current &&
       !graphRag.isStreaming &&
       graphRag.text &&
       !graphRag.error &&
@@ -161,6 +217,7 @@ export function useStreamingQuery() {
 
   const wrappedSend = useCallback(
     (query: string) => {
+      hasEverSent.current = true;
       lastQueryRef.current = query;
       setRagEval(null);
       setGraphRagEval(null);
@@ -170,6 +227,22 @@ export function useStreamingQuery() {
     },
     [send],
   );
+
+  // Persist results to localStorage when state settles
+  useEffect(() => {
+    if (
+      !rag.isStreaming &&
+      !graphRag.isStreaming &&
+      (rag.text || graphRag.text)
+    ) {
+      saveToStorage(STORAGE_KEY_RESULTS, {
+        rag,
+        graphRag,
+        ragEval,
+        graphRagEval,
+      });
+    }
+  }, [rag, graphRag, ragEval, graphRagEval]);
 
   return {
     rag,
