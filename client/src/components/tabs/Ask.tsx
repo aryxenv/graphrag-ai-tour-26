@@ -1,8 +1,10 @@
-import { makeStyles } from "@fluentui/react-components";
+import { makeStyles, Tooltip } from "@fluentui/react-components";
+import { QuestionCircle12Regular } from "@fluentui/react-icons";
 import { useEffect, useRef } from "react";
 import azureAiSearchLogo from "../../assets/azure_ai_search.svg";
 import graphragLogo from "../../assets/graphrag.png";
 import { useAskQuestions, useStreamingQuery } from "../../hooks";
+import type { StreamState } from "../../hooks/ask.hooks";
 import EvalBadge from "../ask/EvalBadge";
 import QueryInput from "../ask/QueryInput";
 import QueryPanel from "../ask/QueryPanel";
@@ -67,6 +69,25 @@ const useStyles = makeStyles({
     color: "rgba(255, 255, 255, 0.5)",
     letterSpacing: "0.3px",
   },
+  tokenBadge: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "3px",
+    fontSize: "11px",
+    fontWeight: 400,
+    textTransform: "none",
+    padding: "2px 8px",
+    borderRadius: "10px",
+    backgroundColor: "rgba(255, 255, 255, 0.06)",
+    color: "rgba(255, 255, 255, 0.5)",
+    letterSpacing: "0.3px",
+    cursor: "default",
+  },
+  tokenIcon: {
+    display: "inline-flex",
+    opacity: 0.5,
+    fontSize: "10px",
+  },
 });
 
 const Ask = () => {
@@ -111,6 +132,37 @@ const Ask = () => {
     });
   }, [graphRag.text]);
 
+  const renderTokenBadge = (state: StreamState) => {
+    if (state.isStreaming || state.tokens === 0) return null;
+    const hasUsage = state.inputTokens !== null && state.outputTokens !== null;
+    const tooltipContent = hasUsage ? (
+      <div>
+        <div>Input: {state.inputTokens}tk</div>
+        <div>Output: {state.outputTokens}tk</div>
+      </div>
+    ) : (
+      `Estimated: ${state.tokens}tk`
+    );
+    const total = hasUsage
+      ? state.inputTokens! + state.outputTokens!
+      : state.tokens;
+    return (
+      <Tooltip
+        content={tooltipContent}
+        relationship="description"
+        positioning="below"
+        withArrow
+      >
+        <span className={styles.tokenBadge}>
+          {total}tk
+          <span className={styles.tokenIcon}>
+            <QuestionCircle12Regular />
+          </span>
+        </span>
+      </Tooltip>
+    );
+  };
+
   return (
     <div className={styles.root}>
       {/* Headers */}
@@ -118,13 +170,21 @@ const Ask = () => {
         <div className={styles.panelHeader}>
           RAG
           {rag.ttft !== null && (
-            <span className={styles.metricBadge}>
-              {rag.ttft.toFixed(1)}s TTFT
-            </span>
+            <Tooltip
+              content="Time to first token"
+              relationship="description"
+              positioning="below"
+              withArrow
+            >
+              <span className={styles.tokenBadge}>
+                {rag.ttft.toFixed(1)}s TTFT
+                <span className={styles.tokenIcon}>
+                  <QuestionCircle12Regular />
+                </span>
+              </span>
+            </Tooltip>
           )}
-          {!rag.isStreaming && rag.tokens > 0 && (
-            <span className={styles.metricBadge}>{rag.tokens}tk</span>
-          )}
+          {renderTokenBadge(rag)}
           <EvalBadge scores={ragEval} isEvaluating={isRagEvaluating} />
         </div>
         <div className={styles.verticalDivider} />
@@ -134,13 +194,21 @@ const Ask = () => {
             <span className={styles.engineBadge}>{graphRag.engine}</span>
           )}
           {graphRag.ttft !== null && (
-            <span className={styles.metricBadge}>
-              {graphRag.ttft.toFixed(1)}s TTFT
-            </span>
+            <Tooltip
+              content="Time to first token"
+              relationship="description"
+              positioning="below"
+              withArrow
+            >
+              <span className={styles.tokenBadge}>
+                {graphRag.ttft.toFixed(1)}s TTFT
+                <span className={styles.tokenIcon}>
+                  <QuestionCircle12Regular />
+                </span>
+              </span>
+            </Tooltip>
           )}
-          {!graphRag.isStreaming && graphRag.tokens > 0 && (
-            <span className={styles.metricBadge}>{graphRag.tokens}tk</span>
-          )}
+          {renderTokenBadge(graphRag)}
           <EvalBadge
             scores={graphRagEval}
             isEvaluating={isGraphRagEvaluating}

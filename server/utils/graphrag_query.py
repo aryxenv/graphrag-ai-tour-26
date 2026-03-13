@@ -72,10 +72,10 @@ Respond with ONLY this JSON (no markdown, no explanation):
 {"query_engine": "global" | "local" | "drift"}"""
 
 
-def select_query_engine(query: str) -> str:
+def select_query_engine(query: str) -> tuple[str, int]:
     """Use an LLM agent to determine the best GraphRAG query engine for a query.
 
-    Returns one of: 'global', 'local', 'drift'.
+    Returns a tuple of (engine_name, prompt_tokens).
     """
     client = _get_openai_client()
 
@@ -92,11 +92,12 @@ def select_query_engine(query: str) -> str:
     raw = response.choices[0].message.content or "{}"
     result = json.loads(raw)
     engine = result.get("query_engine", "local")
+    prompt_tokens = response.usage.prompt_tokens if response.usage else 0
 
     if engine not in ("global", "local", "drift"):
         engine = "local"
 
-    return engine
+    return engine, prompt_tokens
 
 
 async def graphrag_query_stream(

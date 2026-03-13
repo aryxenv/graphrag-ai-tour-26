@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { EvalScores } from "../api";
+import type { EvalScores, TokenUsage } from "../api";
 import {
   evaluateSingle,
   fetchAskQuestions,
@@ -40,6 +40,8 @@ export interface StreamState {
   engine?: string;
   ttft: number | null;
   tokens: number;
+  inputTokens: number | null;
+  outputTokens: number | null;
 }
 
 const INITIAL_STREAM: StreamState = {
@@ -48,6 +50,8 @@ const INITIAL_STREAM: StreamState = {
   error: null,
   ttft: null,
   tokens: 0,
+  inputTokens: null,
+  outputTokens: null,
 };
 
 /** Rough token estimate: ~4 characters per token for English text. */
@@ -95,14 +99,24 @@ export function useStreamingQuery() {
     graphRagTtft.current = null;
 
     // Reset state
-    setRag({ text: "", isStreaming: true, error: null, ttft: null, tokens: 0 });
+    setRag({ text: "", isStreaming: true, error: null, ttft: null, tokens: 0, inputTokens: null, outputTokens: null });
     setGraphRag({
       text: "",
       isStreaming: true,
       error: null,
       ttft: null,
       tokens: 0,
+      inputTokens: null,
+      outputTokens: null,
     });
+
+    const handleUsage = (setter: typeof setRag) => (usage: TokenUsage) => {
+      setter((prev) => ({
+        ...prev,
+        inputTokens: usage.inputTokens,
+        outputTokens: usage.outputTokens,
+      }));
+    };
 
     // Fire both streams concurrently
     ragAbort.current = streamRAGQuery(
@@ -122,6 +136,7 @@ export function useStreamingQuery() {
       () => setRag((prev) => ({ ...prev, isStreaming: false })),
       (err) =>
         setRag((prev) => ({ ...prev, isStreaming: false, error: err.message })),
+      handleUsage(setRag),
     );
 
     graphRagAbort.current = streamGraphRAGQuery(
@@ -147,6 +162,7 @@ export function useStreamingQuery() {
           error: err.message,
         })),
       (engine) => setGraphRag((prev) => ({ ...prev, engine })),
+      handleUsage(setGraphRag),
     );
   }, []);
 

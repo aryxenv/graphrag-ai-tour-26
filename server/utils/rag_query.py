@@ -71,6 +71,7 @@ async def rag_query_stream(question: str) -> AsyncGenerator[str, None]:
     stream = client.chat.completions.create(
         model="gpt-4.1",
         stream=True,
+        stream_options={"include_usage": True},
         messages=[
             {
                 "role": "system",
@@ -87,6 +88,14 @@ async def rag_query_stream(question: str) -> AsyncGenerator[str, None]:
         ],
     )
 
+    usage = None
     for chunk in stream:
         if chunk.choices and chunk.choices[0].delta.content:
             yield chunk.choices[0].delta.content
+        if chunk.usage:
+            usage = {
+                "input_tokens": chunk.usage.prompt_tokens,
+                "output_tokens": chunk.usage.completion_tokens,
+            }
+    if usage:
+        yield f"__USAGE__{usage['input_tokens']}:{usage['output_tokens']}"

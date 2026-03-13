@@ -1,6 +1,11 @@
 import { API_BASE } from "../constants";
 import type { GeneratedQuestion } from "../types";
 
+export interface TokenUsage {
+  inputTokens: number;
+  outputTokens: number;
+}
+
 export type StreamCallback = (chunk: string) => void;
 
 /** Parse an SSE stream and invoke onChunk for each data payload. */
@@ -8,6 +13,7 @@ async function consumeSSE(
   response: Response,
   onChunk: StreamCallback,
   onEngine?: (engine: string) => void,
+  onUsage?: (usage: TokenUsage) => void,
 ) {
   const reader = response.body!.getReader();
   const decoder = new TextDecoder();
@@ -44,6 +50,9 @@ async function consumeSSE(
 
       if (eventType === "engine" && onEngine) {
         onEngine(data);
+      } else if (eventType === "usage" && onUsage) {
+        const [input, output] = data.split(":").map(Number);
+        onUsage({ inputTokens: input, outputTokens: output });
       } else {
         onChunk(data);
       }
@@ -57,6 +66,7 @@ export function streamRAGQuery(
   onChunk: StreamCallback,
   onDone: () => void,
   onError: (err: Error) => void,
+  onUsage?: (usage: TokenUsage) => void,
 ): AbortController {
   const controller = new AbortController();
 
@@ -68,7 +78,7 @@ export function streamRAGQuery(
   })
     .then((res) => {
       if (!res.ok) throw new Error(`RAG query failed: ${res.status}`);
-      return consumeSSE(res, onChunk);
+      return consumeSSE(res, onChunk, undefined, onUsage);
     })
     .then(onDone)
     .catch((err) => {
@@ -85,6 +95,7 @@ export function streamGraphRAGQuery(
   onDone: () => void,
   onError: (err: Error) => void,
   onEngine?: (engine: string) => void,
+  onUsage?: (usage: TokenUsage) => void,
 ): AbortController {
   const controller = new AbortController();
 
@@ -96,7 +107,7 @@ export function streamGraphRAGQuery(
   })
     .then((res) => {
       if (!res.ok) throw new Error(`GraphRAG query failed: ${res.status}`);
-      return consumeSSE(res, onChunk, onEngine);
+      return consumeSSE(res, onChunk, onEngine, onUsage);
     })
     .then(onDone)
     .catch((err) => {

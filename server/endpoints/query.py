@@ -22,9 +22,13 @@ class GraphRAGQueryRequest(BaseModel):
 async def _sse_wrapper(generator):
     """Wrap an async generator into SSE data events."""
     async for chunk in generator:
-        # Escape newlines inside SSE data field
-        escaped = chunk.replace("\n", "\ndata: ")
-        yield f"data: {escaped}\n\n"
+        if chunk.startswith("__USAGE__"):
+            # Extract usage data and send as a custom SSE event
+            usage_data = chunk[9:]  # strip __USAGE__ prefix
+            yield f"event: usage\ndata: {usage_data}\n\n"
+        else:
+            escaped = chunk.replace("\n", "\ndata: ")
+            yield f"data: {escaped}\n\n"
     yield "data: [DONE]\n\n"
 
 
@@ -46,12 +50,13 @@ async def query_graphrag(body: GraphRAGQueryRequest):
     Step 2: Runs the corresponding GraphRAG search and streams the answer.
     """
     # Step 1: Agent determines query engine
-    engine = select_query_engine(body.query)
+    engine, engine_input_tokens = select_query_engine(body.query)
 
     async def _stream_with_engine_header():
         # Send the selected engine as the first SSE event
         yield f"event: engine\ndata: {engine}\n\n"
         # Step 2: Stream the GraphRAG answer
+        output_tokens = 0
         async for chunk in graphrag_query_stream(
             query=body.query,
             query_engine=engine,
@@ -59,6 +64,9 @@ async def query_graphrag(body: GraphRAGQueryRequest):
         ):
             escaped = chunk.replace("\n", "\ndata: ")
             yield f"data: {escaped}\n\n"
+            output_tokens += len(chunk) // 4  # rough estimate
+        # Send usage event (engine selection input tokens + estimated output)
+        yield f"event: usage\ndata: {engine_input_tokens}:{output_tokens}\n\n"
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(
