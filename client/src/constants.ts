@@ -8,3 +8,6 @@ export const TABS: { value: TabValue; label: string }[] = [
   { value: "explore", label: "Explore" },
   { value: "build", label: "Build" },
 ];
+
+export const STORAGE_KEY_QUESTIONS = "ask:questions";
+export const STORAGE_KEY_RESULTS = "ask:results";

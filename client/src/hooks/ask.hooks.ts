@@ -7,26 +7,8 @@ import {
   streamGraphRAGQuery,
   streamRAGQuery,
 } from "../api";
-
-const STORAGE_KEY_QUESTIONS = "ask:questions";
-const STORAGE_KEY_RESULTS = "ask:results";
-
-function loadFromStorage<T>(key: string): T | undefined {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : undefined;
-  } catch {
-    return undefined;
-  }
-}
-
-function saveToStorage(key: string, value: unknown) {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch {
-    // storage full or unavailable — ignore
-  }
-}
+import { STORAGE_KEY_QUESTIONS, STORAGE_KEY_RESULTS } from "../constants";
+import { loadFromStorage, saveToStorage } from "./storage";
 
 export function useAskQuestions() {
   const queryClient = useQueryClient();
