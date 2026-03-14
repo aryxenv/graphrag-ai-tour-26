@@ -12,7 +12,8 @@ from openai import AzureOpenAI
 
 EVAL_DIR = Path(__file__).resolve().parent.parent
 ANSWERS_DIR = EVAL_DIR / "answers"
-DATASET_PATH = EVAL_DIR / "eval_dataset.json"
+DATASET_PATH = EVAL_DIR / "eval_dataset_raw.json"
+OUTPUT_PATH = EVAL_DIR / "eval_dataset.json"
 # Parquet files live in the server/output directory
 OUTPUT_DIR = EVAL_DIR.parent / "server" / "output"
 
@@ -26,6 +27,11 @@ def load_parquet_tables() -> dict[str, pd.DataFrame]:
         "community_reports": pd.read_parquet(OUTPUT_DIR / "community_reports.parquet"),
         "entities": pd.read_parquet(OUTPUT_DIR / "entities.parquet"),
     }
+
+
+def sanitize_text(text: str) -> str:
+    """Strip BOM and normalize curly quotes."""
+    return text.replace("\ufeff", "").replace("\u2019", "'")
 
 
 # Matches [Data: Sources (1, 2, 3)] or [Data: Reports (21, 70, 69, 68, 20, +more)]
@@ -149,17 +155,18 @@ def main() -> None:
     with open(DATASET_PATH, encoding="utf-8") as f:
         dataset = json.load(f)
 
+    processed: list[dict] = []
     for i, entry in enumerate(dataset):
+        query = entry["question"]
         print(f"\n--- Processing entry {i + 1}/{len(dataset)} ---")
-        print(f"  Question: {entry['question'][:80]}...")
+        print(f"  Query: {query[:80]}...")
 
         # 1. Read reference answer from file
         answer_file = ANSWERS_DIR / f"answer_{i + 1}.txt"
         if not answer_file.exists():
             print(f"  WARNING: {answer_file} not found, skipping.")
             continue
-        answer_text = answer_file.read_text(encoding="utf-8").strip()
-        entry["reference_answer"] = answer_text
+        answer_text = sanitize_text(answer_file.read_text(encoding="utf-8").strip())
 
         # 2. Parse citations from the answer and resolve contexts
         citations = parse_citations(answer_text)
@@ -169,20 +176,26 @@ def main() -> None:
               f"Reports={sorted(citations['Reports'])}, "
               f"Entities={sorted(citations['Entities'])}")
 
-        contexts = resolve_contexts(citations, tables)
-        entry["reference_contexts"] = contexts
+        contexts = [sanitize_text(c) for c in resolve_contexts(citations, tables)]
         print(f"  Resolved {len(contexts)} context items")
 
         # 3. Classify question type via LLM
-        q_type = classify_question_type(entry["question"], client)
-        entry["type"] = q_type
+        q_type = classify_question_type(query, client)
         print(f"  Type: {q_type}")
 
-    # Write processed dataset
-    with open(DATASET_PATH, "w", encoding="utf-8") as f:
-        json.dump(dataset, f, indent=2, ensure_ascii=False)
+        # Build Foundry-compatible row
+        processed.append({
+            "query": query,
+            "ground_truth": answer_text,
+            "response": answer_text,
+            "context": "\n\n---\n\n".join(contexts),
+        })
 
-    print(f"\nDone! Wrote {len(dataset)} entries to {DATASET_PATH}")
+    # Write processed dataset
+    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+        json.dump(processed, f, indent=2, ensure_ascii=False)
+
+    print(f"\nDone! Wrote {len(dataset)} entries to {OUTPUT_PATH}")
 
 
 if __name__ == "__main__":

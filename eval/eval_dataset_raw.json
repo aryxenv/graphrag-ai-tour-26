@@ -1,0 +1,122 @@
+[
+  {
+    "question": "How are changes in Scrooge's relationships reflected across his past, present, and future?",
+    "reference_answer": "answers/answer_1.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "How are the themes of generosity and avarice traced from Fezziwig's party to Scrooge's Christmas morning?",
+    "reference_answer": "answers/answer_2.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "What roles do law and social norms play in both literary and legal communities?",
+    "reference_answer": "answers/answer_3.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "How are the themes of generosity and avarice traced from Fezziwig's party to Scrooge's Christmas morning?",
+    "reference_answer": "answers/answer_4.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "What is the name of Scrooge's former fiancée, and why did she end their engagement?",
+    "reference_answer": "answers/answer_5.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "What was Marley's ghost wearing, and what was his chain made of?",
+    "reference_answer": "answers/answer_6.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "What does Scrooge send to the Cratchit family on Christmas morning?",
+    "reference_answer": "answers/answer_7.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "What does Scrooge promise to do for Bob Cratchit at the end of the story?",
+    "reference_answer": "answers/answer_8.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "Who is Dick Wilkins, and what is his connection to Scrooge?",
+    "reference_answer": "answers/answer_9.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "What game does Fred play at his Christmas party, and what is the answer to the riddle?",
+    "reference_answer": "answers/answer_10.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "What role does memory play in Scrooge's moral transformation?",
+    "reference_answer": "answers/answer_11.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "How does Dickens portray the relationship between wealth and happiness in A Christmas Carol?",
+    "reference_answer": "answers/answer_12.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "What is the significance of Christmas as a moral and social force in the story?",
+    "reference_answer": "answers/answer_13.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "How does Dickens use supernatural elements to critique social injustice?",
+    "reference_answer": "answers/answer_14.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "What is the significance of Christmas as a moral and social force in the story?",
+    "reference_answer": "answers/answer_15.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "How do the three Ghosts' methods of persuasion differ, and how does each contribute uniquely to Scrooge's transformation?",
+    "reference_answer": "answers/answer_16.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "Trace how Tiny Tim's situation connects Scrooge's actions as an employer to the broader social consequences shown by the Spirits.",
+    "reference_answer": "answers/answer_17.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "How does Scrooge's reaction to Fezziwig's generosity foreshadow his eventual treatment of Bob Cratchit on Christmas morning?",
+    "reference_answer": "answers/answer_18.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "Compare how Scrooge is perceived by others at Fred's party versus at the businessmen's discussion of his death. What does this contrast reveal?",
+    "reference_answer": "answers/answer_19.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  },
+  {
+    "question": "How does Marley's warning in Stave One establish the moral framework that each subsequent Ghost reinforces?",
+    "reference_answer": "answers/answer_20.txt",
+    "reference_contexts": ["placeholder", "placeholder"],
+    "type": "specific | thematic | cross-document"
+  }
+]
