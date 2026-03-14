@@ -1,0 +1,58 @@
+=================================================================
+  COMPARISON: RAG vs GraphRAG (averages, 1‑5 scale)
+=================================================================
+
+  Metric                              RAG   GraphRAG        Δ
+  ----------------------------------------------------------
+  coherence                          4.85       5.00    +0.15
+  coherence_completion_tokens      162.80     176.30   +13.50
+  coherence_prompt_tokens         1720.30    2189.90  +469.60
+  coherence_threshold                3.00       3.00    +0.00
+  coherence_total_tokens          1883.10    2366.20  +483.10
+  gpt_coherence                      4.85       5.00    +0.15
+  gpt_groundedness                   4.95       5.00    +0.05
+  gpt_relevance                      5.00       5.00    +0.00
+  gpt_similarity                     4.70       4.95    +0.25
+  groundedness                       4.95       4.60    -0.35
+  groundedness_completion_tokens   193.60     206.00   +12.40
+  groundedness_prompt_tokens      3171.05    8200.25 +5029.20
+  groundedness_threshold             3.00       3.00    +0.00
+  groundedness_total_tokens       3364.65    8406.25 +5041.60
+  relevance                          5.00       5.00    +0.00
+  relevance_completion_tokens       62.85      64.60    +1.75
+  relevance_prompt_tokens         2042.05    2511.70  +469.65
+  relevance_threshold                3.00       3.00    +0.00
+  relevance_total_tokens          2104.90    2576.30  +471.40
+  similarity                         4.70       4.95    +0.25
+  similarity_completion_tokens       1.00       1.00    +0.00
+  similarity_prompt_tokens        2167.10    2636.80  +469.70
+  similarity_threshold               3.00       3.00    +0.00
+  similarity_total_tokens         2168.10    2637.80  +469.70
+
+  ── unknown ──
+    coherence                        4.85       5.00    +0.15
+    coherence_completion_tokens    162.80     176.30   +13.50
+    coherence_prompt_tokens       1720.30    2189.90  +469.60
+    coherence_threshold              3.00       3.00    +0.00
+    coherence_total_tokens        1883.10    2366.20  +483.10
+    gpt_coherence                    4.85       5.00    +0.15
+    gpt_groundedness                 4.95       5.00    +0.05
+    gpt_relevance                    5.00       5.00    +0.00
+    gpt_similarity                   4.70       4.95    +0.25
+    groundedness                     4.95       4.60    -0.35
+    groundedness_completion_tokens   193.60     206.00   +12.40
+    groundedness_prompt_tokens    3171.05    8200.25 +5029.20
+    groundedness_threshold           3.00       3.00    +0.00
+    groundedness_total_tokens     3364.65    8406.25 +5041.60
+    relevance                        5.00       5.00    +0.00
+    relevance_completion_tokens     62.85      64.60    +1.75
+    relevance_prompt_tokens       2042.05    2511.70  +469.65
+    relevance_threshold              3.00       3.00    +0.00
+    relevance_total_tokens        2104.90    2576.30  +471.40
+    similarity                       4.70       4.95    +0.25
+    similarity_completion_tokens     1.00       1.00    +0.00
+    similarity_prompt_tokens      2167.10    2636.80  +469.70
+    similarity_threshold             3.00       3.00    +0.00
+    similarity_total_tokens       2168.10    2637.80  +469.70
+
+  API-ready summary → C:\Users\t-aryanshah\OneDrive - Microsoft\SE\ai-tour\foundry\graphrag-ai-tour-26\eval\results\comparison_summary.json     
