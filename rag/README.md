@@ -2,6 +2,9 @@
 
 Chunks text documents, embeds them with Azure OpenAI, and indexes into Azure AI Search for retrieval-augmented generation.
 
+> [!NOTE]
+> This is a custom, basic RAG implementation, Foundry natively supports [`Agentic RAG`](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/foundry-iq-unlocking-ubiquitous-knowledge-for-agents/4470812) which outperforms basic RAG.
+
 ## Setup
 
 ```bash
