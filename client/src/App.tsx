@@ -1,5 +1,16 @@
-import { makeStyles } from "@fluentui/react-components";
-import { useEffect, useRef, useState } from "react";
+import {
+  makeStyles,
+  Toast,
+  Toaster,
+  ToastTitle,
+  useId,
+  useToastController,
+} from "@fluentui/react-components";
+import {
+  CheckmarkCircle20Filled,
+  DismissCircle20Filled,
+} from "@fluentui/react-icons";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Header from "./components/Header";
 import Ask from "./components/tabs/Ask";
 import Build from "./components/tabs/Build";
@@ -52,6 +63,30 @@ const App = () => {
   const [visible, setVisible] = useState(true);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const styles = useStyles();
+  const toasterId = useId("app-toaster");
+  const { dispatchToast } = useToastController(toasterId);
+
+  const showToast = useCallback(
+    (message: string, intent: "success" | "error" = "success") => {
+      dispatchToast(
+        <Toast>
+          <ToastTitle
+            media={
+              intent === "success" ? (
+                <CheckmarkCircle20Filled style={{ color: "#4caf50" }} />
+              ) : (
+                <DismissCircle20Filled style={{ color: "#f44336" }} />
+              )
+            }
+          >
+            {message}
+          </ToastTitle>
+        </Toast>,
+        { intent, timeout: 3000 },
+      );
+    },
+    [dispatchToast],
+  );
 
   useEffect(() => {
     if (activeTab === displayedTab) return;
@@ -72,8 +107,13 @@ const App = () => {
 
   return (
     <div className={styles.root}>
+      <Toaster toasterId={toasterId} position="bottom-end" />
       <div className={styles.glow} />
-      <Header activeTab={activeTab} onTabChange={setActiveTab} />
+      <Header
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        showToast={showToast}
+      />
 
       <main className={styles.content}>
         <div

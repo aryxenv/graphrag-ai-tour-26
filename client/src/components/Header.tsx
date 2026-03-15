@@ -11,7 +11,7 @@ import {
 import { Emoji20Regular } from "@fluentui/react-icons";
 import { useState } from "react";
 import graphragLogo from "../assets/graphrag.png";
-import { TABS } from "../constants";
+import { API_BASE, TABS } from "../constants";
 import type { TabValue } from "../types";
 
 const useStyles = makeStyles({
@@ -115,12 +115,35 @@ const useStyles = makeStyles({
 interface HeaderProps {
   activeTab: TabValue;
   onTabChange: (tab: TabValue) => void;
+  showToast: (message: string, intent?: "success" | "error") => void;
 }
 
-const Header = ({ activeTab, onTabChange }: HeaderProps) => {
+const Header = ({ activeTab, onTabChange, showToast }: HeaderProps) => {
   const styles = useStyles();
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [feedback, setFeedback] = useState("");
+
+  const submitFeedback = () => {
+    const text = feedback.trim();
+    if (!text) return;
+    setFeedback("");
+    setFeedbackOpen(false);
+    fetch(`${API_BASE}/feedback`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          showToast("Feedback sent!");
+        } else {
+          showToast(`Feedback failed (${res.status})`, "error");
+        }
+      })
+      .catch((err) => {
+        showToast(`Feedback error: ${err.message}`, "error");
+      });
+  };
 
   return (
     <header className={styles.header}>
@@ -178,15 +201,17 @@ const Header = ({ activeTab, onTabChange }: HeaderProps) => {
                 value={feedback}
                 onChange={(_, data) => setFeedback(data.value)}
                 resize="vertical"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    submitFeedback();
+                  }
+                }}
               />
               <Button
                 appearance="primary"
                 size="small"
-                onClick={() => {
-                  console.log("[feedback]", feedback);
-                  setFeedback("");
-                  setFeedbackOpen(false);
-                }}
+                onClick={submitFeedback}
               >
                 Submit
               </Button>
