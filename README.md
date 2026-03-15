@@ -77,8 +77,18 @@ Configure your Azure OpenAI connection in `graphrag/settings.yaml`, then run the
 
 See [rag/README.md](rag/README.md) for the Azure AI Search indexing setup.
 
+### Evaluation
+
+The app evaluates responses in two phases using the Azure AI Evaluation SDK:
+
+- **Quick** (per-pipeline): Relevance + Coherence —> runs as soon as a response finishes streaming.
+- **Full** (both pipelines): Groundedness + Similarity + Retrieval —> runs once both RAG and GraphRAG complete, using GraphRAG as the ground truth.
+
+Scores appear as badges next to each response in the Ask tab. See [eval/README.md](eval/README.md) for batch eval scripts and dataset details.
+
 ## Additional Details
 
 - [graphrag/README.md](graphrag/README.md): GraphRAG pipeline, configuration, and search modes
 - [rag/README.md](rag/README.md): Vanilla RAG pipeline and Azure AI Search setup
+- [eval/README.md](eval/README.md): Evaluation pipeline, evaluators, and phased scoring
 - [BUILD.md](BUILD.md): Technical breakdown including tab behavior, API endpoints, and stack details
