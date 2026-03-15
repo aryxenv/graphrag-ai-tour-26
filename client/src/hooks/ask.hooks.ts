@@ -272,6 +272,13 @@ export function useStreamingQuery() {
     graphRag.error,
   ]);
 
+  const stop = useCallback(() => {
+    ragAbort.current?.abort();
+    graphRagAbort.current?.abort();
+    setRag((prev) => ({ ...prev, isStreaming: false }));
+    setGraphRag((prev) => ({ ...prev, isStreaming: false }));
+  }, []);
+
   const wrappedSend = useCallback(
     (query: string) => {
       hasEverSent.current = true;
@@ -312,6 +319,7 @@ export function useStreamingQuery() {
     rag,
     graphRag,
     send: wrappedSend,
+    stop,
     isStreaming,
     lastQuery,
     ragEval,

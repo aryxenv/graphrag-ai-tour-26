@@ -105,6 +105,7 @@ const Ask = () => {
     rag,
     graphRag,
     send,
+    stop,
     isStreaming,
     lastQuery,
     ragEval,
@@ -257,7 +258,9 @@ const Ask = () => {
         loadingSuggestions={loadingSuggestions}
         onRefreshSuggestions={loadSuggestions}
         onSend={send}
+        onStop={stop}
         disabled={isStreaming}
+        isStreaming={isStreaming}
       />
     </div>
   );

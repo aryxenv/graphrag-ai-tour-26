@@ -3,6 +3,7 @@ import {
   ArrowUpRight12Regular,
   LightbulbFilament16Regular,
   Send16Regular,
+  Stop16Filled,
 } from "@fluentui/react-icons";
 import { useRef, useState } from "react";
 import { BOOK_URL } from "../../constants";
@@ -88,7 +89,9 @@ interface QueryInputProps {
   loadingSuggestions: boolean;
   onRefreshSuggestions: () => void;
   onSend: (query: string) => void;
+  onStop: () => void;
   disabled: boolean;
+  isStreaming: boolean;
 }
 
 const QueryInput = ({
@@ -96,7 +99,9 @@ const QueryInput = ({
   loadingSuggestions,
   onRefreshSuggestions,
   onSend,
+  onStop,
   disabled,
+  isStreaming,
 }: QueryInputProps) => {
   const styles = useStyles();
   const [query, setQuery] = useState("");
@@ -157,11 +162,11 @@ const QueryInput = ({
         />
         <button
           className={styles.sendBtn}
-          onClick={handleSend}
-          disabled={!query.trim() || disabled}
-          title="Send"
+          onClick={isStreaming ? onStop : handleSend}
+          disabled={!isStreaming && (!query.trim() || disabled)}
+          title={isStreaming ? "Stop" : "Send"}
         >
-          <Send16Regular />
+          {isStreaming ? <Stop16Filled /> : <Send16Regular />}
         </button>
       </div>
     </div>

@@ -1,6 +1,8 @@
 """Query endpoints — RAG and GraphRAG search with streaming responses."""
 
-from fastapi import APIRouter
+import asyncio
+
+from fastapi import APIRouter, Request
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
@@ -19,12 +21,13 @@ class GraphRAGQueryRequest(BaseModel):
     community_level: int = Field(2, ge=0)
 
 
-async def _sse_wrapper(generator):
-    """Wrap an async generator into SSE data events."""
+async def _sse_wrapper(generator, request: Request):
+    """Wrap an async generator into SSE data events, stopping on client disconnect."""
     async for chunk in generator:
+        if await request.is_disconnected():
+            break
         if chunk.startswith("__USAGE__"):
-            # Extract usage data and send as a custom SSE event
-            usage_data = chunk[9:]  # strip __USAGE__ prefix
+            usage_data = chunk[9:]
             yield f"event: usage\ndata: {usage_data}\n\n"
         else:
             escaped = chunk.replace("\n", "\ndata: ")
@@ -33,23 +36,18 @@ async def _sse_wrapper(generator):
 
 
 @router.post("/rag")
-async def query_rag(body: QueryRequest):
+async def query_rag(body: QueryRequest, request: Request):
     """Query Azure AI Search RAG with streaming response."""
     return StreamingResponse(
-        _sse_wrapper(rag_query_stream(body.query)),
+        _sse_wrapper(rag_query_stream(body.query), request),
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
 
 
 @router.post("/graphrag")
-async def query_graphrag(body: GraphRAGQueryRequest):
-    """Two-step GraphRAG query: agent selects engine, then streams search results.
-
-    Step 1: LLM agent picks the best query engine (global/local/drift).
-    Step 2: Runs the corresponding GraphRAG search and streams the answer.
-    """
-    # Step 1: Agent determines query engine
+async def query_graphrag(body: GraphRAGQueryRequest, request: Request):
+    """Two-step GraphRAG query: agent selects engine, then streams search results."""
     engine, engine_input_tokens = select_query_engine(body.query)
 
     async def _stream_with_engine_header():
@@ -62,6 +60,8 @@ async def query_graphrag(body: GraphRAGQueryRequest):
             query_engine=engine,
             community_level=body.community_level,
         ):
+            if await request.is_disconnected():
+                break
             escaped = chunk.replace("\n", "\ndata: ")
             yield f"data: {escaped}\n\n"
             output_tokens += len(chunk) // 4  # rough estimate
