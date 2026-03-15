@@ -11,9 +11,9 @@ from dotenv import load_dotenv
 from openai import AzureOpenAI
 
 EVAL_DIR = Path(__file__).resolve().parent.parent
-ANSWERS_DIR = EVAL_DIR / "answers"
-DATASET_PATH = EVAL_DIR / "eval_dataset_raw.json"
-OUTPUT_PATH = EVAL_DIR / "eval_dataset.json"
+ANSWERS_DIR = EVAL_DIR / "data" / "answers"
+DATASET_PATH = EVAL_DIR / "data" / "eval_dataset_raw.json"
+OUTPUT_PATH = EVAL_DIR / "data" / "eval_dataset.json"
 # Parquet files live in the server/output directory
 OUTPUT_DIR = EVAL_DIR.parent / "server" / "output"
 

@@ -8,8 +8,8 @@ import json
 from pathlib import Path
 
 EVAL_DIR = Path(__file__).resolve().parent.parent
-INPUT_PATH = EVAL_DIR / "eval_dataset.json"
-OUTPUT_PATH = EVAL_DIR / "eval_dataset.jsonl"
+INPUT_PATH = EVAL_DIR / "data" / "eval_dataset.json"
+OUTPUT_PATH = EVAL_DIR / "data" / "eval_dataset.jsonl"
 
 
 def main() -> None:

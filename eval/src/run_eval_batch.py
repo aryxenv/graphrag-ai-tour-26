@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 
 from azure.ai.evaluation import evaluate
-from custom_evaluators import build_evaluators
+from evaluators import build_evaluators
 from azure.identity import DefaultAzureCredential
 from dotenv import load_dotenv
 
@@ -12,7 +12,7 @@ EVAL_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(EVAL_DIR / ".env")
 output_path = EVAL_DIR / "results" / "eval_results.json"
 output_path.parent.mkdir(exist_ok=True)
-DATASET_PATH = EVAL_DIR / "eval_dataset.jsonl"
+DATASET_PATH = EVAL_DIR / "data" / "eval_dataset.jsonl"
 
 model_config = {
     "azure_endpoint": os.environ["AZURE_OPENAI_ENDPOINT"],

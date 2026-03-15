@@ -29,7 +29,7 @@ from dotenv import load_dotenv
 # ── Paths ─────────────────────────────────────────────────────────────────────
 EVAL_DIR = Path(__file__).resolve().parent.parent
 SERVER_DIR = EVAL_DIR.parent / "server"
-DATASET_PATH = EVAL_DIR / "eval_dataset.jsonl"
+DATASET_PATH = EVAL_DIR / "data" / "eval_dataset.jsonl"
 RESULTS_DIR = EVAL_DIR / "results"
 
 # Load env BEFORE importing server modules (they read env at module level)
