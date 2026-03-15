@@ -51,7 +51,7 @@ Auth uses `DefaultAzureCredential` — run `az login` first.
 ## Run
 
 ```bash
-uv run uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+uv run python main.py
 ```
 
 _This documentation was generated with the help of AI_
