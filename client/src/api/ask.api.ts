@@ -142,11 +142,12 @@ export interface EvalScores {
 export async function evaluateSingle(
   query: string,
   response: string,
+  pipeline: "rag" | "graphrag" = "rag",
 ): Promise<EvalScores> {
   const res = await fetch(`${API_BASE}/evaluate/single`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, response }),
+    body: JSON.stringify({ query, response, pipeline }),
   });
   if (!res.ok) throw new Error(`Evaluation failed: ${res.status}`);
   return res.json();

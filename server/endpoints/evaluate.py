@@ -1,8 +1,10 @@
 """Evaluate endpoint — score responses using Azure AI Evaluation."""
 
 import os
+import re
 from concurrent.futures import ThreadPoolExecutor
 
+import pandas as pd
 from azure.ai.evaluation import (
     CoherenceEvaluator,
     GroundednessEvaluator,
@@ -17,6 +19,59 @@ from utils.rag_query import _search
 router = APIRouter(prefix="/api/evaluate", tags=["evaluate"])
 
 _credential = DefaultAzureCredential()
+
+# ── Citation parsing for GraphRAG responses ───────────────────────────────────
+_CITE_RE = re.compile(r"\[Data:\s*(Sources|Reports|Entities)\s*\(([^)]+)\)\]")
+
+_graphrag_tables: dict[str, pd.DataFrame] | None = None
+
+
+def _get_graphrag_tables() -> dict[str, pd.DataFrame]:
+    """Lazy-load GraphRAG parquet tables (cached after first call)."""
+    global _graphrag_tables
+    if _graphrag_tables is None:
+        from pathlib import Path
+        out = Path(__file__).resolve().parent.parent / "output"
+        _graphrag_tables = {
+            "text_units": pd.read_parquet(out / "text_units.parquet"),
+            "community_reports": pd.read_parquet(out / "community_reports.parquet"),
+            "entities": pd.read_parquet(out / "entities.parquet"),
+        }
+    return _graphrag_tables
+
+
+def _extract_graphrag_context(response_text: str) -> str:
+    """Parse [Data: Sources/Reports/Entities (...)] citations from a GraphRAG
+    response and resolve them to actual text from parquet tables."""
+    cites: dict[str, set[int]] = {"Sources": set(), "Reports": set(), "Entities": set()}
+    for m in _CITE_RE.finditer(response_text):
+        for tok in m.group(2).split(","):
+            tok = tok.strip()
+            if tok.isdigit():
+                cites[m.group(1)].add(int(tok))
+
+    if not any(cites.values()):
+        return ""
+
+    tables = _get_graphrag_tables()
+    parts: list[str] = []
+
+    if cites["Sources"]:
+        tu = tables["text_units"]
+        for _, r in tu[tu["human_readable_id"].isin(cites["Sources"])].iterrows():
+            parts.append(r["text"].strip())
+    if cites["Reports"]:
+        cr = tables["community_reports"]
+        for _, r in cr[cr["human_readable_id"].isin(cites["Reports"])].iterrows():
+            parts.append(r["summary"].strip())
+    if cites["Entities"]:
+        ent = tables["entities"]
+        for _, r in ent[ent["human_readable_id"].isin(cites["Entities"])].iterrows():
+            d = r.get("description", "")
+            if d:
+                parts.append(d.strip())
+
+    return "\n\n---\n\n".join(parts)
 
 
 def _model_config() -> dict:
@@ -42,6 +97,7 @@ class ScoreResult(BaseModel):
 class EvaluateSingleRequest(BaseModel):
     query: str = Field(..., min_length=1)
     response: str = Field(..., min_length=1)
+    pipeline: str = Field("rag", pattern="^(rag|graphrag)$")
 
 
 class EvaluateRequest(BaseModel):
@@ -94,11 +150,18 @@ def _evaluate_response(query: str, response: str, context: str) -> ScoreResult:
 
 @router.post("/single", response_model=ScoreResult)
 async def evaluate_single(body: EvaluateSingleRequest):
-    """Evaluate a single response against source context."""
-    results = _search(body.query)
-    context = "\n\n---\n\n".join(
-        f"[Source: {r['source']}]\n{r['content']}" for r in results
-    )
+    """Evaluate a single response against its own pipeline's context.
+
+    - pipeline=rag   → context from Azure AI Search (RAG retrieval)
+    - pipeline=graphrag → context extracted from [Data: ...] citations in the response
+    """
+    if body.pipeline == "graphrag":
+        context = _extract_graphrag_context(body.response)
+    else:
+        results = _search(body.query)
+        context = "\n\n---\n\n".join(
+            f"[Source: {r['source']}]\n{r['content']}" for r in results
+        )
     return _evaluate_response(body.query, body.response, context)
 
 

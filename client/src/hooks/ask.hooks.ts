@@ -193,7 +193,7 @@ export function useStreamingQuery() {
       lastQueryRef.current
     ) {
       setIsRagEvaluating(true);
-      evaluateSingle(lastQueryRef.current, rag.text)
+      evaluateSingle(lastQueryRef.current, rag.text, "rag")
         .then(setRagEval)
         .catch(() => setRagEval(null))
         .finally(() => setIsRagEvaluating(false));
@@ -210,7 +210,7 @@ export function useStreamingQuery() {
       lastQueryRef.current
     ) {
       setIsGraphRagEvaluating(true);
-      evaluateSingle(lastQueryRef.current, graphRag.text)
+      evaluateSingle(lastQueryRef.current, graphRag.text, "graphrag")
         .then(setGraphRagEval)
         .catch(() => setGraphRagEval(null))
         .finally(() => setIsGraphRagEvaluating(false));
