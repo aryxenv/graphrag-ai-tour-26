@@ -132,23 +132,47 @@ export async function fetchAskQuestions(): Promise<{
 }
 
 export interface EvalScores {
+  /** Phase 1: available immediately after a single pipeline completes. */
   relevance: number;
-  groundedness: number;
   coherence: number;
-  overall: number;
 }
 
-/** Evaluate a single response using Azure AI Evaluation. */
-export async function evaluateSingle(
+export interface FullEvalScores {
+  /** Phase 2: available after both pipelines complete. */
+  groundedness: number;
+  similarity: number;
+  retrieval: number;
+}
+
+/** Phase 1 — evaluate a single response (relevance + coherence only). */
+export async function evaluateQuick(
   query: string,
   response: string,
-  pipeline: "rag" | "graphrag" = "rag",
 ): Promise<EvalScores> {
-  const res = await fetch(`${API_BASE}/evaluate/single`, {
+  const res = await fetch(`${API_BASE}/evaluate/quick`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, response, pipeline }),
+    body: JSON.stringify({ query, response }),
   });
-  if (!res.ok) throw new Error(`Evaluation failed: ${res.status}`);
+  if (!res.ok) throw new Error(`Quick evaluation failed: ${res.status}`);
+  return res.json();
+}
+
+/** Phase 2 — evaluate both responses (groundedness + similarity + retrieval). */
+export async function evaluateFull(
+  query: string,
+  ragResponse: string,
+  graphragResponse: string,
+): Promise<{ rag: FullEvalScores; graphrag: FullEvalScores }> {
+  const res = await fetch(`${API_BASE}/evaluate/full`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query,
+      rag_response: ragResponse,
+      graphrag_response: graphragResponse,
+    }),
+  });
+  if (!res.ok) throw new Error(`Full evaluation failed: ${res.status}`);
   return res.json();
 }

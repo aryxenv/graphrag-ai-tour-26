@@ -111,6 +111,9 @@ const Ask = () => {
     graphRagEval,
     isRagEvaluating,
     isGraphRagEvaluating,
+    ragFullEval,
+    graphRagFullEval,
+    isFullEvaluating,
   } = useStreamingQuery();
 
   const suggestions = (suggestionsData?.questions ?? []).map((q) => ({
@@ -185,7 +188,12 @@ const Ask = () => {
             </Tooltip>
           )}
           {renderTokenBadge(rag)}
-          <EvalBadge scores={ragEval} isEvaluating={isRagEvaluating} />
+          <EvalBadge
+            scores={ragEval}
+            fullScores={ragFullEval}
+            isEvaluating={isRagEvaluating}
+            isFullEvaluating={isFullEvaluating}
+          />
         </div>
         <div className={styles.verticalDivider} />
         <div className={styles.panelHeader}>
@@ -211,7 +219,9 @@ const Ask = () => {
           {renderTokenBadge(graphRag)}
           <EvalBadge
             scores={graphRagEval}
+            fullScores={graphRagFullEval}
             isEvaluating={isGraphRagEvaluating}
+            isFullEvaluating={isFullEvaluating}
           />
         </div>
       </div>

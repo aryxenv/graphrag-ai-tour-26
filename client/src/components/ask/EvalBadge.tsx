@@ -1,6 +1,6 @@
 import { makeStyles, Spinner, Tooltip } from "@fluentui/react-components";
 import { QuestionCircle12Regular } from "@fluentui/react-icons";
-import type { EvalScores } from "../../api";
+import type { EvalScores, FullEvalScores } from "../../api";
 import FoundryLogo from "./FoundryLogo";
 
 const useStyles = makeStyles({
@@ -26,17 +26,47 @@ const useStyles = makeStyles({
   spinner: {
     display: "inline-flex",
   },
+  pendingRow: {
+    opacity: 0.5,
+    fontStyle: "italic",
+  },
 });
 
 interface EvalBadgeProps {
   scores: EvalScores | null;
+  fullScores: FullEvalScores | null;
   isEvaluating: boolean;
+  isFullEvaluating: boolean;
 }
 
-const EvalBadge = ({ scores, isEvaluating }: EvalBadgeProps) => {
+function computeOverall(
+  scores: EvalScores | null,
+  fullScores: FullEvalScores | null,
+): number | null {
+  const vals: number[] = [];
+  if (scores) {
+    vals.push(scores.relevance, scores.coherence);
+  }
+  if (fullScores) {
+    vals.push(
+      fullScores.groundedness,
+      fullScores.similarity,
+      fullScores.retrieval,
+    );
+  }
+  if (vals.length === 0) return null;
+  return Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
+}
+
+const EvalBadge = ({
+  scores,
+  fullScores,
+  isEvaluating,
+  isFullEvaluating,
+}: EvalBadgeProps) => {
   const styles = useStyles();
 
-  if (isEvaluating) {
+  if (isEvaluating && !scores) {
     return (
       <span className={styles.badge}>
         <Spinner className={styles.spinner} size="extra-tiny" />
@@ -46,11 +76,24 @@ const EvalBadge = ({ scores, isEvaluating }: EvalBadgeProps) => {
 
   if (!scores) return null;
 
+  const overall = computeOverall(scores, fullScores);
+  const pendingLabel = isFullEvaluating ? " (loading...)" : " (pending)";
+
   const tooltipContent = (
     <div style={{ fontSize: "12px", lineHeight: "1.6" }}>
       <div>Relevance: {scores.relevance}%</div>
-      <div>Groundedness: {scores.groundedness}%</div>
       <div>Coherence: {scores.coherence}%</div>
+      {fullScores ? (
+        <>
+          <div>Groundedness: {fullScores.groundedness}%</div>
+          <div>Similarity: {fullScores.similarity}%</div>
+          <div>Retrieval: {fullScores.retrieval}%</div>
+        </>
+      ) : (
+        <div className={styles.pendingRow}>
+          Groundedness / Similarity / Retrieval{pendingLabel}
+        </div>
+      )}
       <div
         style={{
           marginTop: "6px",
@@ -77,7 +120,10 @@ const EvalBadge = ({ scores, isEvaluating }: EvalBadgeProps) => {
       withArrow
     >
       <span className={styles.badge}>
-        {scores.overall}%
+        {overall != null ? `${overall}%` : "..."}
+        {isFullEvaluating && (
+          <Spinner className={styles.spinner} size="extra-tiny" />
+        )}
         <span className={styles.icon}>
           <QuestionCircle12Regular />
         </span>

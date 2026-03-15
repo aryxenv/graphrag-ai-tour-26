@@ -1,4 +1,9 @@
-"""Evaluate endpoint — score responses using Azure AI Evaluation."""
+"""Evaluate endpoint — phased scoring using Azure AI Evaluation.
+
+Phase 1 (quick):  Relevance + Coherence — runs immediately after a response finishes.
+Phase 2 (full):   Groundedness + Similarity + Retrieval — requires both pipelines done.
+                  GraphRAG response is used as ground_truth for similarity scoring.
+"""
 
 import os
 import re
@@ -9,6 +14,8 @@ from azure.ai.evaluation import (
     CoherenceEvaluator,
     GroundednessEvaluator,
     RelevanceEvaluator,
+    RetrievalEvaluator,
+    SimilarityEvaluator,
 )
 from azure.identity import DefaultAzureCredential
 from fastapi import APIRouter
@@ -27,7 +34,6 @@ _graphrag_tables: dict[str, pd.DataFrame] | None = None
 
 
 def _get_graphrag_tables() -> dict[str, pd.DataFrame]:
-    """Lazy-load GraphRAG parquet tables (cached after first call)."""
     global _graphrag_tables
     if _graphrag_tables is None:
         from pathlib import Path
@@ -41,8 +47,7 @@ def _get_graphrag_tables() -> dict[str, pd.DataFrame]:
 
 
 def _extract_graphrag_context(response_text: str) -> str:
-    """Parse [Data: Sources/Reports/Entities (...)] citations from a GraphRAG
-    response and resolve them to actual text from parquet tables."""
+    """Parse [Data: Sources/Reports/Entities (...)] citations and resolve to text."""
     cites: dict[str, set[int]] = {"Sources": set(), "Reports": set(), "Entities": set()}
     for m in _CITE_RE.finditer(response_text):
         for tok in m.group(2).split(","):
@@ -87,101 +92,122 @@ def _run_evaluator(evaluator_cls, kwargs: dict) -> dict:
     return evaluator(**kwargs)
 
 
-class ScoreResult(BaseModel):
+def _normalize(score: float) -> float:
+    """Convert 1-5 scale to 0-100%."""
+    return round((score / 5) * 100, 1)
+
+
+# ── Schemas ───────────────────────────────────────────────────────────────────
+
+class QuickScores(BaseModel):
+    """Phase 1: scores that only need query + response."""
     relevance: float
-    groundedness: float
     coherence: float
-    overall: float
 
 
-class EvaluateSingleRequest(BaseModel):
+class FullScores(BaseModel):
+    """Phase 2: scores that need context and/or ground_truth."""
+    groundedness: float
+    similarity: float
+    retrieval: float
+
+
+class QuickEvalRequest(BaseModel):
     query: str = Field(..., min_length=1)
     response: str = Field(..., min_length=1)
-    pipeline: str = Field("rag", pattern="^(rag|graphrag)$")
 
 
-class EvaluateRequest(BaseModel):
+class FullEvalRequest(BaseModel):
     query: str = Field(..., min_length=1)
     rag_response: str = Field(..., min_length=1)
     graphrag_response: str = Field(..., min_length=1)
 
 
-class EvaluateResponse(BaseModel):
-    rag: ScoreResult
-    graphrag: ScoreResult
+class FullEvalResponse(BaseModel):
+    rag: FullScores
+    graphrag: FullScores
 
 
-def _evaluate_response(query: str, response: str, context: str) -> ScoreResult:
-    """Run three evaluators on a single response and return normalized scores."""
-    with ThreadPoolExecutor(max_workers=3) as pool:
-        rel_future = pool.submit(
-            _run_evaluator,
-            RelevanceEvaluator,
-            {"query": query, "response": response},
+# ── Phase 1: Quick eval (relevance + coherence) ─────────────────────────────
+
+@router.post("/quick", response_model=QuickScores)
+async def evaluate_quick(body: QuickEvalRequest):
+    """Run relevance + coherence evaluators. No context or ground_truth needed.
+
+    Call this as soon as a pipeline finishes streaming its response.
+    """
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        rel_fut = pool.submit(
+            _run_evaluator, RelevanceEvaluator,
+            {"query": body.query, "response": body.response},
         )
-        ground_future = pool.submit(
-            _run_evaluator,
-            GroundednessEvaluator,
+        coh_fut = pool.submit(
+            _run_evaluator, CoherenceEvaluator,
+            {"query": body.query, "response": body.response},
+        )
+
+    return QuickScores(
+        relevance=_normalize(rel_fut.result().get("relevance", 3)),
+        coherence=_normalize(coh_fut.result().get("coherence", 3)),
+    )
+
+
+# ── Phase 2: Full eval (groundedness + similarity + retrieval) ───────────────
+
+def _full_eval_one(query: str, response: str, context: str, ground_truth: str) -> FullScores:
+    """Run groundedness, similarity, and retrieval for one pipeline."""
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        ground_fut = pool.submit(
+            _run_evaluator, GroundednessEvaluator,
             {"query": query, "response": response, "context": context},
         )
-        coh_future = pool.submit(
-            _run_evaluator,
-            CoherenceEvaluator,
-            {"query": query, "response": response},
+        sim_fut = pool.submit(
+            _run_evaluator, SimilarityEvaluator,
+            {"query": query, "response": response, "ground_truth": ground_truth},
+        )
+        ret_fut = pool.submit(
+            _run_evaluator, RetrievalEvaluator,
+            {"query": query, "context": context},
         )
 
-    rel_result = rel_future.result()
-    ground_result = ground_future.result()
-    coh_result = coh_future.result()
-
-    # Scores are 1-5, normalize to 0-100%
-    relevance = (rel_result.get("relevance", 3) / 5) * 100
-    groundedness = (ground_result.get("groundedness", 3) / 5) * 100
-    coherence = (coh_result.get("coherence", 3) / 5) * 100
-    overall = round((relevance + groundedness + coherence) / 3, 1)
-
-    return ScoreResult(
-        relevance=round(relevance, 1),
-        groundedness=round(groundedness, 1),
-        coherence=round(coherence, 1),
-        overall=overall,
+    return FullScores(
+        groundedness=_normalize(ground_fut.result().get("groundedness", 3)),
+        similarity=_normalize(sim_fut.result().get("similarity", 3)),
+        retrieval=_normalize(ret_fut.result().get("retrieval", 3)),
     )
 
 
-@router.post("/single", response_model=ScoreResult)
-async def evaluate_single(body: EvaluateSingleRequest):
-    """Evaluate a single response against its own pipeline's context.
+@router.post("/full", response_model=FullEvalResponse)
+async def evaluate_full(body: FullEvalRequest):
+    """Run groundedness + similarity + retrieval for both pipelines.
 
-    - pipeline=rag   → context from Azure AI Search (RAG retrieval)
-    - pipeline=graphrag → context extracted from [Data: ...] citations in the response
+    Requires both RAG and GraphRAG responses to be complete.
+    - RAG context: retrieved from Azure AI Search
+    - GraphRAG context: extracted from [Data: ...] citations in its response
+    - Ground truth for RAG: GraphRAG response (the richer answer)
+    - Ground truth for GraphRAG: GraphRAG response itself (self-consistency)
     """
-    if body.pipeline == "graphrag":
-        context = _extract_graphrag_context(body.response)
-    else:
-        results = _search(body.query)
-        context = "\n\n---\n\n".join(
-            f"[Source: {r['source']}]\n{r['content']}" for r in results
-        )
-    return _evaluate_response(body.query, body.response, context)
+    # Build RAG context from search
+    search_results = _search(body.query)
+    rag_context = "\n\n---\n\n".join(r["content"] for r in search_results)
 
+    # Build GraphRAG context from citations
+    graphrag_context = _extract_graphrag_context(body.graphrag_response)
 
-@router.post("", response_model=EvaluateResponse)
-async def evaluate(body: EvaluateRequest):
-    """Evaluate both RAG and GraphRAG responses against source context."""
-    results = _search(body.query)
-    context = "\n\n---\n\n".join(
-        f"[Source: {r['source']}]\n{r['content']}" for r in results
-    )
+    # Use GraphRAG response as ground truth for both
+    ground_truth = body.graphrag_response
 
     with ThreadPoolExecutor(max_workers=2) as pool:
-        rag_future = pool.submit(
-            _evaluate_response, body.query, body.rag_response, context
+        rag_fut = pool.submit(
+            _full_eval_one,
+            body.query, body.rag_response, rag_context, ground_truth,
         )
-        graphrag_future = pool.submit(
-            _evaluate_response, body.query, body.graphrag_response, context
+        graphrag_fut = pool.submit(
+            _full_eval_one,
+            body.query, body.graphrag_response, graphrag_context, ground_truth,
         )
 
-    return EvaluateResponse(
-        rag=rag_future.result(),
-        graphrag=graphrag_future.result(),
+    return FullEvalResponse(
+        rag=rag_fut.result(),
+        graphrag=graphrag_fut.result(),
     )

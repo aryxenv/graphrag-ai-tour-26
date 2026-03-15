@@ -1,8 +1,9 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { EvalScores, TokenUsage } from "../api";
+import type { EvalScores, FullEvalScores, TokenUsage } from "../api";
 import {
-  evaluateSingle,
+  evaluateFull,
+  evaluateQuick,
   fetchAskQuestions,
   streamGraphRAGQuery,
   streamRAGQuery,
@@ -64,6 +65,8 @@ interface PersistedResults {
   graphRag: StreamState;
   ragEval: EvalScores | null;
   graphRagEval: EvalScores | null;
+  ragFullEval: FullEvalScores | null;
+  graphRagFullEval: FullEvalScores | null;
   lastQuery: string;
 }
 
@@ -99,7 +102,15 @@ export function useStreamingQuery() {
     graphRagTtft.current = null;
 
     // Reset state
-    setRag({ text: "", isStreaming: true, error: null, ttft: null, tokens: 0, inputTokens: null, outputTokens: null });
+    setRag({
+      text: "",
+      isStreaming: true,
+      error: null,
+      ttft: null,
+      tokens: 0,
+      inputTokens: null,
+      outputTokens: null,
+    });
     setGraphRag({
       text: "",
       isStreaming: true,
@@ -168,7 +179,7 @@ export function useStreamingQuery() {
 
   const isStreaming = rag.isStreaming || graphRag.isStreaming;
 
-  // Independent eval state for each side
+  // ── Phase 1: Quick eval (relevance + coherence) per pipeline ──
   const [ragEval, setRagEval] = useState<EvalScores | null>(
     persisted.current?.ragEval ?? null,
   );
@@ -177,12 +188,23 @@ export function useStreamingQuery() {
   );
   const [isRagEvaluating, setIsRagEvaluating] = useState(false);
   const [isGraphRagEvaluating, setIsGraphRagEvaluating] = useState(false);
+
+  // ── Phase 2: Full eval (groundedness + similarity + retrieval) both pipelines ──
+  const [ragFullEval, setRagFullEval] = useState<FullEvalScores | null>(
+    persisted.current?.ragFullEval ?? null,
+  );
+  const [graphRagFullEval, setGraphRagFullEval] =
+    useState<FullEvalScores | null>(
+      persisted.current?.graphRagFullEval ?? null,
+    );
+  const [isFullEvaluating, setIsFullEvaluating] = useState(false);
+
   const lastQueryRef = useRef("");
   const [lastQuery, setLastQuery] = useState(
     persisted.current?.lastQuery ?? "",
   );
 
-  // Trigger RAG eval as soon as RAG finishes (skip on mount with restored data)
+  // Trigger RAG quick eval as soon as RAG finishes
   const hasEverSent = useRef(false);
   useEffect(() => {
     if (
@@ -193,14 +215,14 @@ export function useStreamingQuery() {
       lastQueryRef.current
     ) {
       setIsRagEvaluating(true);
-      evaluateSingle(lastQueryRef.current, rag.text, "rag")
+      evaluateQuick(lastQueryRef.current, rag.text)
         .then(setRagEval)
         .catch(() => setRagEval(null))
         .finally(() => setIsRagEvaluating(false));
     }
   }, [rag.isStreaming, rag.text, rag.error]);
 
-  // Trigger GraphRAG eval as soon as GraphRAG finishes
+  // Trigger GraphRAG quick eval as soon as GraphRAG finishes
   useEffect(() => {
     if (
       hasEverSent.current &&
@@ -210,12 +232,45 @@ export function useStreamingQuery() {
       lastQueryRef.current
     ) {
       setIsGraphRagEvaluating(true);
-      evaluateSingle(lastQueryRef.current, graphRag.text, "graphrag")
+      evaluateQuick(lastQueryRef.current, graphRag.text)
         .then(setGraphRagEval)
         .catch(() => setGraphRagEval(null))
         .finally(() => setIsGraphRagEvaluating(false));
     }
   }, [graphRag.isStreaming, graphRag.text, graphRag.error]);
+
+  // Trigger full eval once BOTH pipelines are done
+  useEffect(() => {
+    if (
+      hasEverSent.current &&
+      !rag.isStreaming &&
+      !graphRag.isStreaming &&
+      rag.text &&
+      graphRag.text &&
+      !rag.error &&
+      !graphRag.error &&
+      lastQueryRef.current
+    ) {
+      setIsFullEvaluating(true);
+      evaluateFull(lastQueryRef.current, rag.text, graphRag.text)
+        .then((result) => {
+          setRagFullEval(result.rag);
+          setGraphRagFullEval(result.graphrag);
+        })
+        .catch(() => {
+          setRagFullEval(null);
+          setGraphRagFullEval(null);
+        })
+        .finally(() => setIsFullEvaluating(false));
+    }
+  }, [
+    rag.isStreaming,
+    graphRag.isStreaming,
+    rag.text,
+    graphRag.text,
+    rag.error,
+    graphRag.error,
+  ]);
 
   const wrappedSend = useCallback(
     (query: string) => {
@@ -224,8 +279,11 @@ export function useStreamingQuery() {
       setLastQuery(query);
       setRagEval(null);
       setGraphRagEval(null);
+      setRagFullEval(null);
+      setGraphRagFullEval(null);
       setIsRagEvaluating(false);
       setIsGraphRagEvaluating(false);
+      setIsFullEvaluating(false);
       send(query);
     },
     [send],
@@ -243,10 +301,12 @@ export function useStreamingQuery() {
         graphRag,
         ragEval,
         graphRagEval,
+        ragFullEval,
+        graphRagFullEval,
         lastQuery,
       });
     }
-  }, [rag, graphRag, ragEval, graphRagEval]);
+  }, [rag, graphRag, ragEval, graphRagEval, ragFullEval, graphRagFullEval]);
 
   return {
     rag,
@@ -258,5 +318,8 @@ export function useStreamingQuery() {
     graphRagEval,
     isRagEvaluating,
     isGraphRagEvaluating,
+    ragFullEval,
+    graphRagFullEval,
+    isFullEvaluating,
   };
 }
