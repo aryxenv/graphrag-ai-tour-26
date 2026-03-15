@@ -13,12 +13,16 @@ uv venv
 uv pip install -r requirements.txt --link-mode=copy
 ```
 
-Create a `.env` file:
+Copy `.env.example` to `.env` and fill in your values:
+
+```bash
+cp .env.example .env
+```
 
 ```
-AZURE_OPENAI_ENDPOINT=<your-azure-openai-endpoint>
-AZURE_COGNITIVE_SERVICES_ENDPOINT=<your-cognitive-services-endpoint>
-AZURE_AI_SEARCH_ENDPOINT=<your-search-endpoint>
+AZURE_OPENAI_ENDPOINT=https://<YOUR_FOUNDRY_RESOURCE_NAME>.openai.azure.com/
+AZURE_COGNITIVE_SERVICES_ENDPOINT=https://<YOUR_FOUNDRY_RESOURCE_NAME>.cognitiveservices.azure.com/
+AZURE_AI_SEARCH_ENDPOINT=https://<YOUR_AZURE_AI_SEARCH_RESOURCE_NAME>.search.windows.net
 ```
 
 Auth uses `DefaultAzureCredential` (managed identity / az login).

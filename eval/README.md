@@ -56,11 +56,17 @@ The server exposes two phased eval endpoints at `/api/evaluate/`:
 
 ## Environment
 
-Add to `eval/.env`:
+Copy `.env.example` to `.env` and fill in your values:
+
+```bash
+cp .env.example .env
+```
 
 ```
-AZURE_OPENAI_ENDPOINT=https://...
-AZURE_AI_SEARCH_ENDPOINT=https://...   # only for RAG pipeline
+AZURE_OPENAI_ENDPOINT=https://<YOUR_FOUNDRY_RESOURCE_NAME>.openai.azure.com/
+AZURE_COGNITIVE_SERVICES_ENDPOINT=https://<YOUR_FOUNDRY_RESOURCE_NAME>.cognitiveservices.azure.com/
 ```
+
+The `AZURE_AI_SEARCH_ENDPOINT` is only needed if running the live RAG pipeline via `run_eval.py`.
 
 _This documentation was generated with the help of AI_
