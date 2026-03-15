@@ -39,3 +39,5 @@ uv run python src/query.py "What is this book about?"
 
 1. **Index**: Reads text files from `data/`, splits with LangChain `RecursiveCharacterTextSplitter` (1200 chars, 100 overlap), embeds with `text-embedding-3-large`, uploads to Azure AI Search with HNSW vector index.
 2. **Query**: Hybrid search (text + vector) retrieves top-5 chunks, passes them as context to `gpt-4.1` for a grounded answer.
+
+_This documentation was generated with the help of AI_

@@ -92,3 +92,5 @@ Scores appear as badges next to each response in the Ask tab. See [eval/README.m
 - [rag/README.md](rag/README.md): Vanilla RAG pipeline and Azure AI Search setup
 - [eval/README.md](eval/README.md): Evaluation pipeline, evaluators, and phased scoring
 - [BUILD.md](BUILD.md): Technical breakdown including tab behavior, API endpoints, and stack details
+
+_This documentation was generated with the help of AI_
