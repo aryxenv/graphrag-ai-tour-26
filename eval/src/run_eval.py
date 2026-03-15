@@ -112,11 +112,17 @@ def run_graphrag_pipeline(query: str, tables: dict) -> dict:
             chunks.append(chunk)
         return "".join(chunks)
 
+    import warnings
     loop = asyncio.new_event_loop()
     try:
         response_text = loop.run_until_complete(_collect())
     finally:
-        loop.close()
+        # Cancel lingering tasks (litellm logging workers) before closing
+        for task in asyncio.all_tasks(loop):
+            task.cancel()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", RuntimeWarning)
+            loop.close()
 
     # Extract context from citations embedded in the response
     cites = _parse_citations(response_text)
