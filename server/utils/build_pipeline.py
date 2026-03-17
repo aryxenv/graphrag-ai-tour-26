@@ -312,6 +312,9 @@ class _BuildProgressCallbacks:
             )
 
 
+import asyncio as _asyncio
+
+
 def run_indexing(session_id: str, progress_callback=None) -> list:
     """Run GraphRAG indexing on the workspace.
 
@@ -325,7 +328,14 @@ def run_indexing(session_id: str, progress_callback=None) -> list:
     workspace = _get_workspace_path(session_id)
     config = load_config(root_dir=str(workspace))
     callbacks = _BuildProgressCallbacks(progress_callback)
-    return build_index(config=config, callbacks=[callbacks])
+    # build_index is async — run it in its own event loop (called from sync thread)
+    loop = _asyncio.new_event_loop()
+    try:
+        return loop.run_until_complete(
+            build_index(config=config, callbacks=[callbacks])
+        )
+    finally:
+        loop.close()
 
 
 # ---------------------------------------------------------------------------
