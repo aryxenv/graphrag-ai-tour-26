@@ -174,6 +174,8 @@ const BuildGraph = ({ data }: Props) => {
             controls.enableDamping = true;
             controls.dampingFactor = 0.06;
           }
+          // Zoom out to fit all nodes in view
+          fgRef.current?.zoomToFit(400, 40);
         }}
       />
 
