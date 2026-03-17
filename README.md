@@ -38,19 +38,36 @@ BUILD.md         Detailed technical build notes and endpoint mapping
 
 - Node.js 20+
 - Python 3.11+ and [uv](https://docs.astral.sh/uv/)
-- Azure OpenAI resource with `gpt-4.1` and `text-embedding-3-large` deployments
-- Azure AI Search resource
+- An Azure subscription with the resources listed below
+- Azure CLI installed and logged in (`az login`)
+
+### Azure Resources
+
+Deploy the following resources in your Azure subscription. Authentication uses `DefaultAzureCredential` throughout — no API keys required (assign your user the appropriate RBAC roles on each resource).
+
+| Resource                            | What it provides                                              | Manual Configuration                                    |
+| ----------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------- |
+| **Azure AI Foundry** (Azure OpenAI) | LLM completions and embeddings                                | Deploy `gpt-4.1`, `text-embedding-3-large` (3 072 dims) |
+| **Azure AI Search**                 | Hybrid (text + vector) retrieval for the vanilla RAG pipeline | —                                                       |
+| **Azure Blob Storage**              | Stores user feedback submitted from the app                   | Create a container named `feedback`                     |
+
+> The Foundry resource exposes two endpoint flavours — an **OpenAI** endpoint (`*.openai.azure.com`) for chat completions and a **Cognitive Services** endpoint (`*.cognitiveservices.azure.com`) for embeddings. Both come from the same resource.
 
 ### Environment Variables
 
-Create `server/.env`:
+Every subfolder (`server/`, `graphrag/`, `rag/`, `eval/`) has its own `.env.example`. Copy each one to `.env` and fill in the URLs from the resources above — the same URLs are reused across folders:
 
-```
-AZURE_OPENAI_ENDPOINT=https://<your-resource>.openai.azure.com/
-AZURE_AI_SEARCH_ENDPOINT=https://<your-search>.search.windows.net
-```
+| Variable                            | Example value                                             | Used by                                                    |
+| ----------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------- |
+| `AZURE_OPENAI_ENDPOINT`             | `https://<foundry-resource>.openai.azure.com/`            | server, graphrag, rag, eval                                |
+| `AZURE_COGNITIVE_SERVICES_ENDPOINT` | `https://<foundry-resource>.cognitiveservices.azure.com/` | server, graphrag, rag, eval                                |
+| `AZURE_AI_SEARCH_ENDPOINT`          | `https://<search-resource>.search.windows.net`            | server, rag                                                |
+| `AZURE_BLOB_STORAGE_ENDPOINT`       | `https://<storage-account>.blob.core.windows.net/`        | server                                                     |
+| `GRAPHRAG_API_KEY`                  | `<API_KEY>`                                               | server, graphrag (leave as-is when using managed identity) |
 
-Authentication uses `DefaultAzureCredential` — ensure you're logged in via `az login`.
+### RAG Indexing
+
+See [rag/README.md](rag/README.md) for the Azure AI Search indexing setup.
 
 ### Frontend
 
@@ -71,11 +88,10 @@ uv run python src/index.py
 
 ### GraphRAG Indexing
 
+> [!NOTE]
+> This is pre-indexed, no need to run this again.
+
 Configure your Azure OpenAI connection in `graphrag/settings.yaml`, then run the indexing pipeline. See [graphrag/README.md](graphrag/README.md) for details.
-
-### RAG Indexing
-
-See [rag/README.md](rag/README.md) for the Azure AI Search indexing setup.
 
 ### Evaluation
 
