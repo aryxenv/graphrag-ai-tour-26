@@ -10,7 +10,7 @@ import {
   CheckmarkCircle20Filled,
   DismissCircle20Filled,
 } from "@fluentui/react-icons";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Header from "./components/Header";
 import Ask from "./components/tabs/Ask";
 import Build from "./components/tabs/Build";
@@ -53,22 +53,10 @@ const useStyles = makeStyles({
     margin: "0 auto",
     position: "relative",
   },
-  panel: {
-    transition: "opacity 0.25s ease",
-  },
-  panelVisible: {
-    opacity: 1,
-  },
-  panelHidden: {
-    opacity: 0,
-  },
 });
 
 const App = () => {
   const [activeTab, setActiveTab] = useState<TabValue>(getTabFromHash);
-  const [displayedTab, setDisplayedTab] = useState<TabValue>(getTabFromHash);
-  const [visible, setVisible] = useState(true);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const styles = useStyles();
   const toasterId = useId("app-toaster");
   const { dispatchToast } = useToastController(toasterId);
@@ -108,23 +96,6 @@ const App = () => {
     window.location.hash = tab;
   }, []);
 
-  useEffect(() => {
-    if (activeTab === displayedTab) return;
-
-    // Fade out
-    setVisible(false);
-
-    timeoutRef.current = setTimeout(() => {
-      // Swap content, then fade in
-      setDisplayedTab(activeTab);
-      requestAnimationFrame(() => setVisible(true));
-    }, 200);
-
-    return () => clearTimeout(timeoutRef.current);
-  }, [activeTab, displayedTab]);
-
-  const ActiveComponent = TAB_COMPONENTS[displayedTab];
-
   return (
     <div className={styles.root}>
       <Toaster toasterId={toasterId} position="bottom-end" />
@@ -136,11 +107,17 @@ const App = () => {
       />
 
       <main className={styles.content}>
-        <div
-          className={`${styles.panel} ${visible ? styles.panelVisible : styles.panelHidden}`}
-        >
-          <ActiveComponent />
-        </div>
+        {TABS.map((tab) => {
+          const Component = TAB_COMPONENTS[tab.value];
+          return (
+            <div
+              key={tab.value}
+              style={{ display: activeTab === tab.value ? "block" : "none" }}
+            >
+              <Component />
+            </div>
+          );
+        })}
       </main>
     </div>
   );
