@@ -15,8 +15,15 @@ import Header from "./components/Header";
 import Ask from "./components/tabs/Ask";
 import Build from "./components/tabs/Build";
 import Explore from "./components/tabs/Explore";
+import { TABS } from "./constants";
 import type { TabValue } from "./types";
 
+const TAB_VALUES = new Set<string>(TABS.map((t) => t.value));
+
+function getTabFromHash(): TabValue {
+  const hash = window.location.hash.replace("#", "");
+  return TAB_VALUES.has(hash) ? (hash as TabValue) : "ask";
+}
 const TAB_COMPONENTS: Record<TabValue, React.ComponentType> = {
   ask: Ask,
   explore: Explore,
@@ -58,8 +65,8 @@ const useStyles = makeStyles({
 });
 
 const App = () => {
-  const [activeTab, setActiveTab] = useState<TabValue>("ask");
-  const [displayedTab, setDisplayedTab] = useState<TabValue>("ask");
+  const [activeTab, setActiveTab] = useState<TabValue>(getTabFromHash);
+  const [displayedTab, setDisplayedTab] = useState<TabValue>(getTabFromHash);
   const [visible, setVisible] = useState(true);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const styles = useStyles();
@@ -88,6 +95,19 @@ const App = () => {
     [dispatchToast],
   );
 
+  // Sync hash → state on browser back/forward
+  useEffect(() => {
+    const onHashChange = () => setActiveTab(getTabFromHash());
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
+  // Sync state → hash on tab change
+  const handleTabChange = useCallback((tab: TabValue) => {
+    setActiveTab(tab);
+    window.location.hash = tab;
+  }, []);
+
   useEffect(() => {
     if (activeTab === displayedTab) return;
 
@@ -111,7 +131,7 @@ const App = () => {
       <div className={styles.glow} />
       <Header
         activeTab={activeTab}
-        onTabChange={setActiveTab}
+        onTabChange={handleTabChange}
         showToast={showToast}
       />
 
