@@ -427,6 +427,15 @@ const Explore = () => {
           onLinkHover={handleLinkHover}
           warmupTicks={80}
           cooldownTime={3000}
+          onEngineStop={() => {
+            const controls = fgRef.current?.controls() as
+              | { enableDamping: boolean; dampingFactor: number }
+              | undefined;
+            if (controls) {
+              controls.enableDamping = true;
+              controls.dampingFactor = 0.06;
+            }
+          }}
         />
 
         {/* Hover tooltip */}
