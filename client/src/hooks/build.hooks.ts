@@ -111,6 +111,7 @@ export function useBuildWizard() {
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(false);
 
   const abortRef = useRef<AbortController | null>(null);
+  const cancelledRef = useRef(false);
   const startTimeRef = useRef(0);
   const firstChunkRef = useRef(false);
   const ttftRef = useRef<number | null>(null);
@@ -147,12 +148,15 @@ export function useBuildWizard() {
   const generate = useCallback(async () => {
     setIsGenerating(true);
     setStep("generating");
+    cancelledRef.current = false;
     try {
       const result = await generateMemos(scenario, memoCount);
+      if (cancelledRef.current) return;
       setSessionId(result.session_id);
       setMemos(result.memos);
       setStep("memos");
     } catch (err) {
+      if (cancelledRef.current) return;
       console.error("Memo generation failed:", err);
       setStep("configure");
     } finally {
@@ -276,6 +280,8 @@ export function useBuildWizard() {
   }, [stream.isStreaming, stream.text, stream.error, lastQuery, sessionId]);
 
   const reset = useCallback(async () => {
+    // Kill all in-flight operations
+    cancelledRef.current = true;
     abortRef.current?.abort();
     if (sessionId) {
       resetBuild(sessionId).catch(() => {});
@@ -288,7 +294,9 @@ export function useBuildWizard() {
     setLastQuery("");
     setBuildEval(null);
     setIsEvaluating(false);
+    setIsGenerating(false);
     setIsIndexing(false);
+    setIsLoadingQuestions(false);
     setIndexProgress(null);
     setStep("configure");
     localStorage.removeItem(STORAGE_KEY);
