@@ -10,7 +10,10 @@ import {
   Subtitle2,
   tokens,
 } from "@fluentui/react-components";
-import { Dismiss24Regular } from "@fluentui/react-icons";
+import {
+  ArrowUpRight12Regular,
+  Dismiss24Regular,
+} from "@fluentui/react-icons";
 import { useCallback, useMemo, useRef, useState } from "react";
 import ForceGraph3D, {
   type ForceGraphMethods,
@@ -18,6 +21,7 @@ import ForceGraph3D, {
   type LinkObject,
 } from "react-force-graph-3d";
 import SpriteText from "three-spritetext";
+import { BOOK_URL } from "../../constants";
 import { useExploreGraph } from "../../hooks";
 import type { Community, GraphLink, GraphNode } from "../../types";
 
@@ -132,10 +136,29 @@ const useStyles = makeStyles({
     bottom: "16px",
     left: "16px",
     display: "flex",
+    alignItems: "center",
     gap: "10px",
     flexWrap: "wrap",
     zIndex: 10,
-    pointerEvents: "none",
+  },
+  bookLink: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "4px",
+    fontSize: "11px",
+    padding: "4px 10px",
+    borderRadius: "14px",
+    border: "1px solid rgba(255, 255, 255, 0.12)",
+    backgroundColor: "transparent",
+    color: "rgba(255, 255, 255, 0.55)",
+    cursor: "pointer",
+    whiteSpace: "nowrap",
+    transition: "border-color 0.15s ease, background-color 0.15s ease",
+    pointerEvents: "auto",
+    ":hover": {
+      border: "1px solid rgba(255, 255, 255, 0.3)",
+      backgroundColor: "rgba(255, 255, 255, 0.04)",
+    },
   },
   legendItem: {
     display: "flex",
@@ -144,6 +167,7 @@ const useStyles = makeStyles({
     fontSize: "11px",
     color: "rgba(255,255,255,0.55)",
     textTransform: "capitalize",
+    pointerEvents: "none",
   },
   legendDot: {
     width: "8px",
@@ -429,6 +453,13 @@ const Explore = () => {
               {type}
             </div>
           ))}
+          <button
+            className={styles.bookLink}
+            onClick={() => window.open(BOOK_URL, "_blank")}
+          >
+            Show book
+            <ArrowUpRight12Regular />
+          </button>
         </div>
       </div>
 
