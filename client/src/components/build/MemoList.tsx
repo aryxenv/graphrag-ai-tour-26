@@ -10,6 +10,7 @@ import {
   Spinner,
 } from "@fluentui/react-components";
 import type { Memo } from "../../types";
+import FoundryLogo from "../ask/FoundryLogo";
 
 const useStyles = makeStyles({
   root: {
@@ -93,7 +94,7 @@ const MemoList = ({ memos, onIndex, isIndexing, disabled }: Props) => {
           size="medium"
           onClick={onIndex}
           disabled={disabled || isIndexing}
-          icon={isIndexing ? <Spinner size="tiny" /> : undefined}
+          icon={isIndexing ? <Spinner size="tiny" /> : <FoundryLogo size={16} />}
         >
           {isIndexing ? "Indexing…" : "Index with GraphRAG"}
         </Button>

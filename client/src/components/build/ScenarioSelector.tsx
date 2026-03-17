@@ -6,6 +6,7 @@ import {
   Spinner,
   tokens,
 } from "@fluentui/react-components";
+import FoundryLogo from "../ask/FoundryLogo";
 import {
   Building24Regular,
   Briefcase24Regular,
@@ -184,10 +185,9 @@ const ScenarioSelector = ({
           size="medium"
           onClick={onGenerate}
           disabled={disabled}
-          icon={isGenerating ? <Spinner size="tiny" /> : undefined}
+          icon={isGenerating ? <Spinner size="tiny" /> : <FoundryLogo size={16} />}
         >
-          {isGenerating ? "Generating…" : "Generate Memos"}
-        </Button>
+          {isGenerating ? "Generating…" : "Generate Memos"}</Button>
       </div>
     </div>
   );
