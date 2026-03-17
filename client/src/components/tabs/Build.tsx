@@ -64,6 +64,8 @@ const useStyles = makeStyles({
     height: "30%",
     borderBottom: "1px solid rgba(255,255,255,0.08)",
     flexShrink: 0,
+    position: "relative",
+    overflow: "hidden",
   },
   queryPanel: {
     height: "70%",
