@@ -184,8 +184,10 @@ const useStyles = makeStyles({
     border: "1px solid rgba(255,255,255,0.1)",
     fontSize: "12px",
     color: "#fff",
-    maxWidth: "260px",
-    whiteSpace: "nowrap",
+    maxWidth: "300px",
+    whiteSpace: "normal",
+    wordBreak: "break-word",
+    lineHeight: "1.4",
   },
 });
 
@@ -302,7 +304,7 @@ const Explore = () => {
           const screen = fgRef.current?.graph2ScreenCoords(mx, my, mz);
           if (screen) {
             setHoverTooltip({
-              text: desc.length > 80 ? desc.slice(0, 80) + "…" : desc,
+              text: desc,
               x: screen.x,
               y: screen.y,
             });
