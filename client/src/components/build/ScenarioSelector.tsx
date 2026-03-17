@@ -183,7 +183,7 @@ const ScenarioSelector = ({
           appearance="primary"
           size="medium"
           onClick={onGenerate}
-          disabled={disabled || isGenerating}
+          disabled={disabled}
           icon={isGenerating ? <Spinner size="tiny" /> : undefined}
         >
           {isGenerating ? "Generating…" : "Generate Memos"}
