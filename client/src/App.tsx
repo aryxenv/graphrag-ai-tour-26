@@ -108,9 +108,12 @@ const App = () => {
 
   const prevTabRef = useRef(activeTab);
 
-  // Trigger window resize when switching to explore tab so Three.js recalculates canvas dimensions
+  // Trigger window resize when switching to explore/build tab so Three.js recalculates canvas dimensions
   useEffect(() => {
-    if (activeTab === "explore" && prevTabRef.current !== "explore") {
+    if (
+      (activeTab === "explore" || activeTab === "build") &&
+      prevTabRef.current !== activeTab
+    ) {
       requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
     }
     prevTabRef.current = activeTab;

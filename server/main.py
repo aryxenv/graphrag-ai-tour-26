@@ -15,6 +15,7 @@ from endpoints.questions import router as questions_router
 from endpoints.evaluate import router as evaluate_router
 from endpoints.feedback import router as feedback_router
 from endpoints.graph import router as graph_router
+from endpoints.build import router as build_router
 
 # Load .env from the server directory
 load_dotenv(Path(__file__).parent / ".env")
@@ -33,6 +34,7 @@ app.include_router(query_router)
 app.include_router(evaluate_router)
 app.include_router(feedback_router)
 app.include_router(graph_router)
+app.include_router(build_router)
 
 
 @app.get("/")
