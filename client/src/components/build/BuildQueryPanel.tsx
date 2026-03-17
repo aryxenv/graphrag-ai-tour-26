@@ -12,8 +12,9 @@ import {
   Send16Regular,
   Stop16Filled,
 } from "@fluentui/react-icons";
+import type React from "react";
 import { useEffect, useRef, useState } from "react";
-import Markdown from "react-markdown";
+import Markdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { BuildEvalScores } from "../../api/build.api";
 import type { BuildStreamState } from "../../hooks/build.hooks";
@@ -21,6 +22,61 @@ import type { GeneratedQuestion } from "../../types";
 import EvalBadge from "../ask/EvalBadge";
 import FoundryLogo from "../ask/FoundryLogo";
 import graphragLogo from "../../assets/graphrag.png";
+
+/* Custom markdown components to normalize headings and style tables */
+const mdComponents: Components = {
+  h1: ({ children }: React.PropsWithChildren) => (
+    <h3 style={{ fontSize: "15px", fontWeight: 600, margin: "14px 0 6px" }}>
+      {children}
+    </h3>
+  ),
+  h2: ({ children }: React.PropsWithChildren) => (
+    <h4 style={{ fontSize: "14px", fontWeight: 600, margin: "12px 0 4px" }}>
+      {children}
+    </h4>
+  ),
+  h3: ({ children }: React.PropsWithChildren) => (
+    <h5 style={{ fontSize: "14px", fontWeight: 600, margin: "10px 0 4px" }}>
+      {children}
+    </h5>
+  ),
+  table: ({ children }: React.PropsWithChildren) => (
+    <table
+      style={{
+        width: "100%",
+        borderCollapse: "collapse",
+        fontSize: "13px",
+        margin: "12px 0",
+      }}
+    >
+      {children}
+    </table>
+  ),
+  th: ({ children }: React.PropsWithChildren) => (
+    <th
+      style={{
+        textAlign: "left",
+        padding: "6px 10px",
+        borderBottom: "1px solid rgba(255,255,255,0.15)",
+        fontWeight: 600,
+        color: "rgba(255,255,255,0.8)",
+      }}
+    >
+      {children}
+    </th>
+  ),
+  td: ({ children }: React.PropsWithChildren) => (
+    <td
+      style={{
+        padding: "5px 10px",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        color: "rgba(255,255,255,0.7)",
+      }}
+    >
+      {children}
+    </td>
+  ),
+};
 
 const useStyles = makeStyles({
   root: {
@@ -89,24 +145,6 @@ const useStyles = makeStyles({
     fontSize: "14px",
     lineHeight: "1.6",
     color: tokens.colorNeutralForeground2,
-    "& h1": {
-      fontSize: "16px",
-      fontWeight: 600,
-      marginTop: "16px",
-      marginBottom: "8px",
-    },
-    "& h2": {
-      fontSize: "15px",
-      fontWeight: 600,
-      marginTop: "14px",
-      marginBottom: "6px",
-    },
-    "& h3": {
-      fontSize: "14px",
-      fontWeight: 600,
-      marginTop: "12px",
-      marginBottom: "4px",
-    },
   },
   emptyState: {
     flex: 1,
@@ -321,7 +359,7 @@ const BuildQueryPanel = ({
   if (stream.error) {
     content = <div className={styles.errorState}>{stream.error}</div>;
   } else if (stream.text) {
-    content = <Markdown remarkPlugins={[remarkGfm]}>{stream.text}</Markdown>;
+    content = <Markdown remarkPlugins={[remarkGfm]} components={mdComponents}>{stream.text}</Markdown>;
   } else if (stream.isStreaming) {
     content = (
       <>
