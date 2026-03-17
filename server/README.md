@@ -4,14 +4,23 @@ FastAPI backend serving query, evaluation, and question generation endpoints.
 
 ## Endpoints
 
-| Route                 | Method | Description                                      |
-| --------------------- | ------ | ------------------------------------------------ |
-| `/`                   | GET    | Health check                                     |
-| `/api/query/rag`      | POST   | Stream RAG response (SSE)                        |
-| `/api/query/graphrag` | POST   | Stream GraphRAG response (SSE)                   |
-| `/api/questions/ask`  | GET    | Generate AI-powered sample questions             |
-| `/api/evaluate/quick` | POST   | Quick eval: relevance + coherence                |
-| `/api/evaluate/full`  | POST   | Full eval: groundedness + similarity + retrieval |
+| Route                          | Method | Description                                      |
+| ------------------------------ | ------ | ------------------------------------------------ |
+| `/`                            | GET    | Health check                                     |
+| `/api/query/rag`               | POST   | Stream RAG response (SSE)                        |
+| `/api/query/graphrag`          | POST   | Stream GraphRAG response (SSE)                   |
+| `/api/questions/ask`           | GET    | Generate AI-powered sample questions             |
+| `/api/evaluate/quick`          | POST   | Quick eval: relevance + coherence                |
+| `/api/evaluate/full`           | POST   | Full eval: groundedness + similarity + retrieval |
+| `/api/graph/explore`           | GET    | Pre-indexed knowledge graph for Explore tab      |
+| `/api/build/generate`          | POST   | Generate synthetic memos via Foundry agent       |
+| `/api/build/index`             | POST   | Run GraphRAG indexing pipeline (SSE progress)    |
+| `/api/build/graph/{session_id}`| GET    | Fetch indexed graph for a build session          |
+| `/api/build/questions`         | POST   | Generate questions from the build graph          |
+| `/api/build/query`             | POST   | Query the build graph via SSE                    |
+| `/api/build/evaluate`          | POST   | Evaluate a build query response (5 metrics)      |
+| `/api/build/reset`             | POST   | Reset and clean up a build session               |
+| `/api/feedback`                | POST   | Submit user feedback                             |
 
 ## Structure
 
@@ -24,10 +33,14 @@ server/
     query.py               # RAG + GraphRAG SSE streaming endpoints
     evaluate.py            # Phased evaluation (quick + full)
     questions.py           # AI-generated question suggestions
+    graph.py               # Pre-indexed graph data for Explore tab
+    build.py               # Build pipeline: generate, index, query, evaluate, reset
+    feedback.py            # User feedback endpoint
   utils/
     rag_query.py           # Azure AI Search hybrid retrieval + GPT-4.1 streaming
     graphrag_query.py      # GraphRAG engine selection + streaming (global/local/drift)
     graphrag_questions.py  # Question generation from community reports
+    build_pipeline.py      # Memo generation, indexing workspace management
   output/                  # GraphRAG parquet tables (entities, communities, etc.)
 ```
 

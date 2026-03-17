@@ -79,12 +79,14 @@ See [rag/README.md](rag/README.md) for the Azure AI Search indexing setup.
 
 ### Evaluation
 
-The app evaluates responses in two phases using the Azure AI Evaluation SDK:
+The app evaluates responses using the Azure AI Evaluation SDK with five metrics: relevance, coherence, groundedness, similarity, and retrieval.
 
-- **Quick** (per-pipeline): Relevance + Coherence —> runs as soon as a response finishes streaming.
-- **Full** (both pipelines): Groundedness + Similarity + Retrieval —> runs once both RAG and GraphRAG complete, using GraphRAG as the ground truth.
+- **Ask tab** — two-phase evaluation:
+  - **Quick** (per-pipeline): Relevance + Coherence → runs as soon as a response finishes streaming.
+  - **Full** (both pipelines): Groundedness + Similarity + Retrieval → runs once both RAG and GraphRAG complete, using GraphRAG as the ground truth.
+- **Build tab** — single-pass evaluation: all five metrics run together after each query.
 
-Scores appear as badges next to each response in the Ask tab. See [eval/README.md](eval/README.md) for batch eval scripts and dataset details.
+Scores appear as badges next to each response. See [eval/README.md](eval/README.md) for batch eval scripts and dataset details.
 
 ## Additional Details
 

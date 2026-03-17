@@ -20,11 +20,14 @@ React + Vite client (`client/`) with Fluent UI v9, backed by a FastAPI server (`
 
 ### Server (`server/`)
 
-FastAPI application with three routers:
+FastAPI application with six routers:
 
 - **Query** (`endpoints/query.py`) — SSE streaming endpoints for RAG and GraphRAG search
 - **Questions** (`endpoints/questions.py`) — AI-generated question suggestions
 - **Evaluate** (`endpoints/evaluate.py`) — Response quality scoring via Azure AI Evaluation SDK
+- **Graph** (`endpoints/graph.py`) — Pre-indexed knowledge graph data for the Explore tab
+- **Build** (`endpoints/build.py`) — End-to-end pipeline: memo generation, indexing, querying, and evaluation
+- **Feedback** (`endpoints/feedback.py`) — User feedback collection
 
 ### Query Pipeline
 
@@ -40,12 +43,14 @@ FastAPI application with three routers:
 
 ### Evaluation Pipeline
 
-Uses Azure AI Evaluation SDK (`azure-ai-evaluation`) with three evaluators run in parallel per response:
+Uses Azure AI Evaluation SDK (`azure-ai-evaluation`) with five evaluators:
 - **RelevanceEvaluator** — does the response answer the question?
-- **GroundednessEvaluator** — are claims supported by source text?
 - **CoherenceEvaluator** — is the response well-structured and logical?
+- **GroundednessEvaluator** — are claims supported by source text?
+- **SimilarityEvaluator** — how similar are the RAG and GraphRAG responses?
+- **RetrievalEvaluator** — quality of the retrieved source documents
 
-Scores are 1–5, normalized to 0–100% and averaged for an overall score. Each side (RAG/GraphRAG) evaluates independently as soon as its stream finishes.
+Scores are 1–5, normalized to 0–100%. The Ask tab evaluates in two phases: quick (relevance + coherence) fires per-pipeline as soon as streaming completes, then full (groundedness + similarity + retrieval) fires once both pipelines finish. The Build tab evaluates all five metrics in a single pass after each query.
 
 ### SSE Streaming Protocol
 
@@ -53,23 +58,34 @@ Server emits SSE events with `data:` lines. Newlines within a chunk are encoded 
 
 ### API Endpoints
 
-| Method | Endpoint                    | Purpose                                      |
-| ------ | --------------------------- | -------------------------------------------- |
-| POST   | `/api/query/rag`            | Stream RAG answer via SSE                    |
-| POST   | `/api/query/graphrag`       | Stream GraphRAG answer via SSE               |
-| GET    | `/api/questions/ask`        | AI-generated question suggestions            |
-| POST   | `/api/evaluate/single`      | Evaluate a single response (3 metrics)       |
-| POST   | `/api/evaluate`             | Evaluate both RAG + GraphRAG responses       |
-| GET    | `/api/graph/explore`        | Full graph for 3D visualization              |
-| POST   | `/api/build/generate`       | Foundry agent memo generation                |
-| POST   | `/api/build/index`          | Trigger GraphRAG indexing pipeline           |
-| POST   | `/api/build/questions`      | Generate questions from new graph            |
-| POST   | `/api/build/query`          | Query the build-tab graph                    |
+| Method | Endpoint                       | Purpose                                      |
+| ------ | ------------------------------ | -------------------------------------------- |
+| POST   | `/api/query/rag`               | Stream RAG answer via SSE                    |
+| POST   | `/api/query/graphrag`          | Stream GraphRAG answer via SSE               |
+| GET    | `/api/questions/ask`           | AI-generated question suggestions            |
+| POST   | `/api/evaluate/quick`          | Quick eval: relevance + coherence            |
+| POST   | `/api/evaluate/full`           | Full eval: groundedness + similarity + retrieval |
+| GET    | `/api/graph/explore`           | Full graph for 3D visualization              |
+| POST   | `/api/build/generate`          | Foundry agent memo generation                |
+| POST   | `/api/build/index`             | Trigger GraphRAG indexing pipeline (SSE progress) |
+| GET    | `/api/build/graph/{session_id}`| Fetch indexed graph for a build session      |
+| POST   | `/api/build/questions`         | Generate questions from new graph            |
+| POST   | `/api/build/query`             | Query the build-tab graph via SSE            |
+| POST   | `/api/build/evaluate`          | Evaluate a build query response (5 metrics)  |
+| POST   | `/api/build/reset`             | Reset and clean up a build session           |
+| POST   | `/api/feedback`                | Submit user feedback                         |
 
 ### Client Architecture
 
-- **API layer** (`src/api/ask.api.ts`) — SSE consumption with `consumeSSE()` helper, streaming callbacks, and `AbortController` for cancellation
-- **Hooks** (`src/hooks/ask.hooks.ts`) — `useStreamingQuery()` manages concurrent stream state, TTFT measurement (via `performance.now()` refs), token estimation (~4 chars/token), and auto-triggered per-side evaluation
+- **API layer** (`src/api/`) — SSE consumption with `consumeSSE()` helper, streaming callbacks, and `AbortController` for cancellation
+  - `ask.api.ts` — RAG/GraphRAG streaming, question fetching, phased evaluation
+  - `explore.api.ts` — Pre-built graph data fetching
+  - `build.api.ts` — Memo generation, indexing with SSE progress, build-tab querying and evaluation
+- **Hooks** (`src/hooks/`)
+  - `ask.hooks.ts` — `useStreamingQuery()` manages concurrent stream state, TTFT measurement (via `performance.now()` refs), token estimation (~4 chars/token), and auto-triggered per-side evaluation
+  - `explore.hooks.ts` — `useExploreGraph()` fetches and caches graph data via TanStack Query
+  - `build.hooks.ts` — `useBuildWizard()` orchestrates the full build pipeline (scenario → generate → index → query → evaluate) with localStorage persistence
+  - `storage.ts` — localStorage persistence helpers
 - **Markdown rendering** — `react-markdown` with `remark-gfm` for GFM tables, strikethrough, and task lists
 
 ### Stack

@@ -18,11 +18,11 @@ src/
   api/
     ask.api.ts               # SSE streaming, eval API calls
     explore.api.ts           # Graph data fetching
-    build.api.ts             # Memo generation + indexing
+    build.api.ts             # Memo generation, indexing, build querying + eval
   hooks/
     ask.hooks.ts             # Streaming state, phased eval orchestration
     explore.hooks.ts         # Graph data hook
-    build.hooks.ts           # Build pipeline hook
+    build.hooks.ts           # Build pipeline wizard hook
     storage.ts               # localStorage persistence helpers
   components/
     Header.tsx               # Navigation header
@@ -30,10 +30,16 @@ src/
       QueryInput.tsx         # Search input with suggestion pills
       QueryPanel.tsx         # Markdown response panel with streaming
       EvalBadge.tsx          # Evaluation score badge with tooltip
+      FoundryLogo.tsx        # Foundry SVG logo component
+    build/
+      ScenarioSelector.tsx   # Scenario cards + memo count slider
+      MemoList.tsx           # Accordion of generated memos + index button
+      BuildGraph.tsx         # 3D graph preview of indexed entities
+      BuildQueryPanel.tsx    # Query input, question suggestions, responses, eval badges
     tabs/
       Ask.tsx                # Ask tab layout (two-panel + metrics)
-      Explore.tsx            # Explore tab (3D graph)
-      Build.tsx              # Build tab (pipeline wizard)
+      Explore.tsx            # Explore tab (3D graph + detail drawers)
+      Build.tsx              # Build tab (pipeline wizard + graph + query)
 ```
 
 ## Setup
