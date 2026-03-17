@@ -14,7 +14,7 @@ import {
   ArrowUpRight12Regular,
   Dismiss24Regular,
 } from "@fluentui/react-icons";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ForceGraph3D, {
   type ForceGraphMethods,
   type NodeObject,
@@ -196,11 +196,27 @@ const Explore = () => {
   const { data, isLoading, isError } = useExploreGraph();
   const fgRef = useRef<ForceGraphMethods<NodeObject> | undefined>(undefined);
   const [selected, setSelected] = useState<SelectedItem | null>(null);
-  const [hoverTooltip, setHoverTooltip] = useState<{
-    text: string;
-    x: number;
-    y: number;
-  } | null>(null);
+  const [hoverTooltip, setHoverTooltip] = useState<string | null>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  const mousePos = useRef({ x: 0, y: 0 });
+
+  // Track mouse and update tooltip position directly via DOM for smooth following
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mousePos.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    if (tooltipRef.current) {
+      tooltipRef.current.style.left = `${mousePos.current.x + 14}px`;
+      tooltipRef.current.style.top = `${mousePos.current.y + 14}px`;
+    }
+  }, []);
+
+  // Sync tooltip DOM position when tooltip text changes (first render frame)
+  useEffect(() => {
+    if (hoverTooltip && tooltipRef.current) {
+      tooltipRef.current.style.left = `${mousePos.current.x + 14}px`;
+      tooltipRef.current.style.top = `${mousePos.current.y + 14}px`;
+    }
+  }, [hoverTooltip]);
 
   // Community lookup
   const communityMap = useMemo(() => {
@@ -253,7 +269,6 @@ const Explore = () => {
 
   const handleNodeHover = useCallback(
     (node: NodeObject | null, prevNode: NodeObject | null) => {
-      // Update cursor
       const el = fgRef.current?.renderer()?.domElement;
       if (el) el.style.cursor = node ? "pointer" : "default";
 
@@ -263,20 +278,7 @@ const Explore = () => {
       }
       if (node) {
         const gn = nodeMap.get(node.id as string);
-        if (gn) {
-          const screen = fgRef.current?.graph2ScreenCoords(
-            node.x ?? 0,
-            node.y ?? 0,
-            node.z ?? 0,
-          );
-          if (screen) {
-            setHoverTooltip({
-              text: `${gn.name} (${gn.type})`,
-              x: screen.x,
-              y: screen.y,
-            });
-          }
-        }
+        if (gn) setHoverTooltip(`${gn.name} (${gn.type})`);
       }
     },
     [nodeMap],
@@ -292,25 +294,7 @@ const Explore = () => {
         return;
       }
       const desc = (link as LinkObject & { description?: string }).description;
-      if (desc) {
-        const sourceNode =
-          typeof link.source === "object" ? (link.source as NodeObject) : null;
-        const targetNode =
-          typeof link.target === "object" ? (link.target as NodeObject) : null;
-        if (sourceNode && targetNode) {
-          const mx = ((sourceNode.x ?? 0) + (targetNode.x ?? 0)) / 2;
-          const my = ((sourceNode.y ?? 0) + (targetNode.y ?? 0)) / 2;
-          const mz = ((sourceNode.z ?? 0) + (targetNode.z ?? 0)) / 2;
-          const screen = fgRef.current?.graph2ScreenCoords(mx, my, mz);
-          if (screen) {
-            setHoverTooltip({
-              text: desc,
-              x: screen.x,
-              y: screen.y,
-            });
-          }
-        }
-      }
+      if (desc) setHoverTooltip(desc);
     },
     [],
   );
@@ -409,7 +393,7 @@ const Explore = () => {
   return (
     <div className={styles.root}>
       {/* Graph */}
-      <div className={styles.graphContainer}>
+      <div className={styles.graphContainer} onMouseMove={handleMouseMove}>
         <ForceGraph3D
           ref={fgRef}
           graphData={data}
@@ -440,16 +424,10 @@ const Explore = () => {
           }}
         />
 
-        {/* Hover tooltip */}
+        {/* Hover tooltip — positioned via ref in handleMouseMove */}
         {hoverTooltip && (
-          <div
-            className={styles.tooltip}
-            style={{
-              left: hoverTooltip.x + 12,
-              top: hoverTooltip.y - 20,
-            }}
-          >
-            {hoverTooltip.text}
+          <div ref={tooltipRef} className={styles.tooltip}>
+            {hoverTooltip}
           </div>
         )}
 
