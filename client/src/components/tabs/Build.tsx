@@ -171,12 +171,19 @@ const Build = () => {
             disabled={step !== "configure" && step !== "generating"}
           />
 
-          {/* Generating spinner */}
+          {/* Generating progress */}
           {step === "generating" && (
             <>
               <div className={styles.divider} />
-              <div className={styles.centered} style={{ height: "60px" }}>
-                <Spinner size="small" label="Generating memos…" />
+              <div className={styles.progressSection}>
+                <span className={styles.sectionLabel}>Generating</span>
+                <ProgressBar />
+                <div className={styles.progressInfo}>
+                  <Spinner size="extra-tiny" />
+                  <span className={styles.progressText}>
+                    Generating {memoCount} interconnected memos…
+                  </span>
+                </div>
               </div>
             </>
           )}
