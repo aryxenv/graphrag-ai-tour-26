@@ -220,7 +220,7 @@ const Header = ({ activeTab, onTabChange, showToast }: HeaderProps) => {
         </Popover>
 
         <a
-          href="https://github.com/microsoft/graphrag"
+          href="https://github.com/aryxenv/graphrag-ai-tour-26/"
           target="_blank"
           rel="noopener noreferrer"
           className={styles.iconBtn}
