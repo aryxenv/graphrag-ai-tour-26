@@ -211,6 +211,7 @@ async def build_query(body: QueryRequest, request: Request):
     async def sse_generator():
         yield f"event: engine\ndata: {engine}\n\n"
 
+        output_tokens = 0
         if engine == "global":
             stream = global_search_streaming(
                 config=config,
@@ -251,8 +252,11 @@ async def build_query(body: QueryRequest, request: Request):
         async for chunk in stream:
             if await request.is_disconnected():
                 break
-            yield f"data: {chunk}\n\n"
+            escaped = chunk.replace("\n", "\ndata: ")
+            yield f"data: {escaped}\n\n"
+            output_tokens += len(chunk) // 4
 
+        yield f"event: usage\ndata: {_input_tokens}:{output_tokens}\n\n"
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(
