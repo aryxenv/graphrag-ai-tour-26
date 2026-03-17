@@ -10,9 +10,9 @@ A hands-on demo built for the Microsoft Foundry booth at AI Tour Brussels 2026. 
 
 The app has three tabs:
 
-- **Ask**: Submit a question and see GraphRAG and vanilla RAG answer side by side. Pre-generated questions highlight where GraphRAG excels: multi-hop reasoning, cross-document synthesis, and global summarization.
-- **Explore**: Browse a 3D force-directed visualization of a pre-built knowledge graph. Click any node to inspect entities and relationships extracted by GraphRAG.
-- **Build**: Walk through the full pipeline end to end. Pick a scenario, generate synthetic corporate memos with a Foundry agent, run GraphRAG indexing, and then query the resulting graph.
+- **Ask**: Submit a question and see GraphRAG and vanilla RAG answer side by side. Pre-generated questions highlight where GraphRAG excels: multi-hop reasoning, cross-document synthesis, and global summarization. ([demo video](videos/demo_ask.mp4))
+- **Explore**: Browse a 3D force-directed visualization of a pre-built knowledge graph. Click any node to inspect entities and relationships extracted by GraphRAG. ([demo video](videos/demo_explore.mp4))
+- **Build**: Walk through the full pipeline end to end. Pick a scenario, generate synthetic corporate memos with a Foundry agent, run GraphRAG indexing, and then query the resulting graph. ([demo video](videos/demo_build.mp4))
 
 ## Architecture
 
