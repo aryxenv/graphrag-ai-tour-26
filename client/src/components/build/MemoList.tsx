@@ -46,6 +46,7 @@ const useStyles = makeStyles({
     whiteSpace: "pre-wrap",
     maxHeight: "200px",
     overflowY: "auto",
+    marginBottom: "12px",
   },
   actions: {
     display: "flex",
