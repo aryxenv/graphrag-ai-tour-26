@@ -9,3 +9,4 @@ openai>=2.26.0
 pandas>=2.3.3
 python-dotenv>=1.2.2
 uvicorn>=0.41.0
+black>=24.0.0

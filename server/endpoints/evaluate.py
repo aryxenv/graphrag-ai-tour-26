@@ -37,6 +37,7 @@ def _get_graphrag_tables() -> dict[str, pd.DataFrame]:
     global _graphrag_tables
     if _graphrag_tables is None:
         from pathlib import Path
+
         out = Path(__file__).resolve().parent.parent / "output"
         _graphrag_tables = {
             "text_units": pd.read_parquet(out / "text_units.parquet"),
@@ -99,14 +100,17 @@ def _normalize(score: float) -> float:
 
 # ── Schemas ───────────────────────────────────────────────────────────────────
 
+
 class QuickScores(BaseModel):
     """Phase 1: scores that only need query + response."""
+
     relevance: float
     coherence: float
 
 
 class FullScores(BaseModel):
     """Phase 2: scores that need context and/or ground_truth."""
+
     groundedness: float
     similarity: float
     retrieval: float
@@ -130,6 +134,7 @@ class FullEvalResponse(BaseModel):
 
 # ── Phase 1: Quick eval (relevance + coherence) ─────────────────────────────
 
+
 @router.post("/quick", response_model=QuickScores)
 async def evaluate_quick(body: QuickEvalRequest):
     """Run relevance + coherence evaluators. No context or ground_truth needed.
@@ -138,11 +143,13 @@ async def evaluate_quick(body: QuickEvalRequest):
     """
     with ThreadPoolExecutor(max_workers=2) as pool:
         rel_fut = pool.submit(
-            _run_evaluator, RelevanceEvaluator,
+            _run_evaluator,
+            RelevanceEvaluator,
             {"query": body.query, "response": body.response},
         )
         coh_fut = pool.submit(
-            _run_evaluator, CoherenceEvaluator,
+            _run_evaluator,
+            CoherenceEvaluator,
             {"query": body.query, "response": body.response},
         )
 
@@ -154,19 +161,25 @@ async def evaluate_quick(body: QuickEvalRequest):
 
 # ── Phase 2: Full eval (groundedness + similarity + retrieval) ───────────────
 
-def _full_eval_one(query: str, response: str, context: str, ground_truth: str) -> FullScores:
+
+def _full_eval_one(
+    query: str, response: str, context: str, ground_truth: str
+) -> FullScores:
     """Run groundedness, similarity, and retrieval for one pipeline."""
     with ThreadPoolExecutor(max_workers=3) as pool:
         ground_fut = pool.submit(
-            _run_evaluator, GroundednessEvaluator,
+            _run_evaluator,
+            GroundednessEvaluator,
             {"query": query, "response": response, "context": context},
         )
         sim_fut = pool.submit(
-            _run_evaluator, SimilarityEvaluator,
+            _run_evaluator,
+            SimilarityEvaluator,
             {"query": query, "response": response, "ground_truth": ground_truth},
         )
         ret_fut = pool.submit(
-            _run_evaluator, RetrievalEvaluator,
+            _run_evaluator,
+            RetrievalEvaluator,
             {"query": query, "context": context},
         )
 
@@ -200,11 +213,17 @@ async def evaluate_full(body: FullEvalRequest):
     with ThreadPoolExecutor(max_workers=2) as pool:
         rag_fut = pool.submit(
             _full_eval_one,
-            body.query, body.rag_response, rag_context, ground_truth,
+            body.query,
+            body.rag_response,
+            rag_context,
+            ground_truth,
         )
         graphrag_fut = pool.submit(
             _full_eval_one,
-            body.query, body.graphrag_response, graphrag_context, ground_truth,
+            body.query,
+            body.graphrag_response,
+            graphrag_context,
+            ground_truth,
         )
 
     return FullEvalResponse(

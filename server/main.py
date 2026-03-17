@@ -7,8 +7,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Suppress litellm LoggingWorker RuntimeWarning on GraphRAG streams
-warnings.filterwarnings("ignore", message=".*Event loop is closed.*", category=RuntimeWarning)
-warnings.filterwarnings("ignore", message=".*coroutine.*was never awaited.*", category=RuntimeWarning)
+warnings.filterwarnings(
+    "ignore", message=".*Event loop is closed.*", category=RuntimeWarning
+)
+warnings.filterwarnings(
+    "ignore", message=".*coroutine.*was never awaited.*", category=RuntimeWarning
+)
 
 from endpoints.query import router as query_router
 from endpoints.questions import router as questions_router

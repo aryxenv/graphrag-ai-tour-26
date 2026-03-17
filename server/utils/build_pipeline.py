@@ -180,6 +180,7 @@ def generate_memos(scenario: str, count: int) -> list[dict]:
 # Workspace management
 # ---------------------------------------------------------------------------
 
+
 def create_workspace(session_id: str) -> Path:
     """Create an isolated workspace for a build session.
 
@@ -277,6 +278,7 @@ def write_memos_to_workspace(session_id: str, memos: list[dict]) -> None:
 # Indexing
 # ---------------------------------------------------------------------------
 
+
 class _BuildProgressCallbacks:
     """WorkflowCallbacks implementation that delegates to a progress_callback."""
 
@@ -341,6 +343,7 @@ def run_indexing(session_id: str, progress_callback=None) -> list:
 # ---------------------------------------------------------------------------
 # Graph loading (mirrors server/endpoints/graph.py but reads from workspace)
 # ---------------------------------------------------------------------------
+
 
 def load_build_graph(session_id: str) -> dict:
     """Load the indexed graph from the session workspace output.
@@ -426,6 +429,7 @@ def load_build_graph(session_id: str) -> dict:
 # ---------------------------------------------------------------------------
 # Question generation (mirrors server/utils/graphrag_questions.py)
 # ---------------------------------------------------------------------------
+
 
 def generate_build_questions(session_id: str, count: int = 3) -> list[dict]:
     """Generate questions from the session workspace's community reports.
@@ -570,6 +574,7 @@ def extract_build_context(session_id: str, response_text: str) -> str:
 # ---------------------------------------------------------------------------
 # Cleanup
 # ---------------------------------------------------------------------------
+
 
 def cleanup_workspace(session_id: str) -> None:
     """Delete the entire workspace directory for a build session."""

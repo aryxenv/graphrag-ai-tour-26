@@ -290,7 +290,11 @@ async def build_evaluate(body: EvaluateRequest):
         similarity_fut = pool.submit(
             _run_evaluator,
             SimilarityEvaluator,
-            {"query": body.query, "response": body.response, "ground_truth": body.response},
+            {
+                "query": body.query,
+                "response": body.response,
+                "ground_truth": body.response,
+            },
         )
         retrieval_fut = pool.submit(
             _run_evaluator,

@@ -28,8 +28,11 @@ def _get_client() -> AzureOpenAI:
 
 def _get_token_provider():
     from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+
     credential = DefaultAzureCredential()
-    return get_bearer_token_provider(credential, "https://cognitiveservices.azure.com/.default")
+    return get_bearer_token_provider(
+        credential, "https://cognitiveservices.azure.com/.default"
+    )
 
 
 def _load_report_summaries(level: int, max_reports: int = 15) -> str:
@@ -49,7 +52,9 @@ def _load_report_summaries(level: int, max_reports: int = 15) -> str:
 
 def _parse_questions(raw_response: str) -> list[dict[str, str]]:
     """Parse numbered, typed questions from the LLM response."""
-    type_pattern = re.compile(r"\[(cross-document|global|hidden|timeline)\]\s*", re.IGNORECASE)
+    type_pattern = re.compile(
+        r"\[(cross-document|global|hidden|timeline)\]\s*", re.IGNORECASE
+    )
     questions: list[dict[str, str]] = []
 
     for line in raw_response.strip().splitlines():
