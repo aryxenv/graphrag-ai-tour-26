@@ -152,9 +152,7 @@ const ScenarioSelector = ({
         {SCENARIOS.map((s) => (
           <div
             key={s.value}
-            className={
-              scenario === s.value ? styles.cardSelected : styles.card
-            }
+            className={scenario === s.value ? styles.cardSelected : styles.card}
             onClick={() => !disabled && onScenarioChange(s.value)}
           >
             <span className={styles.cardIcon}>{s.icon}</span>
@@ -185,9 +183,12 @@ const ScenarioSelector = ({
           size="medium"
           onClick={onGenerate}
           disabled={disabled}
-          icon={isGenerating ? <Spinner size="tiny" /> : <FoundryLogo size={16} />}
+          icon={
+            isGenerating ? <Spinner size="tiny" /> : <FoundryLogo size={16} />
+          }
         >
-          {isGenerating ? "Generating…" : "Generate Memos"}</Button>
+          {isGenerating ? "Generating…" : "Generate Memos"}
+        </Button>
       </div>
     </div>
   );

@@ -114,8 +114,7 @@ export async function generateBuildQuestions(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ session_id: sessionId }),
   });
-  if (!res.ok)
-    throw new Error(`Question generation failed: ${res.status}`);
+  if (!res.ok) throw new Error(`Question generation failed: ${res.status}`);
   return res.json();
 }
 

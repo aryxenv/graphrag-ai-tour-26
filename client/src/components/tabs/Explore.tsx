@@ -10,10 +10,7 @@ import {
   Subtitle2,
   tokens,
 } from "@fluentui/react-components";
-import {
-  ArrowUpRight12Regular,
-  Dismiss24Regular,
-} from "@fluentui/react-icons";
+import { ArrowUpRight12Regular, Dismiss24Regular } from "@fluentui/react-icons";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ForceGraph3D, {
   type ForceGraphMethods,
@@ -286,20 +283,17 @@ const Explore = () => {
     [nodeMap],
   );
 
-  const handleLinkHover = useCallback(
-    (link: LinkObject | null) => {
-      const el = fgRef.current?.renderer()?.domElement;
-      if (el) el.style.cursor = link ? "pointer" : "default";
+  const handleLinkHover = useCallback((link: LinkObject | null) => {
+    const el = fgRef.current?.renderer()?.domElement;
+    if (el) el.style.cursor = link ? "pointer" : "default";
 
-      if (!link) {
-        setHoverTooltip(null);
-        return;
-      }
-      const desc = (link as LinkObject & { description?: string }).description;
-      if (desc) setHoverTooltip(desc);
-    },
-    [],
-  );
+    if (!link) {
+      setHoverTooltip(null);
+      return;
+    }
+    const desc = (link as LinkObject & { description?: string }).description;
+    if (desc) setHoverTooltip(desc);
+  }, []);
 
   const nodeThreeObject = useCallback(
     (node: NodeObject) => {
@@ -473,9 +467,7 @@ const Explore = () => {
               </button>
             }
           >
-            {selected?.kind === "node"
-              ? selected.data.name
-              : "Relationship"}
+            {selected?.kind === "node" ? selected.data.name : "Relationship"}
           </DrawerHeaderTitle>
         </DrawerHeader>
         <DrawerBody>

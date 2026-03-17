@@ -315,9 +315,7 @@ const BuildQueryPanel = ({
     );
   } else {
     content = (
-      <div className={styles.emptyState}>
-        Select a question or ask your own
-      </div>
+      <div className={styles.emptyState}>Select a question or ask your own</div>
     );
   }
 

@@ -94,7 +94,9 @@ const MemoList = ({ memos, onIndex, isIndexing, disabled }: Props) => {
           size="medium"
           onClick={onIndex}
           disabled={disabled || isIndexing}
-          icon={isIndexing ? <Spinner size="tiny" /> : <FoundryLogo size={16} />}
+          icon={
+            isIndexing ? <Spinner size="tiny" /> : <FoundryLogo size={16} />
+          }
         >
           {isIndexing ? "Indexing…" : "Index with GraphRAG"}
         </Button>

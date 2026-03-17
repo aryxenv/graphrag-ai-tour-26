@@ -140,8 +140,7 @@ const Build = () => {
     reset,
   } = useBuildWizard();
 
-  const wizardDone =
-    step === "graph" || step === "ready";
+  const wizardDone = step === "graph" || step === "ready";
   const showMemos =
     step === "memos" ||
     step === "indexing" ||

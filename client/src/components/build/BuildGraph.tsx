@@ -167,7 +167,11 @@ const BuildGraph = ({ data }: Props) => {
   }
 
   return (
-    <div className={styles.root} ref={containerRef} onMouseMove={handleMouseMove}>
+    <div
+      className={styles.root}
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+    >
       <ForceGraph3D
         ref={fgRef}
         graphData={data}

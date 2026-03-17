@@ -236,8 +236,7 @@ export function useBuildWizard() {
         (chunk) => {
           if (!firstChunkRef.current) {
             firstChunkRef.current = true;
-            ttftRef.current =
-              (performance.now() - startTimeRef.current) / 1000;
+            ttftRef.current = (performance.now() - startTimeRef.current) / 1000;
           }
           setStream((prev) => ({
             ...prev,
