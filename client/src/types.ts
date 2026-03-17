@@ -4,17 +4,29 @@ export interface GraphNode {
   type: "person" | "organization" | "event" | "geo" | "project" | "concept";
   description?: string;
   community?: number;
+  degree: number;
+  frequency: number;
+  textUnits: string[];
 }
 
 export interface GraphLink {
   source: string;
   target: string;
-  label?: string;
+  description?: string;
+  weight: number;
+}
+
+export interface Community {
+  id: number;
+  title: string;
+  summary: string;
+  level: number;
 }
 
 export interface GraphData {
   nodes: GraphNode[];
   links: GraphLink[];
+  communities: Community[];
 }
 
 export interface QueryResult {

@@ -31,12 +31,17 @@ export async function indexMemos(memos: Memo[]): Promise<GraphData> {
       name: m.title,
       type: "concept" as const,
       description: m.content.slice(0, 60),
+      degree: 1,
+      frequency: 1,
+      textUnits: [],
     })),
     links: memos.slice(1).map((m, i) => ({
       source: `memo-${memos[i].id}`,
       target: `memo-${m.id}`,
-      label: "related to",
+      description: "related to",
+      weight: 1.0,
     })),
+    communities: [],
   };
 }
 
