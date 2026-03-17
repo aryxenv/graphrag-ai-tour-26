@@ -6,7 +6,7 @@ import {
   Spinner,
   tokens,
 } from "@fluentui/react-components";
-import { ArrowReset20Regular } from "@fluentui/react-icons";
+import { ArrowReset20Regular, Info12Regular } from "@fluentui/react-icons";
 import { useBuildWizard } from "../../hooks";
 import BuildGraph from "../build/BuildGraph";
 import BuildQueryPanel from "../build/BuildQueryPanel";
@@ -102,6 +102,14 @@ const useStyles = makeStyles({
     height: "100%",
     width: "100%",
   },
+  infoText: {
+    display: "flex",
+    alignItems: "center",
+    gap: "4px",
+    fontSize: "11px",
+    color: tokens.colorNeutralForeground4,
+    marginTop: "4px",
+  },
 });
 
 const Build = () => {
@@ -185,6 +193,9 @@ const Build = () => {
                     Generating {memoCount} interconnected memos…
                   </span>
                 </div>
+                <div className={styles.infoText}>
+                  <Info12Regular /> Generating memos may take up to 30 seconds
+                </div>
               </div>
             </>
           )}
@@ -219,6 +230,9 @@ const Build = () => {
                     </span>
                   </div>
                 )}
+                <div className={styles.infoText}>
+                  <Info12Regular /> Indexing may take up to 5 minutes
+                </div>
               </div>
             </>
           )}
