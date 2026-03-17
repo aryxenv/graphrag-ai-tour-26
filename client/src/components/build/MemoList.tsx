@@ -89,6 +89,7 @@ const MemoList = ({ memos, onIndex, isIndexing, disabled }: Props) => {
       <div className={styles.actions}>
         <Button
           appearance="primary"
+          size="medium"
           onClick={onIndex}
           disabled={disabled || isIndexing}
           icon={isIndexing ? <Spinner size="tiny" /> : undefined}

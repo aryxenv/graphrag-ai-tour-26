@@ -181,6 +181,7 @@ const ScenarioSelector = ({
       <div className={styles.actions}>
         <Button
           appearance="primary"
+          size="medium"
           onClick={onGenerate}
           disabled={disabled || isGenerating}
           icon={isGenerating ? <Spinner size="tiny" /> : undefined}
