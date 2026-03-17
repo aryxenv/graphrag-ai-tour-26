@@ -31,5 +31,9 @@ for key, value in results.get("metrics", {}).items():
     print(f"  {key}: {value}")
 
 with open(output_path, "w", encoding="utf-8") as f:
-    json.dump({"metrics": results.get("metrics", {}), "rows": results.get("rows", [])}, f, indent=2)
+    json.dump(
+        {"metrics": results.get("metrics", {}), "rows": results.get("rows", [])},
+        f,
+        indent=2,
+    )
 print(f"\nDetailed results saved to {output_path}")

@@ -35,14 +35,16 @@ def sanitize_text(text: str) -> str:
 
 
 # Matches [Data: Sources (1, 2, 3)] or [Data: Reports (21, 70, 69, 68, 20, +more)]
-CITATION_PATTERN = re.compile(
-    r"\[Data:\s*(Sources|Reports|Entities)\s*\(([^)]+)\)\]"
-)
+CITATION_PATTERN = re.compile(r"\[Data:\s*(Sources|Reports|Entities)\s*\(([^)]+)\)\]")
 
 
 def parse_citations(text: str) -> dict[str, set[int]]:
     """Extract all citation IDs grouped by type (Sources, Reports, Entities)."""
-    citations: dict[str, set[int]] = {"Sources": set(), "Reports": set(), "Entities": set()}
+    citations: dict[str, set[int]] = {
+        "Sources": set(),
+        "Reports": set(),
+        "Entities": set(),
+    }
     for match in CITATION_PATTERN.finditer(text):
         cite_type = match.group(1)
         ids_str = match.group(2)
@@ -171,10 +173,12 @@ def main() -> None:
         # 2. Parse citations from the answer and resolve contexts
         citations = parse_citations(answer_text)
         total_cited = sum(len(v) for v in citations.values())
-        print(f"  Found {total_cited} citations: "
-              f"Sources={sorted(citations['Sources'])}, "
-              f"Reports={sorted(citations['Reports'])}, "
-              f"Entities={sorted(citations['Entities'])}")
+        print(
+            f"  Found {total_cited} citations: "
+            f"Sources={sorted(citations['Sources'])}, "
+            f"Reports={sorted(citations['Reports'])}, "
+            f"Entities={sorted(citations['Entities'])}"
+        )
 
         contexts = [sanitize_text(c) for c in resolve_contexts(citations, tables)]
         print(f"  Resolved {len(contexts)} context items")
@@ -184,12 +188,14 @@ def main() -> None:
         print(f"  Type: {q_type}")
 
         # Build Foundry-compatible row
-        processed.append({
-            "query": query,
-            "ground_truth": answer_text,
-            "response": answer_text,
-            "context": "\n\n---\n\n".join(contexts),
-        })
+        processed.append(
+            {
+                "query": query,
+                "ground_truth": answer_text,
+                "response": answer_text,
+                "context": "\n\n---\n\n".join(contexts),
+            }
+        )
 
     # Write processed dataset
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:

@@ -113,6 +113,7 @@ def run_graphrag_pipeline(query: str, tables: dict) -> dict:
         return "".join(chunks)
 
     import warnings
+
     loop = asyncio.new_event_loop()
     try:
         response_text = loop.run_until_complete(_collect())
@@ -148,14 +149,24 @@ def _build_evaluators() -> dict:
         "api_version": "2024-12-01-preview",
     }
     return {
-        "groundedness": GroundednessEvaluator(model_config=model_config, credential=credential),
-        "relevance": RelevanceEvaluator(model_config=model_config, credential=credential),
-        "coherence": CoherenceEvaluator(model_config=model_config, credential=credential),
-        "similarity": SimilarityEvaluator(model_config=model_config, credential=credential),
+        "groundedness": GroundednessEvaluator(
+            model_config=model_config, credential=credential
+        ),
+        "relevance": RelevanceEvaluator(
+            model_config=model_config, credential=credential
+        ),
+        "coherence": CoherenceEvaluator(
+            model_config=model_config, credential=credential
+        ),
+        "similarity": SimilarityEvaluator(
+            model_config=model_config, credential=credential
+        ),
     }
 
 
-def _score_one(evaluators: dict, *, query: str, response: str, context: str, ground_truth: str) -> dict:
+def _score_one(
+    evaluators: dict, *, query: str, response: str, context: str, ground_truth: str
+) -> dict:
     """Run all evaluators on a single result (parallel). Returns flat scores dict."""
     scores: dict = {}
 
@@ -169,22 +180,30 @@ def _score_one(evaluators: dict, *, query: str, response: str, context: str, gro
     with ThreadPoolExecutor(max_workers=4) as pool:
         futs = {
             "groundedness": pool.submit(
-                _safe, "groundedness",
-                lambda: evaluators["groundedness"](query=query, response=response, context=context),
+                _safe,
+                "groundedness",
+                lambda: evaluators["groundedness"](
+                    query=query, response=response, context=context
+                ),
             ),
             "relevance": pool.submit(
-                _safe, "relevance",
+                _safe,
+                "relevance",
                 lambda: evaluators["relevance"](query=query, response=response),
             ),
             "coherence": pool.submit(
-                _safe, "coherence",
+                _safe,
+                "coherence",
                 lambda: evaluators["coherence"](query=query, response=response),
             ),
         }
         if ground_truth:
             futs["similarity"] = pool.submit(
-                _safe, "similarity",
-                lambda: evaluators["similarity"](query=query, response=response, ground_truth=ground_truth),
+                _safe,
+                "similarity",
+                lambda: evaluators["similarity"](
+                    query=query, response=response, ground_truth=ground_truth
+                ),
             )
 
     for result in futs.values():
@@ -199,7 +218,9 @@ def _aggregate(results: list[dict]) -> dict:
     if not scored:
         return {}
 
-    metric_names = sorted({k for s in scored for k in s if isinstance(s[k], (int, float))})
+    metric_names = sorted(
+        {k for s in scored for k in s if isinstance(s[k], (int, float))}
+    )
     agg = {}
     for m in metric_names:
         vals = [s[m] for s in scored if m in s and isinstance(s[m], (int, float))]
@@ -271,7 +292,9 @@ def _print_comparison(rag_agg: dict, graphrag_agg: dict) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Batch eval: RAG vs GraphRAG")
     parser.add_argument(
-        "--pipeline", choices=["rag", "graphrag", "both"], default="both",
+        "--pipeline",
+        choices=["rag", "graphrag", "both"],
+        default="both",
         help="Which pipeline(s) to evaluate (default: both)",
     )
     args = parser.parse_args()
@@ -341,10 +364,14 @@ def main() -> None:
                     output = run_rag_pipeline(query)
                 else:
                     output = run_graphrag_pipeline(query, tables)
-                print(f"    → response {len(output['response'])} chars, context {len(output['context'])} chars")
+                print(
+                    f"    → response {len(output['response'])} chars, context {len(output['context'])} chars"
+                )
             except Exception as e:
                 print(f"    ✗ Pipeline error: {e}")
-                rows.append({"query": query, "type": qtype, "error": str(e), "scores": {}})
+                rows.append(
+                    {"query": query, "type": qtype, "error": str(e), "scores": {}}
+                )
                 continue
 
             # ── Score ──
@@ -356,16 +383,20 @@ def main() -> None:
                 context=output["context"],
                 ground_truth=gt,
             )
-            brief = {k: round(v, 1) if isinstance(v, float) else v for k, v in scores.items()}
+            brief = {
+                k: round(v, 1) if isinstance(v, float) else v for k, v in scores.items()
+            }
             print(brief)
 
-            rows.append({
-                "query": query,
-                "type": qtype,
-                "response": output["response"],
-                "context_chars": len(output["context"]),
-                "scores": scores,
-            })
+            rows.append(
+                {
+                    "query": query,
+                    "type": qtype,
+                    "response": output["response"],
+                    "context_chars": len(output["context"]),
+                    "scores": scores,
+                }
+            )
 
         # ── Aggregate & save ──
         agg = _aggregate(rows)
@@ -375,7 +406,10 @@ def main() -> None:
         with open(out_path, "w", encoding="utf-8") as f:
             json.dump(
                 {"pipeline": pl, "aggregated": agg, "questions": rows},
-                f, indent=2, ensure_ascii=False, default=str,
+                f,
+                indent=2,
+                ensure_ascii=False,
+                default=str,
             )
         print(f"\n  Saved → {out_path}")
 
