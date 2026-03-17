@@ -98,7 +98,9 @@ def ask(question: str) -> str:
 if __name__ == "__main__":
     import sys
 
-    question = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else "What is this book about?"
+    question = (
+        " ".join(sys.argv[1:]) if len(sys.argv) > 1 else "What is this book about?"
+    )
     print(f"\nQuestion: {question}\n")
     answer = ask(question)
     print(f"Answer:\n{answer}")

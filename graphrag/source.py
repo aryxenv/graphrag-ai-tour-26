@@ -10,7 +10,11 @@ reports = pd.read_parquet("output/community_reports.parquet")
 cited_entity_ids = [59, 12, 60, 13, 29, 24]
 cited_entities = entities[entities["human_readable_id"].isin(cited_entity_ids)]
 print("=== Cited Entities ===")
-print(cited_entities[["human_readable_id", "title", "type", "description"]].to_string(max_colwidth=100))
+print(
+    cited_entities[["human_readable_id", "title", "type", "description"]].to_string(
+        max_colwidth=100
+    )
+)
 
 print()
 
@@ -18,4 +22,6 @@ print()
 cited_report_ids = [6]
 cited_reports = reports[reports["human_readable_id"].isin(cited_report_ids)]
 print("=== Cited Reports ===")
-print(cited_reports[["human_readable_id", "title", "summary"]].to_string(max_colwidth=100))
+print(
+    cited_reports[["human_readable_id", "title", "summary"]].to_string(max_colwidth=100)
+)

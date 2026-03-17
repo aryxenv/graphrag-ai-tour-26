@@ -85,10 +85,16 @@ def load_and_split_documents() -> list[dict]:
         splits = text_splitter.split_text(text)
         for i, chunk in enumerate(splits):
             chunks.append(
-                {"id": f"{file_path.stem}_{i}", "content": chunk, "source": file_path.name}
+                {
+                    "id": f"{file_path.stem}_{i}",
+                    "content": chunk,
+                    "source": file_path.name,
+                }
             )
 
-    print(f"Split into {len(chunks)} chunks from {len(list(DATA_DIR.glob('*.txt')))} file(s).")
+    print(
+        f"Split into {len(chunks)} chunks from {len(list(DATA_DIR.glob('*.txt')))} file(s)."
+    )
     return chunks
 
 
