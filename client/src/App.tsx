@@ -52,23 +52,21 @@ const useStyles = makeStyles({
   content: {
     margin: "0 auto",
     position: "relative",
+    height: "calc(100vh - 48px)",
+    overflow: "hidden",
   },
-  panel: {
-    transition: "opacity 0.25s ease",
-  },
-  panelVisible: {
-    opacity: 1,
-  },
-  panelHidden: {
-    opacity: 0,
+  tabPanel: {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    right: "0",
+    bottom: "0",
+    transition: "opacity 0.2s ease",
   },
 });
 
 const App = () => {
   const [activeTab, setActiveTab] = useState<TabValue>(getTabFromHash);
-  const [displayedTab, setDisplayedTab] = useState<TabValue>(getTabFromHash);
-  const [visible, setVisible] = useState(true);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const styles = useStyles();
   const toasterId = useId("app-toaster");
   const { dispatchToast } = useToastController(toasterId);
@@ -108,22 +106,15 @@ const App = () => {
     window.location.hash = tab;
   }, []);
 
+  const prevTabRef = useRef(activeTab);
+
+  // Trigger window resize when switching to explore tab so Three.js recalculates canvas dimensions
   useEffect(() => {
-    if (activeTab === displayedTab) return;
-
-    // Fade out
-    setVisible(false);
-
-    timeoutRef.current = setTimeout(() => {
-      // Swap content, then fade in
-      setDisplayedTab(activeTab);
-      requestAnimationFrame(() => setVisible(true));
-    }, 200);
-
-    return () => clearTimeout(timeoutRef.current);
-  }, [activeTab, displayedTab]);
-
-  const ActiveComponent = TAB_COMPONENTS[displayedTab];
+    if (activeTab === "explore" && prevTabRef.current !== "explore") {
+      requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
+    }
+    prevTabRef.current = activeTab;
+  }, [activeTab]);
 
   return (
     <div className={styles.root}>
@@ -136,11 +127,24 @@ const App = () => {
       />
 
       <main className={styles.content}>
-        <div
-          className={`${styles.panel} ${visible ? styles.panelVisible : styles.panelHidden}`}
-        >
-          <ActiveComponent />
-        </div>
+        {TABS.map((tab) => {
+          const Component = TAB_COMPONENTS[tab.value];
+          const isActive = activeTab === tab.value;
+          return (
+            <div
+              key={tab.value}
+              className={styles.tabPanel}
+              style={{
+                opacity: isActive ? 1 : 0,
+                visibility: isActive ? "visible" : "hidden",
+                zIndex: isActive ? 1 : 0,
+                pointerEvents: isActive ? "auto" : "none",
+              }}
+            >
+              <Component />
+            </div>
+          );
+        })}
       </main>
     </div>
   );
