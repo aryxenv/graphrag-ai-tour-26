@@ -121,6 +121,7 @@ const Build = () => {
     graph,
     questions,
     isLoadingQuestions,
+    refreshQuestions,
     stream,
     lastQuery,
     sendQuery,
@@ -250,6 +251,7 @@ const Build = () => {
             lastQuery={lastQuery}
             questions={questions}
             isLoadingQuestions={isLoadingQuestions}
+            onRefreshQuestions={refreshQuestions}
             onSend={sendQuery}
             onStop={stopQuery}
             isStreaming={isStreaming}

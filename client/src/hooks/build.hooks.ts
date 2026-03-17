@@ -199,6 +199,15 @@ export function useBuildWizard() {
     );
   }, [sessionId]);
 
+  const refreshQuestions = useCallback(() => {
+    if (!sessionId) return;
+    setIsLoadingQuestions(true);
+    generateBuildQuestions(sessionId)
+      .then(setQuestions)
+      .catch(() => {})
+      .finally(() => setIsLoadingQuestions(false));
+  }, [sessionId]);
+
   const sendQuery = useCallback(
     (query: string) => {
       if (!sessionId) return;
@@ -321,6 +330,7 @@ export function useBuildWizard() {
     // Questions
     questions,
     isLoadingQuestions,
+    refreshQuestions,
     // Query
     stream,
     lastQuery,
