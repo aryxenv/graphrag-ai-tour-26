@@ -156,6 +156,21 @@ const BuildGraph = ({ data }: Props) => {
     [nodeMap, maxDegree],
   );
 
+  // Deep-clone graph data so ForceGraph3D's in-place mutations
+  // (replacing source/target strings with object refs) don't corrupt
+  // the React state or localStorage persistence.
+  const graphData = useMemo(
+    () =>
+      data
+        ? {
+            nodes: data.nodes.map((n) => ({ ...n })),
+            links: data.links.map((l) => ({ ...l })),
+            communities: data.communities.map((c) => ({ ...c })),
+          }
+        : null,
+    [data],
+  );
+
   if (!data) {
     return (
       <div className={styles.empty}>
@@ -166,23 +181,11 @@ const BuildGraph = ({ data }: Props) => {
     );
   }
 
-  // Deep-clone graph data so ForceGraph3D's in-place mutations
-  // (replacing source/target strings with object refs) don't corrupt
-  // the React state or localStorage persistence.
-  const graphData = useMemo(
-    () => ({
-      nodes: data.nodes.map((n) => ({ ...n })),
-      links: data.links.map((l) => ({ ...l })),
-      communities: data.communities.map((c) => ({ ...c })),
-    }),
-    [data],
-  );
-
   return (
     <div className={styles.root} ref={containerRef} onMouseMove={handleMouseMove}>
       <ForceGraph3D
         ref={fgRef}
-        graphData={graphData}
+        graphData={graphData!}
         width={dimensions.width || undefined}
         height={dimensions.height || undefined}
         backgroundColor="#151515"
