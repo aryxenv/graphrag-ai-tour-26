@@ -355,8 +355,6 @@ const BuildQueryPanel = ({
         />
       </div>
 
-      <div className={styles.divider} />
-
       {/* Answer panel */}
       <div className={styles.panel} ref={panelRef}>
         {lastQuery && <div className={styles.question}>{lastQuery}</div>}
