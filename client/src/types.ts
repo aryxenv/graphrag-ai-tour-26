@@ -48,6 +48,22 @@ export interface Memo {
 
 export type DemoScenario = "tech-startup" | "hospital" | "law-firm";
 
+export type BuildStep =
+  | "configure"
+  | "generating"
+  | "memos"
+  | "indexing"
+  | "graph"
+  | "ready";
+
+export interface BuildSession {
+  sessionId: string;
+  scenario: DemoScenario;
+  memos: Memo[];
+  graph: GraphData | null;
+  step: BuildStep;
+}
+
 export type SearchMethod = "local" | "global";
 
 export interface DemoPrompt {
