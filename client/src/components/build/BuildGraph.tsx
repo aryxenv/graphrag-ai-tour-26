@@ -65,9 +65,27 @@ interface Props {
 const BuildGraph = ({ data }: Props) => {
   const styles = useStyles();
   const fgRef = useRef<ForceGraphMethods<NodeObject> | undefined>(undefined);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [hoverTooltip, setHoverTooltip] = useState<string | null>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const mousePos = useRef({ x: 0, y: 0 });
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+  // Track container size and re-fit graph when it changes
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      const { width, height } = entries[0].contentRect;
+      if (width > 0 && height > 0) {
+        setDimensions({ width, height });
+        // Re-fit when container becomes visible (tab switch)
+        setTimeout(() => fgRef.current?.zoomToFit(400, 40), 100);
+      }
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const nodeMap = useMemo(() => {
     const map = new Map<string, GraphNode>();
@@ -151,10 +169,12 @@ const BuildGraph = ({ data }: Props) => {
   }
 
   return (
-    <div className={styles.root} onMouseMove={handleMouseMove}>
+    <div className={styles.root} ref={containerRef} onMouseMove={handleMouseMove}>
       <ForceGraph3D
         ref={fgRef}
         graphData={data}
+        width={dimensions.width || undefined}
+        height={dimensions.height || undefined}
         backgroundColor="#151515"
         nodeColor={nodeColor}
         nodeVal={nodeSize}
