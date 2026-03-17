@@ -89,6 +89,24 @@ const useStyles = makeStyles({
     fontSize: "14px",
     lineHeight: "1.6",
     color: tokens.colorNeutralForeground2,
+    "& h1": {
+      fontSize: "16px",
+      fontWeight: 600,
+      marginTop: "16px",
+      marginBottom: "8px",
+    },
+    "& h2": {
+      fontSize: "15px",
+      fontWeight: 600,
+      marginTop: "14px",
+      marginBottom: "6px",
+    },
+    "& h3": {
+      fontSize: "14px",
+      fontWeight: 600,
+      marginTop: "12px",
+      marginBottom: "4px",
+    },
   },
   emptyState: {
     flex: 1,
