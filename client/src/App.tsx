@@ -10,7 +10,7 @@ import {
   CheckmarkCircle20Filled,
   DismissCircle20Filled,
 } from "@fluentui/react-icons";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Header from "./components/Header";
 import Ask from "./components/tabs/Ask";
 import Build from "./components/tabs/Build";
@@ -52,6 +52,16 @@ const useStyles = makeStyles({
   content: {
     margin: "0 auto",
     position: "relative",
+    height: "calc(100vh - 48px)",
+    overflow: "hidden",
+  },
+  tabPanel: {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    right: "0",
+    bottom: "0",
+    transition: "opacity 0.2s ease",
   },
 });
 
@@ -96,6 +106,16 @@ const App = () => {
     window.location.hash = tab;
   }, []);
 
+  const prevTabRef = useRef(activeTab);
+
+  // Trigger window resize when switching to explore tab so Three.js recalculates canvas dimensions
+  useEffect(() => {
+    if (activeTab === "explore" && prevTabRef.current !== "explore") {
+      requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
+    }
+    prevTabRef.current = activeTab;
+  }, [activeTab]);
+
   return (
     <div className={styles.root}>
       <Toaster toasterId={toasterId} position="bottom-end" />
@@ -109,10 +129,17 @@ const App = () => {
       <main className={styles.content}>
         {TABS.map((tab) => {
           const Component = TAB_COMPONENTS[tab.value];
+          const isActive = activeTab === tab.value;
           return (
             <div
               key={tab.value}
-              style={{ display: activeTab === tab.value ? "block" : "none" }}
+              className={styles.tabPanel}
+              style={{
+                opacity: isActive ? 1 : 0,
+                visibility: isActive ? "visible" : "hidden",
+                zIndex: isActive ? 1 : 0,
+                pointerEvents: isActive ? "auto" : "none",
+              }}
             >
               <Component />
             </div>
