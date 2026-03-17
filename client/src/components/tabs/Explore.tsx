@@ -433,7 +433,7 @@ const Explore = () => {
               | undefined;
             if (controls) {
               controls.enableDamping = true;
-              controls.dampingFactor = 0.12;
+              controls.dampingFactor = 0.06;
             }
           }}
         />
