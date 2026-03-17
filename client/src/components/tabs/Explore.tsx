@@ -51,13 +51,14 @@ const useStyles = makeStyles({
   },
   graphContainer: {
     flex: 1,
+    minWidth: 0,
     position: "relative",
+    overflow: "hidden",
   },
   drawer: {
     backgroundColor: "#1e1e1e",
     borderLeft: "1px solid rgba(255,255,255,0.08)",
-    width: "380px",
-    maxWidth: "380px",
+    minWidth: "380px",
   },
   drawerClose: {
     display: "flex",
@@ -457,7 +458,6 @@ const Explore = () => {
       <InlineDrawer
         open={drawerOpen}
         position="end"
-        size="medium"
         className={styles.drawer}
         separator
       >
