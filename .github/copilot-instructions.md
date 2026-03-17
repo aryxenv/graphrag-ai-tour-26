@@ -83,6 +83,8 @@ All Azure services use `DefaultAzureCredential` — ensure `az login` is run. No
 ### Git
 
 - **Conventional Commits**: All commit messages must follow the format `<type>: <description>` — e.g., `feat: add build tab question generation`, `fix: handle SSE disconnect on abort`, `docs: update eval README`, `refactor: extract SSE wrapper`. Common types: `feat`, `fix`, `docs`, `refactor`, `chore`, `test`, `style`, `perf`.
+- **Branch naming**: Use `feat/...` for features and `fix/...` for bug fixes (e.g., `feat/explore-show-book`, `fix/sse-disconnect`).
+- **Workflow**: Always create a GitHub issue first describing the work, then wait for human approval on the issue before starting implementation. Work on a feature branch (never commit directly to `main`). When done, open a PR targeting `main` and wait for human review — do not merge automatically. Only merge after explicit human approval.
 
 ### Shared
 
