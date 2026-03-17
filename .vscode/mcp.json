@@ -3,6 +3,10 @@
     "fluent-ui": {
       "command": "npx.cmd",
       "args": ["mcp-fluent-ui"]
+    },
+    "microsoft-learn": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
     }
   }
 }
