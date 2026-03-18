@@ -2,6 +2,14 @@
 
 An interactive way to learn how GraphRAG works, built for the Microsoft Foundry booth at AI Tour Brussels 2026. Compare GraphRAG and vanilla RAG answers side by side to see where knowledge graphs shine, explore a 3D visualization of the graph database behind GraphRAG, and build a mini knowledge graph yourself to understand the full pipeline end to end — all powered by Microsoft Foundry.
 
+## Demos
+
+_Hover over link to reveal a demo video_
+
+- **Ask**: [Comparing RAG with GraphRAG](https://github.com/aryxenv/graphrag-ai-tour-26/issues/22)
+- **Explore**: [Explore the graph database used for GraphRAG in 3D](https://github.com/aryxenv/graphrag-ai-tour-26/issues/23)
+- **Build**: [Build your own GraphRAG from scratch](https://github.com/aryxenv/graphrag-ai-tour-26/issues/24)
+
 ## Preview
 
 ![Foundry x GraphRAG Preview](./foundry_x_graphrag_preview.jpeg)
