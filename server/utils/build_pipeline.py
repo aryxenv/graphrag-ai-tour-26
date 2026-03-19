@@ -196,17 +196,18 @@ def create_workspace(session_id: str) -> Path:
     for subdir in ("input", "output", "cache", "logs"):
         (workspace / subdir).mkdir(parents=True, exist_ok=True)
 
-    # Copy prompts — try server/prompts/ first, fall back to graphrag/prompts/
+    # Copy prompts from server/prompts/
     prompts_dst = workspace / "prompts"
     prompts_src = _SERVER_ROOT / "prompts"
-    if not prompts_src.exists():
-        prompts_src = _SERVER_ROOT.parent / "graphrag" / "prompts"
     if prompts_src.exists():
         if prompts_dst.exists():
             shutil.rmtree(prompts_dst)
         shutil.copytree(prompts_src, prompts_dst)
     else:
-        prompts_dst.mkdir(parents=True, exist_ok=True)
+        raise FileNotFoundError(
+            f"Prompts directory not found at {prompts_src}. "
+            "Ensure server/prompts/ contains the GraphRAG prompt templates."
+        )
 
     # Read the base settings.yaml and adjust paths
     base_settings = _SERVER_ROOT / "settings.yaml"
