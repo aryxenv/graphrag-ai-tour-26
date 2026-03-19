@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: graphrag-demo
+
+infra:
+  provider: bicep
+  path: azure
+
+services:
+  server:
+    host: containerapp
+    project: ./server
+    language: python
+
+  client:
+    host: containerapp
+    project: ./client
+    language: js
