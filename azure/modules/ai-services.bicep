@@ -21,7 +21,7 @@ resource gpt41 'Microsoft.CognitiveServices/accounts/deployments@2024-04-01-prev
   name: 'gpt-4.1'
   sku: {
     name: 'Standard'
-    capacity: 30
+    capacity: 500
   }
   properties: {
     model: {
@@ -37,7 +37,7 @@ resource embedding 'Microsoft.CognitiveServices/accounts/deployments@2024-04-01-
   name: 'text-embedding-3-large'
   sku: {
     name: 'Standard'
-    capacity: 30
+    capacity: 500
   }
   properties: {
     model: {

@@ -6,6 +6,15 @@ infra:
   provider: bicep
   path: azure
 
+hooks:
+  postprovision:
+    windows:
+      shell: pwsh
+      run: azure/hooks/postprovision.ps1
+    posix:
+      shell: sh
+      run: azure/hooks/postprovision.sh
+
 services:
   server:
     host: containerapp

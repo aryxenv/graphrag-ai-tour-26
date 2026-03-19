@@ -44,11 +44,14 @@ azd up
 That's it. `azd up` will prompt for an **environment name** and **Azure region**, then:
 
 1. **Provision** all infrastructure (AI Services, AI Search, Storage, ACR, Container Apps)
-2. **Deploy** model deployments (`gpt-4.1` + `text-embedding-3-large`)
-3. **Build** Docker images for client and server
-4. **Push** images to Azure Container Registry
-5. **Deploy** both Container Apps with auto-configured environment variables
-6. **Assign RBAC** roles to the server's managed identity
+2. **Deploy** model deployments (`gpt-4.1` + `text-embedding-3-large` at 500K TPM each)
+3. **Post-provision hook** automatically:
+   - Indexes RAG data into the new AI Search instance (`rag-index`)
+   - Sets server ingress timeout to 600s for long-running GraphRAG queries
+4. **Build** Docker images for client and server
+5. **Push** images to Azure Container Registry
+6. **Deploy** both Container Apps with auto-configured environment variables
+7. **Assign RBAC** roles to the server's managed identity
 
 > The first deployment takes ~10–15 minutes. Subsequent deploys (`azd deploy`) are faster since infrastructure already exists.
 
@@ -62,6 +65,7 @@ That's it. `azd up` will prompt for an **environment name** and **Azure region**
 | `AZURE_BLOB_STORAGE_ENDPOINT` | Derived from provisioned Storage Account |
 | `GRAPHRAG_API_KEY` | Hardcoded to `<API_KEY>` (placeholder for GraphRAG compatibility) |
 | `API_BASE_URL` (client) | Derived from server Container App FQDN |
+| `rag-index` (AI Search) | Auto-populated by postprovision hook |
 | RBAC roles | Auto-assigned to server managed identity |
 
 ## Common Operations

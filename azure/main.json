@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.41.2.15936",
-      "templateHash": "13331624615615074150"
+      "templateHash": "8984032550820343186"
     }
   },
   "parameters": {
@@ -67,7 +67,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.41.2.15936",
-              "templateHash": "13121730400662495978"
+              "templateHash": "6764179010616553653"
             }
           },
           "parameters": {
@@ -104,7 +104,7 @@
               "name": "[format('{0}/{1}', parameters('name'), 'gpt-4.1')]",
               "sku": {
                 "name": "Standard",
-                "capacity": 30
+                "capacity": 500
               },
               "properties": {
                 "model": {
@@ -123,7 +123,7 @@
               "name": "[format('{0}/{1}', parameters('name'), 'text-embedding-3-large')]",
               "sku": {
                 "name": "Standard",
-                "capacity": 30
+                "capacity": 500
               },
               "properties": {
                 "model": {
