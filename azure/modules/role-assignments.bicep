@@ -4,13 +4,13 @@ param aiSearchName string
 param storageAccountName string
 
 // Cognitive Services OpenAI User
-var cognitiveServicesOpenAiUserRoleId = 'a97b65f3-24c7-4388-baec-2e87135dc908'
+var cognitiveServicesOpenAiUserRoleId = '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
 
 // Search Index Data Reader
 var searchIndexDataReaderRoleId = '1407120a-92aa-4202-b7e9-c0e197c71c8f'
 
 // Search Index Data Contributor
-var searchIndexDataContributorRoleId = '8bbe4f3e-f6da-4bda-9c24-1325753aa40a'
+var searchIndexDataContributorRoleId = '8ebe5a00-799e-43f5-93ac-243d3dce84a7'
 
 // Storage Blob Data Contributor
 var storageBlobDataContributorRoleId = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
