@@ -42,6 +42,23 @@ BUILD.md         Detailed technical build notes and endpoint mapping
 
 ## Getting Started
 
+### Quick Start — Azure Developer CLI (recommended)
+
+The fastest way to get up and running. A single command provisions all Azure resources and deploys the app:
+
+```bash
+azd auth login
+azd up
+```
+
+This will provision AI Services (with model deployments), AI Search, Storage, Container Registry, and Container Apps — then build, push, and deploy both the client and server. No manual resource creation or `.env` files required.
+
+See [azure/README.md](azure/README.md) for prerequisites, architecture details, redeployment commands, and troubleshooting.
+
+---
+
+### Manual Setup (local development)
+
 ### Prerequisites
 
 - Node.js 20+
@@ -114,6 +131,7 @@ Scores appear as badges next to each response. See [eval/README.md](eval/README.
 
 ## Additional Details
 
+- [azure/README.md](azure/README.md): Azure Container Apps deployment with `azd up`
 - [graphrag/README.md](graphrag/README.md): GraphRAG pipeline, configuration, and search modes
 - [rag/README.md](rag/README.md): Vanilla RAG pipeline and Azure AI Search setup
 - [eval/README.md](eval/README.md): Evaluation pipeline, evaluators, and phased scoring
