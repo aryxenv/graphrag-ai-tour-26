@@ -14,6 +14,10 @@ $env:AZURE_COGNITIVE_SERVICES_ENDPOINT = azd env get-value AZURE_COGNITIVE_SERVI
 
 Write-Host "Using AI Search: $env:AZURE_AI_SEARCH_ENDPOINT"
 
+# RBAC propagation can take a few seconds after provisioning
+Write-Host "Waiting for RBAC propagation..."
+Start-Sleep -Seconds 30
+
 Push-Location rag
 try {
     Write-Host "Installing RAG dependencies..."
