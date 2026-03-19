@@ -158,7 +158,7 @@ const BuildGraph = ({ data }: Props) => {
 
   if (!data) {
     return (
-      <div className={styles.empty}>
+      <div className={styles.empty} ref={containerRef}>
         <Caption1 style={{ color: "rgba(255,255,255,0.35)" }}>
           Knowledge graph will appear here after indexing
         </Caption1>
@@ -166,13 +166,15 @@ const BuildGraph = ({ data }: Props) => {
     );
   }
 
+  const hasDimensions = dimensions.width > 0 && dimensions.height > 0;
+
   return (
     <div
       className={styles.root}
       ref={containerRef}
       onMouseMove={handleMouseMove}
     >
-      <ForceGraph3D
+      {hasDimensions && <ForceGraph3D
         ref={fgRef}
         graphData={data}
         width={dimensions.width || undefined}
@@ -197,7 +199,7 @@ const BuildGraph = ({ data }: Props) => {
             controls.dampingFactor = 0.06;
           }
         }}
-      />
+      />}
 
       {hoverTooltip && (
         <div ref={tooltipRef} className={styles.tooltip}>
