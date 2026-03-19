@@ -63,7 +63,7 @@ cache:
 
 vector_store:
   type: lancedb
-  db_uri: output\lancedb
+  db_uri: output/lancedb
 
 ### Workflow settings ###
 
