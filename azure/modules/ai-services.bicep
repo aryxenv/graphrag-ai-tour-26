@@ -37,7 +37,7 @@ resource embedding 'Microsoft.CognitiveServices/accounts/deployments@2024-04-01-
   name: 'text-embedding-3-large'
   sku: {
     name: 'Standard'
-    capacity: 500
+    capacity: 100
   }
   properties: {
     model: {
