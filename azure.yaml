@@ -8,12 +8,8 @@ infra:
 
 hooks:
   postprovision:
-    windows:
-      shell: pwsh
-      run: azure/hooks/postprovision.ps1
-    posix:
-      shell: sh
-      run: azure/hooks/postprovision.sh
+    shell: pwsh
+    run: azure/hooks/postprovision.ps1
 
 services:
   server:

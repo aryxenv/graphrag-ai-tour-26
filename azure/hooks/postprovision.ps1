@@ -25,10 +25,9 @@ Write-Host "`n=== Post-Provision: Server Ingress Timeout ===" -ForegroundColor C
 
 $serverName = azd env get-value SERVICE_SERVER_URI 2>$null
 if ($serverName) {
-    # Extract resource names from azd env
     $rgName = "rg-$(azd env get-value AZURE_ENV_NAME)"
-    # Get the server container app name from the resource group
-    $serverApp = az containerapp list --resource-group $rgName --query "[?tags.""azd-service-name""=='server'].name" -o tsv
+    $apps = az containerapp list --resource-group $rgName -o json 2>$null | ConvertFrom-Json
+    $serverApp = ($apps | Where-Object { $_.tags.'azd-service-name' -eq 'server' }).name
     if ($serverApp) {
         Write-Host "Setting server ingress timeout to 600s..."
         az containerapp ingress update --name $serverApp --resource-group $rgName --target-port 8000 --transport auto --proxy-request-timeout 600 2>$null
