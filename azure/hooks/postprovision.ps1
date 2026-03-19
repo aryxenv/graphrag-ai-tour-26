@@ -7,8 +7,12 @@ $ErrorActionPreference = "Stop"
 
 Write-Host "`n=== Post-Provision: RAG Indexing ===" -ForegroundColor Cyan
 
-# Env vars AZURE_AI_SEARCH_ENDPOINT, AZURE_OPENAI_ENDPOINT, AZURE_COGNITIVE_SERVICES_ENDPOINT
-# are automatically available from Bicep outputs via azd environment.
+# Explicitly set env vars from azd to override rag/.env defaults
+$env:AZURE_AI_SEARCH_ENDPOINT = azd env get-value AZURE_AI_SEARCH_ENDPOINT
+$env:AZURE_OPENAI_ENDPOINT = azd env get-value AZURE_OPENAI_ENDPOINT
+$env:AZURE_COGNITIVE_SERVICES_ENDPOINT = azd env get-value AZURE_COGNITIVE_SERVICES_ENDPOINT
+
+Write-Host "Using AI Search: $env:AZURE_AI_SEARCH_ENDPOINT"
 
 Push-Location rag
 try {

@@ -9,6 +9,9 @@ param environmentName string
 @description('Azure region for all resources')
 param location string
 
+@description('Principal ID of the deploying user (for RBAC on data plane)')
+param deployerPrincipalId string = ''
+
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
 var tags = { 'azd-env-name': environmentName }
 
@@ -135,6 +138,7 @@ module roleAssignments 'modules/role-assignments.bicep' = {
   name: 'role-assignments'
   params: {
     principalId: serverApp.outputs.principalId
+    deployerPrincipalId: deployerPrincipalId
     aiServicesName: aiServices.outputs.name
     aiSearchName: aiSearch.outputs.name
     storageAccountName: storage.outputs.name
