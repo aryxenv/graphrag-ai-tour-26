@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: graphrag-demo
+
+infra:
+  provider: bicep
+  path: azure
+
+hooks:
+  preprovision:
+    shell: pwsh
+    run: azure/hooks/preprovision.ps1
+  postprovision:
+    shell: pwsh
+    run: azure/hooks/postprovision.ps1
+
+services:
+  server:
+    host: containerapp
+    project: ./server
+    language: python
+
+  client:
+    host: containerapp
+    project: ./client
+    language: js
