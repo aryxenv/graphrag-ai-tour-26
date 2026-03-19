@@ -125,3 +125,5 @@ Key design choices:
 - **GraphRAG data** (parquet + LanceDB, ~9 MB) is baked into the server Docker image.
 - **Runtime API URL injection** — the client nginx entrypoint replaces the default API URL with the actual server FQDN at container startup.
 - **RBAC is auto-assigned** — Cognitive Services OpenAI User, Search Index Data Reader/Contributor, Storage Blob Data Contributor.
+
+_This documentation was generated with the help of AI_
