@@ -129,6 +129,7 @@ module clientApp 'modules/container-app.bicep' = {
       { name: 'API_BASE_URL', value: 'https://${serverApp.outputs.fqdn}/api' }
     ]
     secrets: []
+    minReplicas: 1
   }
 }
 
