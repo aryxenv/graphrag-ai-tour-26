@@ -121,7 +121,7 @@ azure/
 
 Key design choices:
 
-- **Server** has `minReplicas: 1` (always warm), **client** has `minReplicas: 0` (scales to zero when idle).
+- Both **server** and **client** have `minReplicas: 1` (always warm) to avoid cold-start latency.
 - **GraphRAG data** (parquet + LanceDB, ~9 MB) is baked into the server Docker image.
 - **Runtime API URL injection** — the client nginx entrypoint replaces the default API URL with the actual server FQDN at container startup.
 - **RBAC is auto-assigned** — Cognitive Services OpenAI User, Search Index Data Reader/Contributor, Storage Blob Data Contributor.
