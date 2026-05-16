@@ -1,6 +1,6 @@
 # GraphRAG Interactive Demo
 
-An interactive way to learn how GraphRAG works, built for the Microsoft Foundry booth at AI Tour Brussels 2026. Compare GraphRAG and vanilla RAG answers side by side to see where knowledge graphs shine, explore a 3D visualization of the graph database behind GraphRAG, and build a mini knowledge graph yourself to understand the full pipeline end to end — all powered by Microsoft Foundry.
+An interactive way to learn how GraphRAG works, built for the Microsoft Foundry showcase. Compare GraphRAG and vanilla RAG answers side by side to see where knowledge graphs shine, explore a 3D visualization of the graph database behind GraphRAG, and build a mini knowledge graph yourself to understand the full pipeline end to end — all powered by Microsoft Foundry.
 
 ## Demos
 
